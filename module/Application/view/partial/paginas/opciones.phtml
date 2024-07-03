@@ -1,0 +1,66 @@
+<style>
+    .select2{
+        width: 180px!important;
+    }
+    .select2-dropdown{
+        z-index: 100000;
+    }
+    .select2-search--dropdown:before {
+        font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f002";
+    }
+</style>
+
+<div class="opciones-vista">
+    <a class="btn btn-info" onclick="regresar();"><i class="fas fa-arrow-left"></i> Regresar</a>
+    <select class="select2 select-plan-paginas">
+        <option value="" disabled="">Seleccionar...</option>
+        <?php foreach($this->planes_paginas as $pagina): ?>
+        <option value="<?php echo $pagina['idpaginas'] ?>" <?php if( $this->idpaginas == $pagina['idpaginas'] ) echo "selected='select'"; ?>><?php echo $pagina['pagina'] ?></option>
+        <?php endforeach; ?>
+    </select>
+    <?php if( $this->pagina['hash_url'] == 'home' || $this->pagina['hash_url'] == 'hall' || $this->pagina['hash_url'] == 'hall-conferencias' || $this->pagina['hash_url'] == 'registro' || $this->pagina['hash_url'] == 'registro-presencial' || $this->pagina['hash_url'] == 'auditorio' || $this->pagina['hash_url'] == 'recepcion' || $this->pagina['hash_url'] == 'zonas' || $this->pagina['hash_url'] == 'stand-vip' || $this->pagina['hash_url'] == 'stand-standard' || $this->pagina['hash_url'] == 'auditorio-vip'|| $this->pagina['hash_url'] == 'auditorio-estandar' || $this->pagina['hash_url'] == 'stand-standard-nuevo' || $this->pagina['hash_url'] == 'stand-vip-nuevo' || $this->pagina['hash_url'] == 'cronograma') : ?>
+    <button type="button" class="btn btn-success btn-cambiar-fondo" data-toggle="tooltip" data-placement="top" title="La dimensión recomendada es de 2000 px de ancho y 1109 px de alto"><i class="fas fa-images"></i> <span>Cambiar Fondo</span></button>
+    <?php endif; ?>
+    <?php if( $this->pagina['hash_url'] == 'home' || $this->pagina['hash_url'] == 'hall' || $this->pagina['hash_url'] == 'hall-conferencias' || $this->pagina['hash_url'] == 'recepcion' || $this->pagina['hash_url'] == 'registro' || $this->pagina['hash_url'] == 'registro-presencial' || $this->pagina['hash_url'] == 'cronograma' ) : ?>
+    <button type="button" class="btn btn-success btn-cambiar-fondo-movil" data-toggle="tooltip" data-placement="top" title="La dimensión recomendada es de 500 px de ancho y 881 px de alto"><i class="fas fa-images"></i> <span>Cambiar Fondo Móvil</span></button>
+    <?php endif; ?>
+    <?php if( $this->pagina['hash_url'] == 'hall' || $this->pagina['hash_url'] == 'hall-conferencias' ) : ?>
+    <button type="button" onclick="abrirVista('/cliente/paginas-banner-opciones', 'dos', 'banner')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Opción para asociar el banner con el stand"><i class="fas fa-cog"></i> <span>Asociar Banner</span></button>
+    <?php endif; ?>
+    <div class="opciones-vista-video">
+        <button type="button" class="btn btn-success btn-fondo-video pf-8">
+            <i class="fas fa-images"></i>
+            <span><?php echo (isset($this->configuracion['fondo_video']) && $this->configuracion['fondo_video']['hash'] != '') ? 'Cambiar' : 'Subir'; ?> Video</span>
+        </button>
+        <input
+            type="checkbox"
+            class="check-activar-fondo-video"
+            value="1">
+    </div>
+    <button type="button" class="btn btn-dark btn-guardar-cambios"><i class="fas fa-save"></i> <span>Guardar Cambios</span></button>
+</div>
+
+<script>
+    $(".select2").select2();
+    $(".select-plan-paginas").change(function(){
+        let idferias = '<?php echo $this->idferias; ?>';
+        let idpaginas = $(this).val();
+        window.location.href = 'cliente/paginas-ferias-configuracion/'+idferias+'/'+idpaginas;
+    });
+    function regresar(){
+        window.location.href = "cliente/paginas-ferias?idferias=<?php echo $this->idferias; ?>";
+    }
+
+    document.querySelector('.check-activar-fondo-video').addEventListener('click', (e) => {
+        document.querySelector('input[name="activar_fondo_video"]').value = e.target.checked;
+    })
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        setTimeout(() => {
+            <?php if( isset($this->configuracion['activar_fondo_video']) && $this->configuracion['activar_fondo_video'] ) : ?>
+                document.querySelector('.check-activar-fondo-video').click();
+                document.querySelector('input[name="activar_fondo_video"]').click();
+            <?php endif; ?>
+        }, 100);
+    });
+</script>

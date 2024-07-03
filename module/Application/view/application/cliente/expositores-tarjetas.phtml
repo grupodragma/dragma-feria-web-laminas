@@ -1,0 +1,79 @@
+<style>
+    
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title">Tarjetas</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form autocomplete="off">
+    <div class="modal-body">
+        <table id="dataTablesTarjetas" class="table table-bordered table-hover table-striped w-100">
+            <thead>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+    </div>
+</form>
+
+<script>
+
+    var tablaOpcionIzquierdaTarjetas = '';
+    var tablaOpcionDerechaTarjetas = '';
+    var responsiveHelper_dataTablesTarjetas = undefined;
+    var dataTablesTarjetas;
+    var breakpointDefinitionDataTablesTarjetas = {
+        tablet: 1024,
+        phone: 480
+    };
+    dataTablesTarjetas = $('#dataTablesTarjetas').dataTable({
+        "ajax": "/cliente/listar-expositores-tarjetas?idexpositores=<?php echo $this->idexpositores; ?>",
+        "sDom": "<'row'<'col-xs-11 col-sm-6 tabla-opciones-izquierda'f><'col-sm-6 col-xs-1 tabla-opciones-derecha'>r>" +
+                "t" +
+                "<'row'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+        "autoWidth": false,
+        "oLanguage": {
+            "sUrl": "js/datagrid/datatables/Spanish.json",
+        },
+        "aoColumnDefs": [
+            {"bSortable": false, "aTargets": [0]}
+        ],
+        "preDrawCallback": function () {
+            if (!responsiveHelper_dataTablesTarjetas) {
+                responsiveHelper_dataTablesTarjetas = new ResponsiveDatatablesHelper($('#dataTablesTarjetas'), breakpointDefinitionDataTablesTarjetas);
+            }
+        },
+        "rowCallback": function (nRow) {
+            responsiveHelper_dataTablesTarjetas.createExpandIcon(nRow);
+        },
+        "drawCallback": function (oSettings) {
+            responsiveHelper_dataTablesTarjetas.respond();
+            tablaOpcionIzquierdaTarjetas = $(".tabla-opciones-izquierda");
+            tablaOpcionDerechaTarjetas = $(".tabla-opciones-derecha");
+        },
+        "ordering": false,
+        responsive: true
+    });
+
+    $(document).ready(function () {
+        setTimeout(function(){
+            
+            tablaOpcionIzquierdaTarjetas.find(".input-group-addon").addClass("input-group-text d-inline-flex width-3 align-items-center justify-content-center border-bottom-right-radius-0 border-top-right-radius-0 border-right-0");
+            tablaOpcionIzquierdaTarjetas.find(".input-group-addon").find("i").removeAttr("class").addClass("fas fa-search");
+            tablaOpcionIzquierdaTarjetas.find("input[type='search']").attr("placeholder", "Buscar");
+
+        }, 700);
+    });
+
+</script>

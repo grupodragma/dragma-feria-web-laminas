@@ -1,0 +1,87 @@
+<style>
+    
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title">Editar Promociones</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/cliente/guardar-editar-promociones-ferias?idferiaspromociones=<?php echo $this->idferiaspromociones; ?>" data-callback="respuesta(response, 'Promociones actualizado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+        <input type="hidden" name="idferias" value="<?php echo $this->idferias; ?>" />
+        <div class="form-group">
+            <label class="form-label">Promoción</label>
+            <span>
+                <select class="select2 form-control" name="idpromociones">
+                    <option value="" selected="select">Seleccionar...</option>
+                    <?php foreach($this->promociones as $item):?>
+                    <option value="<?php echo $item['idpromociones'];?>" <?php if( $item['idpromociones'] === $this->idpromociones ) { echo "selected='select'"; } ?>><?php echo $item['nombre']. " (".$item['empresa'].")";?></option>
+                    <?php endforeach;?>
+                </select>
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Programar Fecha</label> 
+            <span>
+                <div class="input-group">
+                    <input type="text" class="form-control rangofechas" placeholder="Seleccionar rango de fechas" name="rango_fechas" value="<?php echo date('d/m/Y H:i', strtotime($this->fecha_inicio))." - ".date('d/m/Y H:i', strtotime($this->fecha_fin)); ?>">
+                    <div class="input-group-append">
+                        <span class="input-group-text fs-xl">
+                            <i class="fal fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">URL Externo</label>
+            <span>
+                <input type="text" name="url_externo" class="form-control" value="<?php echo $this->url_externo; ?>">
+            </span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info btn-submit btn-uploader-form" data-id-form='validar_formulario'>Guardar Cambios</button>
+    </div>
+</form>
+
+<script>
+
+    $('.rangofechas').daterangepicker({
+        locale: 'es',
+        timePicker: true,
+        timePickerIncrement: 30,
+        timePicker24Hour: true,
+        //startDate: moment().subtract(3, 'days').format('DD/MM/YYYY HH:mm'),
+        //endDate: moment().format('DD/MM/YYYY HH:mm'),
+        locale: {
+            format: 'DD/MM/YYYY HH:mm',
+            applyLabel: "Aplicar",
+            cancelLabel: "Cancelar",
+        }
+    });
+
+    $(".select2").select2();
+
+    $("#validar_formulario").validate({
+        ignore: [],
+        rules: {
+            idpromociones: {
+                required: true
+            },
+            rango_fechas: {
+                required: true
+            }
+        },
+        messages: {},
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+
+
+</script>

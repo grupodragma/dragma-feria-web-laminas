@@ -1,0 +1,181 @@
+<div class="modal-header">
+    <h4 class="modal-title">Agregar Módulo</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/sistema/guardar-agregar-modulo" data-callback="respuesta(response, 'Módulo agregado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-5">
+                    <label class="form-label">Nombre</label>
+                    <span>
+                        <input type="text" name="nombre" class="form-control">
+                    </span>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">Ruta</label>
+                    <span>
+                        <input type="text" name="ruta" class="form-control">
+                    </span>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Icono</label>
+                    <div class="contenedor-icono" data-idicono="<?php echo time(); ?>" onclick="abrirModalIcono('<?php echo time(); ?>')">
+                        <input type="hidden" name="icono" class="form-control">
+                        <i class="fas fa-horizontal-rule hidden"></i>
+                        <span>Seleccionar</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-hdr">
+            <h2><i class="fas fa-fw fa-lg fa-users"></i>&nbsp;Submódulos</h2>
+        </div>
+        <div class="contenedor-dinamico lista-submodulos">
+            <input type="hidden" name="submodulos">
+            <div class="encabezado">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Nombre</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Ruta</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Descripción</label>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">Icono</label>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+            </div>
+            <div class="plantilla" style="display: none;">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <span>
+                                <input type="text" class="form-control" data-name="nombre">
+                            </span>
+                        </div>
+                        <div class="col-md-3">
+                            <span>
+                                <input type="text" class="form-control" data-name="ruta">
+                            </span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>
+                                <input type="text" class="form-control" data-name="descripcion">
+                            </span>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="contenedor-icono">
+                                <input type="hidden" class="form-control" data-name="icono">
+                                <i class="fas fa-horizontal-rule hidden"></i>
+                                <span>Icono</span>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-danger btn-plantilla" onclick="Fila.eliminar(this)"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contenido"></div>
+            <div class="opcion">
+                <button type="button" class="btn btn-success btn-block" onclick="Fila.agregar(this)"><i class="fas fa-plus"></i> Agregar Módulo</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info btn-submit btn-uploader-form" data-id-form='validar_formulario'>Agregar Módulo</button>
+    </div>
+</form>
+
+<script>
+
+    var iconoSeleccionar = '';
+
+    function abrirModalIcono(id){
+        iconoSeleccionar = id;
+        abrirModal('sistema/seleccionar-icono?id='+id, 'icono');
+    }
+
+    $(document).on("click", ".agregar-icono", function(){
+        guardarSubmodulos();
+    });
+
+    $(document).on("keyup", ".contenedor-dinamico .form-group", function(){
+        guardarSubmodulos();
+    });
+
+    var Fila = {
+        agregar: function(obj){
+            let idInputIcono = $.now();
+            let contenedor = $(obj).parents(".contenedor-dinamico");
+            let plantilla = contenedor.find(".plantilla");
+            let plantillaContenido = $("<div>").html(plantilla.html());
+            let contenido = contenedor.find(".contenido");
+            plantillaContenido.find(".contenedor-icono").attr({
+                "data-idicono": idInputIcono,
+                "onclick": "abrirModalIcono('"+idInputIcono+"')"
+            });
+            contenido.append(plantillaContenido.html());
+        },
+        eliminar: function(obj){
+            $(obj).parents(".form-group").remove();
+            guardarSubmodulos();
+        }
+    }
+
+    function guardarSubmodulos(){
+        let data = [];
+        $(".lista-submodulos .contenido .form-group").each(function(){
+            if($(this).find("input[data-name='nombre']").val().trim() != ''){
+                data.push({
+                    nombre: $(this).find("input[data-name='nombre']").val(),
+                    ruta: $(this).find("input[data-name='ruta']").val(),
+                    icono: $(this).find("input[data-name='icono']").val(),
+                    descripcion: $(this).find("input[data-name='descripcion']").val()
+                });
+                data = data.filter(data => data.nombre != '' && data.ruta != '' && data.descripcion != '');
+            }
+        });
+        console.log(data);
+        $("input[name='submodulos']").val(JSON.stringify(data));
+    }
+
+    $("#validar_formulario").validate({
+        rules: {
+            nombre: {
+                required: true
+            },
+            ruta: {
+                required: true
+            },
+            icono: {
+                required: true
+            }
+        },
+        messages: {
+            nombre: {
+                required: 'Por favor, ingrese el nombre'
+            },
+            ruta: {
+                required: 'Por favor, ingrese la ruta'
+            },
+            icono: {
+                required: 'Por favor, ingrese el icono'
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+
+</script>

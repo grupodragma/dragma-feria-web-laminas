@@ -1,0 +1,146 @@
+<style>
+    .contenedor-imagen-personalizado{
+        background: #eaeaea;
+    }
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title">Editar Bancos</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/mantenimiento/guardar-editar-bancos?idbancos=<?php echo $this->idbancos; ?>" data-callback="respuesta(response, 'Bancos actualizado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+    <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <span>
+                <input type="text" name="nombre" class="form-control" value="<?php echo $this->nombre; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Correo Electrónico</label>
+            <span>
+                <input type="text" name="correo" class="form-control" value="<?php echo $this->correo; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Teléfono</label>
+            <span>
+                <input type="text" name="telefono" class="form-control" value="<?php echo $this->telefono; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Enlace Whatsapp</label>
+            <span>
+                <input type="text" name="enlace_wsp" class="form-control" value="<?php echo $this->enlace_wsp; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Enlace</label>
+            <span>
+                <input type="text" name="enlace" class="form-control" value="<?php echo $this->enlace; ?>">
+            </span>
+        </div>
+        <div class="panel-hdr">
+            <h2><i class="fas fa-fw fa-lg fa-images"></i>&nbsp;Logo</h2>
+        </div>
+        <div class="form-group">
+            <div class="contenedor-imagen-personalizado">
+                <img src="<?php echo ( $this->hash_logo != '' ) ? 'bancos/logo/'.$this->hash_logo.'?t='.time() : 'img/no-imagen.jpg'; ?>" width="300" class="imagen">
+                <div class="panel-tag panel-tag--alert-danger mb-5 mt-5">Imagen recomendada de 300 px de ancho y 91 px de alto</div>
+                <button type="button" class="btn btn-dark btn-block cambiar-imagen-personalizado"><i class="fas fa-upload"></i> Cambiar Imagen</button>
+                <input type="file" data-width="300" data-height="91" onchange="cambiarImagenDimension(this, event);" class="hidden" name="logo" accept=".jpg,.jpeg,.png" style="display: none;">
+                <div class="hidden mensaje">La imagen que intenta subir, no cumple con las dimensiones recomendadas. Intente otra vez.</div>
+            </div>
+        </div>
+        <div class="panel-hdr">
+            <h2><i class="fas fa-fw fa-lg fa-images"></i>&nbsp;Logo Pequeño</h2>
+        </div>
+        <div class="form-group">
+            <div class="contenedor-imagen-personalizado">
+                <img src="<?php echo ( $this->hash_logo_small != '' ) ? 'bancos/logo/'.$this->hash_logo_small.'?t='.time() : 'img/no-imagen.jpg'; ?>" width="72" class="imagen">
+                <div class="panel-tag panel-tag--alert-danger mb-5 mt-5">Imagen recomendada de 72 px de ancho y 22 px de alto</div>
+                <button type="button" class="btn btn-dark btn-block cambiar-imagen-personalizado"><i class="fas fa-upload"></i> Cambiar Imagen</button>
+                <input type="file" data-width="72" data-height="22" onchange="cambiarImagenDimension(this, event);" class="hidden" name="logo_small" accept=".jpg,.jpeg,.png" style="display: none;">
+                <div class="hidden mensaje">La imagen que intenta subir, no cumple con las dimensiones recomendadas. Intente otra vez.</div>
+            </div>
+        </div>
+        <div class="panel-hdr">
+            <h2><i class="fas fa-fw fa-lg fa-images"></i>&nbsp;Imagen Módulo</h2>
+        </div>
+        <div class="form-group">
+            <div class="contenedor-imagen-personalizado">
+                <img src="<?php echo ( $this->hash_logo_modulo != '' ) ? 'bancos/logo/'.$this->hash_logo_modulo.'?t='.time() : 'img/no-imagen.jpg'; ?>" width="320" class="imagen">
+                <div class="panel-tag panel-tag--alert-danger mb-5 mt-5">Imagen recomendada de 320 px de ancho y 700 px de alto</div>
+                <button type="button" class="btn btn-dark btn-block cambiar-imagen-personalizado"><i class="fas fa-upload"></i> Cambiar Imagen</button>
+                <input type="file" data-width="320" data-height="700" onchange="cambiarImagenDimension(this, event);" class="hidden" name="logo_modulo" accept=".jpg,.jpeg,.png" style="display: none;">
+                <div class="hidden mensaje">La imagen que intenta subir, no cumple con las dimensiones recomendadas. Intente otra vez.</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info btn-submit btn-uploader-form" data-id-form='validar_formulario'>Guardar Cambios</button>
+    </div>
+</form>
+
+<script>
+
+    $(".cambiar-imagen-personalizado").click(function () {
+        $(this).parent().find("input[type='file']").click();
+    });
+
+    var _URL = window.URL || window.webkitURL;
+
+    function cambiarImagenDimension(obj, event){
+        var contenedor = $(obj).parent();
+        var reader = new FileReader();
+        var img = contenedor.find("img");
+        var img_width = parseInt($(obj).attr("data-width"));
+        var img_height = parseInt($(obj).attr("data-height"));
+        var mensaje = contenedor.find(".mensaje").text();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = function (e) {
+            var image = new Image();
+            image.src = e.target.result;
+            image.onload = function () {
+                var width = this.width;
+                var height = this.height;
+                if (width != img_width || height != img_height) {
+                    alert(mensaje);
+                    $(obj).val('');
+                    img.attr("src", "img/no-imagen.jpg");
+                    return false;
+                } 
+                img.attr("src", e.target.result);
+            };
+        }
+    }
+
+    $("#validar_formulario").validate({
+        rules: {
+            nombre: {
+                required: true
+            },
+            correo: {
+                required: true,
+                email: true
+            }
+        },
+        messages: {
+            nombre: {
+                required: 'Por favor, ingrese el nombre'
+            },
+            correo: {
+                required: 'Por favor, ingrese el correo electrónico',
+                email: 'Por favor, ingrese una dirección de correo electrónico válida'
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+
+</script>

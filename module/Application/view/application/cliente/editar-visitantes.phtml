@@ -1,0 +1,132 @@
+<style>
+    
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title">Editar Visitantes</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/cliente/guardar-editar-visitantes?idvisitantes=<?php echo $this->idvisitantes; ?>" data-callback="respuesta(response, 'Visitantes actualizado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+        <?php if( $this->layout()->datosUsuario['idperfil'] == 1 ) :?>
+        <div class="form-group">
+            <label class="form-label">Feria</label>
+            <span>
+                <select class="select2 form-control" name="idferias">
+                    <option value="" selected="select" disabled="">Seleccionar...</option>
+                    <?php foreach($this->ferias as $item):?>
+                    <option value="<?php echo $item['idferias'];?>" <?php if( $this->idferias == $item['idferias'] ) echo "selected='select'"; ?>><?php echo $item['nombre'];?></option>
+                    <?php endforeach;?>
+                </select>
+            </span>
+        </div>
+        <?php endif; ?>
+        <div class="form-group">
+            <label class="form-label">Nombres</label>
+            <span>
+                <input type="text" name="nombres" class="form-control" value="<?php echo $this->nombres; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Apellido Paterno</label>
+            <span>
+                <input type="text" name="apellido_paterno" class="form-control" value="<?php echo $this->apellido_paterno; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Apellido Materno</label>
+            <span>
+                <input type="text" name="apellido_materno" class="form-control" value="<?php echo $this->apellido_materno; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Correo Electrónico</label>
+            <span>
+                <input type="text" name="correo" class="form-control" value="<?php echo $this->correo; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Teléfono</label>
+            <span>
+                <input type="text" name="telefono" class="form-control" value="<?php echo $this->telefono; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Tipo Documento <?php echo $this->tipo_documento; ?></label>
+            <span>
+                <select class="select2 form-control" name="tipo_documento">
+                    <option value="" selected="select" disabled="">Seleccionar...</option>
+                    <option value="DNI" <?php if( $this->tipo_documento == "DNI" ) echo "selected='select'"; ?>>DNI</option>
+                    <option value="CARNET DE EXTRANJERIA" <?php if( $this->tipo_documento == "CARNET DE EXTRANJERIA" ) echo "selected='select'"; ?>>CARNET DE EXTRANJERIA</option>
+                    <option value="PASAPORTE" <?php if( $this->tipo_documento == "PASAPORTE" ) echo "selected='select'"; ?>>PASAPORTE</option>
+                </select>
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">N° Documento</label>
+            <span>
+                <input type="text" name="numero_documento" class="form-control" value="<?php echo $this->numero_documento; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-checkbox custom-control-inline mt-1">
+                <input type="checkbox" name="sala_premium" value="1" class="custom-control-input" id="defaultInline1" <?php if($this->sala_premium === "1") echo 'checked="true"'; ?>>
+                <label class="custom-control-label" for="defaultInline1"><span class=""></span> Sala Premium</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info btn-submit btn-uploader-form" data-id-form='validar_formulario'>Guardar Cambios</button>
+    </div>
+</form>
+
+<script>
+
+    $(".select2").select2();
+
+    $("#validar_formulario").validate({
+        rules: {
+            <?php if( $this->layout()->datosUsuario['idperfil'] == 1 ) :?>
+            idferias: {
+                required: true
+            },
+            <?php endif; ?>
+            nombres: {
+                required: true
+            },
+            numero_documento: {
+                required: true,
+                remote: "/cliente/validar-numero-documento?key=<?php echo $this->numero_documento; ?>"
+            },
+            correo: {
+                required: true,
+                email: true
+            }
+        },
+        messages: {
+            <?php if( $this->layout()->datosUsuario['idperfil'] == 1 ) :?>
+            idferias: {
+                required: 'Por favor, seleccione la feria'
+            },
+            <?php endif; ?>
+            nombres: {
+                required: 'Por favor, ingrese los nombres'
+            },
+            numero_documento: {
+                required: 'Por favor, ingrese el número de documento'
+            },
+            correo: {
+                required: 'Por favor, ingrese el correo electrónico',
+                email: 'Por favor, ingrese una dirección de correo electrónico válida'
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+
+</script>

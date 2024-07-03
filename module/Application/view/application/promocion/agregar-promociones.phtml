@@ -1,0 +1,220 @@
+<style>
+    
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title">Agregar Promociones</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/promocion/guardar-agregar-promociones" data-callback="respuesta(response, 'Promociones agregado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="form-label">Empresa</label>
+            <span>
+                <select class="select2 form-control" name="idempresas">
+                    <option value="" selected="select" disabled="">Seleccionar...</option>
+                    <?php foreach($this->empresas as $item):?>
+                    <option value="<?php echo $item['idempresas'];?>"><?php echo $item['nombre'];?></option>
+                    <?php endforeach;?>
+                </select>
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <span>
+                <input type="text" name="nombre" class="form-control">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Tipo Enlace</label>
+            <span>
+                <select class="select2 form-control select-tipoenlace" name="tipo_enlace">
+                    <option value="" selected="select" disabled="">Seleccionar...</option>
+                    <option value="URL">URL</option>
+                    <option value="PDF">PDF</option>
+                </select>
+            </span>
+        </div>
+        <span data-contenedor="enlace" style="display: none;">
+            <div class="form-group">
+                <label class="form-label">Enlace</label>
+                <span>
+                    <input type="text" name="enlace" class="form-control">
+                </span>
+            </div>
+        </span>
+        <span data-contenedor="pdf" style="display: none;">
+            <div class="form-group">
+                <label class="form-label">PDF</label>
+                <div class="contenedor-archivo">
+                    <button type="button" class="btn btn-default btn-archivo">Seleccionar archivo</button>
+                    <button type="button" class="btn btn-danger btn-eliminar" style="display: none;" onclick="File.delete(this)"><i class="fas fa-times"></i></button>
+                    <a href="javascript:void(0)" download class="btn btn-primary btn-descargar" style="display: none;"><i class="fas fa-download"></i> Descargar</a>
+                    <input type="file" name="archivo_pdf" class="form-control" size-valid="5000000" valid-file="application/pdf" onchange="File.upload(this, event);" accept="application/pdf" style="display: none;">
+                    <div class="panel-tag panel-tag--alert-danger mb-5 mt-5">El peso máximo del archivo es de 5 MB</div>
+                </div>
+            </div>
+        </span>
+        <div class="form-group">
+            <label class="form-label">Enlace Whatsapp</label>
+            <span>
+                <input type="text" name="enlace_wsp" class="form-control">
+            </span>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-checkbox custom-control-inline mt-1">
+                <input type="checkbox" name="buscador" value="1" class="custom-control-input" id="defaultInline1">
+                <label class="custom-control-label" for="defaultInline1"><span class=""></span> Buscador</label>
+            </div>
+        </div>
+        <div class="panel-hdr">
+            <h2><i class="fas fa-fw fa-lg fa-images"></i>&nbsp;Imagen</h2>
+        </div>
+        <div class="form-group">   
+            <div class="contenedor-imagen-personalizado">
+                <img src="img/no-imagen.jpg" width="300" class="imagen">
+                <div class="panel-tag panel-tag--alert-danger mb-5 mt-5">Imagen recomendada de 590 px de ancho y 700 px de alto</div>
+                <button type="button" class="btn btn-dark btn-block cambiar-imagen-personalizado"><i class="fas fa-upload"></i> Cambiar Imagen</button>
+                <input type="file" data-width="590" data-height="700" onchange="cambiarImagenDimension(this, event);" class="hidden" name="imagen" accept=".jpg,.jpeg,.png" style="display: none;">
+                <div class="hidden mensaje">La imagen que intenta subir, no cumple con las dimensiones recomendadas. Intente otra vez.</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info btn-submit btn-uploader-form" data-id-form='validar_formulario'>Agregar Promociones</button>
+    </div>
+</form>
+
+<script>
+
+    $(".btn-archivo").click(function(){
+        $(this).parent().find("input[type='file']").click();
+    });
+
+    var File = {
+        upload: function(obj, event){
+            let contenedor = $(obj).parent();
+            let btnArchivo = contenedor.find(".btn-archivo");
+            let btnEliminar = contenedor.find(".btn-eliminar");
+            let btnDescargar = contenedor.find(".btn-descargar");
+            let inputFile = contenedor.find("input[type='file']");
+            let validFiles = inputFile.attr("valid-file").split(",");
+            if(event.target.files.length){
+                if( validFiles.indexOf(event.target.files[0].type) == -1 ){
+                    this.message('invalid-format', 'warning');
+                    this.restore(obj);
+                    return;
+                }
+                if( event.target.files[0].size > 5000000 ) {
+                    this.message('invalid-size', 'warning');
+                    this.restore(obj);
+                    return;
+                }
+                btnArchivo.text("Cambiar archivo");
+                btnEliminar.show();
+            } else {
+                this.restore(obj);
+            }
+        },
+        delete: function(obj) {
+            this.restore(obj);
+        },
+        restore: function(obj) {
+            let contenedor = $(obj).parent();
+            let btnArchivo = contenedor.find(".btn-archivo");
+            let btnEliminar = contenedor.find(".btn-eliminar");
+            let inputFile = contenedor.find("input[type='file']");
+            btnArchivo.text("Seleccionar archivo");
+            btnEliminar.hide();
+            inputFile.val('');
+        },
+        message: function(type, typeMessage){
+            switch(type){
+                case 'invalid-format': alerta("El tipo de formato no es valido. Por favor, vuelva a intentarlo.", typeMessage); break;
+                case 'invalid-size': alerta("El peso máximo no es valido. Por favor, vuelva a intentarlo.", typeMessage); break;
+            }
+        }
+    }
+
+    var selectTipoEnlace = $(".select-tipoenlace");
+    var contenedorEnlace = $('span[data-contenedor="enlace"]');
+    var contenedorPdf = $('span[data-contenedor="pdf"]');
+
+    selectTipoEnlace.change(function(){
+        let tipo = $(this).val();
+        if( tipo == 'URL' ){
+            contenedorEnlace.show();
+            contenedorPdf.hide();
+            File.restore($(".contenedor-archivo"));
+        }else{
+            contenedorEnlace.hide();
+            contenedorPdf.show();
+        }
+    });
+
+    $(".cambiar-imagen-personalizado").click(function () {
+        $(this).parent().find("input[type='file']").click();
+    });
+
+    var _URL = window.URL || window.webkitURL;
+
+    function cambiarImagenDimension(obj, event){
+        var contenedor = $(obj).parent();
+        var reader = new FileReader();
+        var img = contenedor.find("img");
+        var img_width = parseInt($(obj).attr("data-width"));
+        var img_height = parseInt($(obj).attr("data-height"));
+        var mensaje = contenedor.find(".mensaje").text();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = function (e) {
+            var image = new Image();
+            image.src = e.target.result;
+            image.onload = function () {
+                var width = this.width;
+                var height = this.height;
+                if (width != img_width || height != img_height) {
+                    alert(mensaje);
+                    $(obj).val('');
+                    img.attr("src", "img/no-imagen.jpg");
+                    return false;
+                }
+                img.attr("src", e.target.result);
+            };
+        }
+    }
+
+    $(".select2").select2();
+
+    $("#validar_formulario").validate({
+        rules: {
+            idempresas: {
+                required: true
+            },
+            nombre: {
+                required: true
+            },
+            tipo_enlace: {
+                required: true
+            }
+        },
+        messages: {
+            idempresas: {
+                required: 'Por favor, seleccionar la empresa'
+            },
+            nombre: {
+                required: 'Por favor, ingrese el nombre'
+            },
+            tipo_enlace: {
+                required: 'Por favor, seleccionar el tipo de empresa'
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+
+</script>

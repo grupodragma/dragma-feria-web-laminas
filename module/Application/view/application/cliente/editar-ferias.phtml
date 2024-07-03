@@ -1,0 +1,210 @@
+<style>
+    
+</style>
+
+
+<div class="modal-header">
+    <h4 class="modal-title">Editar Ferias</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fal fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/cliente/guardar-editar-ferias?idferias=<?php echo $this->idferias; ?>" data-callback="respuesta(response, 'Ferias actualizado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <span>
+                <input type="text" name="nombre" class="form-control" value="<?php echo $this->nombre; ?>">
+            </span>
+        </div>
+        <?php if( $this->layout()->datosUsuario['idperfil'] == '1' ) : ?>
+        <div class="form-group">
+            <label class="form-label">Cliente</label>
+            <span>
+                <select class="select2 form-control" name="idclientes">
+                    <option value="" selected="select" disabled="">Seleccionar...</option>
+                    <?php foreach($this->clientes as $item):?>
+                    <option value="<?php echo $item['idclientes'];?>" <?php if( $this->idclientes == $item['idclientes'] ) echo "selected='select'"; ?>><?php echo $item['nombre'];?></option>
+                    <?php endforeach;?>
+                </select>
+            </span>
+        </div>
+        <?php else : ?>
+        <input type="hidden" name="idclientes" value="<?php echo $this->idclientes; ?>">
+        <?php endif; ?>
+        <div class="form-group">
+            <label class="form-label">Plan</label>
+            <span>
+                <select class="select2 form-control" name="idplanes">
+                    <option value="" selected="select" disabled="">Seleccionar...</option>
+                    <?php foreach($this->planes as $item):?>
+                    <option value="<?php echo $item['idplanes'];?>" <?php if( $this->idplanes == $item['idplanes'] ) echo "selected='select'"; ?>><?php echo $item['nombre'];?></option>
+                    <?php endforeach;?>
+                </select>
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Dominio</label>
+            <span>
+                <input type="text" name="dominio" class="form-control" value="<?php echo $this->dominio; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Descripción</label>
+            <span>
+                <input type="text" name="descripcion" class="form-control" value="<?php echo $this->descripcion; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Link RV</label>
+            <span>
+                <input type="text" name="link_rv" value="<?php echo $this->link_rv; ?>" class="form-control">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Correo</label>
+            <span>
+                <input type="text" name="correo" class="form-control" value="<?php echo $this->correo; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Pregunta</label>
+            <span>
+                <input type="text" name="pregunta" class="form-control" value="<?php echo $this->pregunta; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Texto Buscador</label>
+            <span>
+                <input type="text" name="texto_buscador" class="form-control" value="<?php echo $this->texto_buscador; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Plataforma</label>
+            <span>
+                <select class="select2 form-control" name="idplataformas">
+                    <option value="" selected="select">Seleccionar...</option>
+                    <?php foreach($this->plataformas as $item):?>
+                    <option value="<?php echo $item['idplataformas'];?>" <?php if( $this->idplataformas == $item['idplataformas'] ) echo "selected='select'"; ?>><?php echo $item['nombre'];?></option>
+                    <?php endforeach;?>
+                </select>
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Tipo Auditorio</label>
+            <span>
+                <select class="select2 form-control" name="tipo_auditorio" required>
+                    <option value="" selected="select">Seleccionar...</option>
+                    <option value="B" <?php if( $this->tipo_auditorio == "B") { echo "selected='select'"; } ?>>BÁSICO (1 BANNER)</option>
+                    <option value="S" <?php if( $this->tipo_auditorio == "S") { echo "selected='select'"; } ?>>ESTÁNDAR (2 BANNER)</option>
+                </select>
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Número Soporte</label>
+            <span>
+                <input type="text" name="soporte_numero" class="form-control" value="<?php echo $this->soporte_numero; ?>">
+            </span>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-checkbox custom-control-inline mt-2">
+                <input type="checkbox" name="estado_networking" value="1" <?php if((int)$this->estado_networking) { echo "checked='true'"; } ?> class="custom-control-input" id="defaultInline1">
+                <label class="custom-control-label" for="defaultInline1">Networking</label>
+            </div>
+        </div>
+        <div class="panel-hdr">
+            <h2><i class="fas fa-fw fa-lg fa-images"></i>&nbsp;Logo</h2>
+        </div>
+        <div class="form-group">
+            <div class="contenedor-imagen-personalizado">
+                <img src="<?php echo ( $this->hash_logo != '' ) ? 'ferias/logo/'.$this->hash_logo.'?t='.time() : 'img/no-imagen.jpg'; ?>" width="331" class="imagen">
+                <div class="panel-tag panel-tag--alert-danger mb-5 mt-5">Imagen recomendada de 331 px de ancho y 63 px de alto</div>
+                <button type="button" class="btn btn-dark btn-block cambiar-imagen-personalizado"><i class="fas fa-upload"></i> Cambiar Imagen</button>
+                <input type="file" data-width="331" data-height="63" onchange="cambiarImagenDimension(this, event);" class="hidden" name="logo" accept=".png" style="display: none;">
+                <div class="hidden mensaje">La imagen que intenta subir, no cumple con las dimensiones recomendadas. Intente otra vez.</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info btn-submit btn-uploader-form" data-id-form='validar_formulario'>Guardar Cambios</button>
+    </div>
+</form>
+
+<script>
+
+    $(".cambiar-imagen-personalizado").click(function () {
+        $(this).parent().find("input[type='file']").click();
+    });
+
+    var _URL = window.URL || window.webkitURL;
+
+    function cambiarImagenDimension(obj, event){
+        var contenedor = $(obj).parent();
+        var reader = new FileReader();
+        var img = contenedor.find("img");
+        var img_width = parseInt($(obj).attr("data-width"));
+        var img_height = parseInt($(obj).attr("data-height"));
+        var mensaje = contenedor.find(".mensaje").text();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = function (e) {
+            var image = new Image();
+            image.src = e.target.result;
+            image.onload = function () {
+                var width = this.width;
+                var height = this.height;
+                if (width != img_width || height != img_height) {
+                    alert(mensaje);
+                    $(obj).val('');
+                    img.attr("src", "img/no-imagen.jpg");
+                    return false;
+                } 
+                img.attr("src", e.target.result);
+            };
+        }
+    }
+
+    $(".select2").select2();
+
+    $("#validar_formulario").validate({
+        rules: {
+            nombre: {
+                required: true
+            },
+            idclientes: {
+                required: true
+            },
+            idplanes: {
+                required: true
+            },
+            dominio: {
+                required: true
+            },
+            idsectores: {
+                required: true
+            }
+        },
+        messages: {
+            nombre: {
+                required: 'Por favor, ingrese el nombre'
+            },
+            idclientes: {
+                required: 'Por favor, seleccione el cliente'
+            },
+            idplanes: {
+                required: 'Por favor, seleccione el plan'
+            },
+            dominio: {
+                required: 'Por favor, ingrese el dominio'
+            }
+           /* idsectores: {
+                required: 'Por favor, ingrese el dominio'
+            }*/
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+
+</script>

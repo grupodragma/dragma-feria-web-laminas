@@ -1,0 +1,97 @@
+<style>
+    .icon-success{
+        color: #24ad24
+    }
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title"><?php echo $this->empresa['nombre']; ?></h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form autocomplete="off">
+    <div class="modal-body">
+        <table id="dataTablesTarjetas" class="table table-bordered table-hover table-striped w-100">
+            <thead>
+                <tr>
+                    <th width="140">Visitante</th>
+                    <th>Visitas</th>
+                    <th>DNI</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Celular</th>
+                    <th>Video</th>
+                    <th>Whatsapp</th>
+                    <th>Productos</th>
+                    <th>Promociones</th>
+                    <th>Banner 1</th>
+                    <th>Banner 2</th>
+                    <th>Banner 3</th>
+                    <th>Banner 4</th>
+                    <th>RV</th>
+                    <th>Vivo</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+    </div>
+</form>
+
+<script>
+
+    var tablaOpcionIzquierdaTarjetas = '';
+    var tablaOpcionDerechaTarjetas = '';
+    var responsiveHelper_dataTablesTarjetas = undefined;
+    var dataTablesTarjetas;
+    var breakpointDefinitionDataTablesTarjetas = {
+        tablet: 1024,
+        phone: 480
+    };
+    dataTablesTarjetas = $('#dataTablesTarjetas').dataTable({
+        "ajax": "/panel/listar-empresa-eventos-general?idempresas=<?php echo $this->idempresas; ?>&idferias=<?php echo $this->idferias; ?>&rango_fechas="+$(".rango-fechas").val(),
+        "sDom": "<'row'<'col-xs-11 col-sm-6 tabla-opciones-izquierda'f><'col-sm-6 col-xs-1 tabla-opciones-derecha-eventos'>r>" +
+                "t" +
+                "<'row'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+        "autoWidth": false,
+        "oLanguage": {
+            "sUrl": "js/datagrid/datatables/Spanish.json",
+        },
+        "aoColumnDefs": [
+            {"bSortable": false, "aTargets": [0]}
+        ],
+        "preDrawCallback": function () {
+            if (!responsiveHelper_dataTablesTarjetas) {
+                responsiveHelper_dataTablesTarjetas = new ResponsiveDatatablesHelper($('#dataTablesTarjetas'), breakpointDefinitionDataTablesTarjetas);
+            }
+        },
+        "rowCallback": function (nRow) {
+            responsiveHelper_dataTablesTarjetas.createExpandIcon(nRow);
+        },
+        "drawCallback": function (oSettings) {
+            responsiveHelper_dataTablesTarjetas.respond();
+            tablaOpcionIzquierdaTarjetas = $(".tabla-opciones-izquierda");
+            tablaOpcionDerechaTarjetas = $(".tabla-opciones-derecha-eventos");
+        },
+        "ordering": false,
+        responsive: true
+    });
+
+    $(document).ready(function () {
+        setTimeout(function(){
+            
+            tablaOpcionIzquierdaTarjetas.find(".input-group-addon").addClass("input-group-text d-inline-flex width-3 align-items-center justify-content-center border-bottom-right-radius-0 border-top-right-radius-0 border-right-0");
+            tablaOpcionIzquierdaTarjetas.find(".input-group-addon").find("i").removeAttr("class").addClass("fas fa-search");
+            tablaOpcionIzquierdaTarjetas.find("input[type='search']").attr("placeholder", "Buscar");
+            tablaOpcionDerechaTarjetas.append('<div class="opciones pull-right">'+
+                '<button class="btn btn-success" onclick="Panel.exportarGraficos(\'eventos-empresas\', this, <?php echo $this->idempresas; ?>)"><i class="fas fa-file-excel"></i> Exportar</button>'+
+            '</div>');
+
+        }, 700);
+    });
+
+</script>

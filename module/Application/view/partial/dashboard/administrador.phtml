@@ -1,0 +1,381 @@
+<style>
+    .content-select-feria .select2{
+        width: 280px!important;
+    }
+    .content-select-feria .select2-container{
+        z-index: 1;
+    }
+    .row-optiones .panel{
+        display: inline-block;
+        vertical-align: middle;
+        margin-bottom: 0px;
+    }
+    .cursor{
+        cursor: pointer;
+    }
+</style>
+<div class="row">
+    <div class="col-md-8 col-sm-12 col-xs-12">
+        <?php //if( $this->layout()->datosUsuario['idperfil'] == '1' ) : ?>
+        <div class="form-group">
+            <div class="row-optiones">
+                <div class="panel">
+                    <span class="content-select-feria">
+                        <select class="select2 form-control select-ferias">
+                            <option value="" selected="select" disabled="">Seleccionar Feria</option>
+                            <?php if( $this->layout()->datosUsuario['idperfil'] === '1' ) : foreach($this->ferias as $item) : ?>
+                            <option value="<?php echo $item['idferias']; ?>"><?php echo $item['nombre'];?></option>
+                            <?php endforeach; else : foreach($this->ferias as $item) : if( $item['idferias'] != $this->layout()->datosUsuario['idferias'] ) continue; ?>
+                            <option value="<?php echo $item['idferias']; ?>"><?php echo $item['nombre'];?></option>
+                            <?php endforeach; endif; ?>
+                        </select>
+                    </span>
+                </div>
+                <div class="panel">
+                    <div class="input-group">
+                        <input type="text" class="form-control rango-fechas" placeholder="Seleccione el rango de fechas">
+                        <div class="input-group-append">
+                            <span class="input-group-text fs-xl">
+                                <i class="fal fa-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php //endif; ?>
+    </div>
+    <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="pull-right">
+            <button class="btn btn-primary" onclick="Panel.actualizarGraficos('todos')"><i class="fas fa-sync"></i> Actualizar</button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-sm-6 col-xl-3">
+        <div class="p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
+            <div class="">
+                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                    <span data-encabezado="UE">0</span>
+                    <small class="m-0 l-h-n">Usuarios Efectivos</small>
+                </h3>
+            </div>
+            <i class="fal fa-user position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="p-3 bg-warning-400 rounded overflow-hidden position-relative text-white mb-g">
+            <div class="">
+                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                    <span data-encabezado="SR">0</span>
+                    <small class="m-0 l-h-n">Sesiones Realizadas</small>
+                </h3>
+            </div>
+            <i class="fal fa-gem position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4" style="font-size: 6rem;"></i>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="p-3 bg-success-200 rounded overflow-hidden position-relative text-white mb-g">
+            <div class="">
+                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                    <span data-encabezado="PV">0</span>
+                    <small class="m-0 l-h-n">Páginas Visitadas</small>
+                </h3>
+            </div>
+            <i class="fal fa-lightbulb position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6" style="font-size: 8rem;"></i>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g cursor" onclick="Panel.exportarFeriaVisitantes(this)">
+            <div class="">
+                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                    <span><i class="fal fa-file-excel" style="font-size: 1em;"></i></span>
+                    <small class="m-0 l-h-n">Descargar Base de Datos Generada</small>
+                </h3>
+            </div>
+            <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4" style="font-size: 6rem;"></i>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel" data-content="eventos_general"> 
+            <div class="panel-hdr">
+                <h2>Eventos por Empresas</h2>
+                <div class="panel-toolbar">
+                    <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Colapsar"></button>
+                    <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Pantalla Completa"></button>
+                </div>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <table id="dataTables" class="table table-bordered table-hover table-striped w-100">
+                        <thead>
+                            <tr>
+                                <th>Empresa</th>
+                                <th width="80">N° Sesiones</th>
+                                <th width="110">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel" data-content="zonas"> 
+            <div class="panel-hdr">
+                <h2>Total Click por  Zonas</h2>
+                <div class="panel-toolbar">
+                    <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Colapsar"></button>
+                    <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Pantalla Completa"></button>
+                </div>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <canvas class="canvas_zonas" style="width:100%; height:300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel" data-content="empresas"> 
+            <div class="panel-hdr">
+                <h2>Total Click por Empresas</h2>
+                <div class="panel-toolbar">
+                    <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Colapsar"></button>
+                    <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Pantalla Completa"></button>
+                </div>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <canvas class="canvas_empresas" style="width:100%; height:300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+<?php $this->inlineScript()->captureStart(); ?>
+
+    $('.rango-fechas').daterangepicker({
+        "startDate": "<?php echo date("d/m/Y",time()-(3600*24*3));?>",
+        "endDate": "<?php echo date("d/m/Y");?>",
+        opens: 'rigth',
+        locale: {
+            format: 'DD/MM/YYYY',
+            daysOfWeek: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
+            monthNames: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Augosto","Setiembre","Octubre","Noviembre","Diciembre"],
+            "applyLabel": "Aceptar",
+            "cancelLabel": "Cancelar"
+        }
+    });
+
+    $('.rango-fechas').change(function(){
+        Panel.actualizarGraficos('todos');
+    });
+
+    var tablaOpcionIzquierda = '';
+    var tablaOpcionDerecha = '';
+    var responsiveHelper_dataTables = undefined;
+    var dataTable;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480
+    };
+    dataTable = $('#dataTables').dataTable({
+        "ajax": "/panel/listar-empresa-eventos?idferias=",
+        "sDom": "<'row'<'col-xs-11 col-sm-6 tabla-opciones-izquierda'f><'col-sm-6 col-xs-1 tabla-opciones-derecha'>r>" +
+                "t" +
+                "<'row'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+        "autoWidth": false,
+        "oLanguage": {
+            "sUrl": "js/datagrid/datatables/Spanish.json",
+        },
+        "aoColumnDefs": [
+            {"bSortable": false, "aTargets": [1]}
+        ],
+        "preDrawCallback": function () {
+            if (!responsiveHelper_dataTables) {
+                responsiveHelper_dataTables = new ResponsiveDatatablesHelper($('#dataTables'), breakpointDefinition);
+            }
+        },
+        "rowCallback": function (nRow) {
+            responsiveHelper_dataTables.createExpandIcon(nRow);
+        },
+        "drawCallback": function (oSettings) {
+            responsiveHelper_dataTables.respond();
+            tablaOpcionIzquierda = $(".tabla-opciones-izquierda");
+            tablaOpcionDerecha = $(".tabla-opciones-derecha");
+        },
+        "ordering": false,
+        responsive: true
+    });
+
+    $(document).ready(function () {
+        setTimeout(function(){
+            
+            tablaOpcionIzquierda.find(".input-group-addon").addClass("input-group-text d-inline-flex width-3 align-items-center justify-content-center border-bottom-right-radius-0 border-top-right-radius-0 border-right-0");
+            tablaOpcionIzquierda.find(".input-group-addon").find("i").removeAttr("class").addClass("fal fa-search");
+            tablaOpcionIzquierda.find("input[type='search']").attr("placeholder", "Buscar");
+            tablaOpcionDerecha.append('<div class="opciones">'+
+                
+            '</div>');
+
+        }, 500);
+    });
+
+    $(".select-ferias").select2();
+
+    $(".select-ferias").change(function(){
+        Panel.actualizarGraficos('todos');
+    });
+
+    $(document).ready(function(){
+        Panel.zonas();
+        Panel.empresas();
+        Panel.totalReporteEncabezado('TODOS');
+    });
+
+    var Panel = {
+        estadoZonas: false,
+        estadoEmpresas: false,
+        chartZonas: {},
+        chartEmpresas: {},
+        selectFeria: $(".select-ferias"),
+        selectRangoFechas: $(".rango-fechas"),
+        generarPie: function(data, accion) {
+            let _this = this;
+            var type = 'doughnut';
+            var options = {
+                responsive: true,
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                }
+            };
+            var config = {};
+            config['type'] = type;
+            config['data'] = data;
+            config['options'] = options;
+            if(accion == 'zonas')_this.chartZonas = new Chart($(".canvas_"+accion).get(0).getContext("2d"), config);
+            if(accion == 'empresas')_this.chartEmpresas = new Chart($(".canvas_"+accion).get(0).getContext("2d"), config);
+        },
+        zonas: function(){
+            this.obtenerGrafico('zonas');
+        },
+        empresas: function(){
+            this.obtenerGrafico('empresas');
+        },
+        obtenerGrafico: function(accion){
+            let _this = this;
+            let selectIdFerias = _this.selectFeria.val();
+            $.post("panel/data-graficos-pie", {accion: accion, idferias: selectIdFerias, rango_fechas: _this.selectRangoFechas.val()}, function(response){
+                let panel = $(".panel[data-content='"+accion+"']");
+                if( !response.data.datasets[0].data.length )panel.find(".panel-container").hide();
+                else panel.find(".panel-container").show();
+                if(response.result == 'success'){
+                    if(accion == 'zonas'){
+                        if( !_this.estadoZonas ){
+                            _this.generarPie(response.data, accion);
+                            _this.estadoZonas = true;
+                        } else {
+                            _this.chartZonas.data.datasets[0].data = response.data.datasets[0].data;
+                            _this.chartZonas.data.datasets[0].backgroundColor = response.data.datasets[0].backgroundColor;
+                            _this.chartZonas.data.labels = response.data.labels;
+                            _this.chartZonas.update();
+                        }
+                    }
+                    if(accion == 'empresas'){
+                        if( !_this.estadoEmpresas ){
+                            _this.generarPie(response.data, accion);
+                            _this.estadoEmpresas = true;
+                        } else {
+                            _this.chartEmpresas.data.datasets[0].data = response.data.datasets[0].data;
+                            _this.chartEmpresas.data.datasets[0].backgroundColor = response.data.datasets[0].backgroundColor;
+                            _this.chartEmpresas.data.labels = response.data.labels;
+                            _this.chartEmpresas.update();
+                        }
+                    }
+                }
+            },'json');
+        },
+        actualizarGraficos: function(accion){
+            let _this = this;
+            switch(accion){
+                case 'todos':
+                    _this.obtenerGrafico('zonas');
+                    _this.obtenerGrafico('empresas');
+                    dataTable.api().ajax.url('/panel/listar-empresa-eventos?idferias='+$(".select-ferias").val()+'&rango_fechas='+$(".rango-fechas").val()).load();
+                    _this.totalReporteEncabezado('TODOS');
+                break;
+            }
+        },
+        exportarGraficos: function(accion, obj, idempresas){
+            let _this = this;
+            $(obj).attr("disabled", "");
+            $(obj).html('<i class="fas fa-sync fa-spin"></i> Descargando reporte...');
+            $.post("panel/descargar-reporte-eventos", {accion: accion, idempresas: idempresas, idferias: $(".select-ferias").val(), rango_fechas: $(".rango-fechas").val()}, function(response){
+                if(response.result == 'success'){
+                    $(obj).html('<i class="fas fa-file-excel"></i> Exportar');
+                    $(obj).removeAttr("disabled");
+                    _this.downloadURI('tmp/reporte.xlsx', 'Reporte.xlsx');
+                }
+            }, 'json');
+        },
+        downloadURI: function(uri, name) {
+            var link = document.createElement("a");
+            link.setAttribute('download', name);
+            link.href = uri;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        },
+        totalReporteEncabezado: function(accion) {
+            $.post("panel/total-reporte-encabezado", {accion: accion, idferias: $(".select-ferias").val(), rango_fechas: $(".rango-fechas").val()}, function(response){
+                console.log(response);
+                if(response.result == 'success'){
+                    if(response.accion == 'TODOS') {
+                        $("[data-encabezado]").text(0);
+                        let total = response.data_total;
+                        for(let i in total){
+                            $("[data-encabezado='"+i+"']").text(total[i]);
+                        }
+                    } else {
+
+                    }
+                }
+            }, 'json');
+        },
+        exportarFeriaVisitantes: function(obj){
+            let _this = this;
+            $(obj).addClass("disabled");
+            $.post("cliente/descargar-reporte-feria-visitantes", {idferias: $(".select-ferias").val(), rango_fechas: $(".rango-fechas").val()}, function(response){
+                if(response.result == 'success'){
+                    $(obj).removeClass("disabled");
+                    _this.downloadURI('tmp/reporte_visitantes.xlsx', 'Reporte Feria Visitantes.xlsx');
+                }
+            }, 'json');
+        },
+        downloadURI: function (uri, name) {
+            var link = document.createElement("a");
+            link.setAttribute('download', name);
+            link.href = uri;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+    };
+
+    socket.on("obtener-datos-encabezado", function(data){
+        console.log(data);
+        Panel.totalReporteEncabezado('TODOS');
+    });
+
+<?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

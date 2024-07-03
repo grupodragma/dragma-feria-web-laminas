@@ -1,0 +1,57 @@
+<style>
+    .select2{
+        width: 180px!important;
+    }
+    .select2-dropdown{
+        z-index: 100000;
+    }
+    .select2-search--dropdown:before {
+        font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f002";
+    }
+</style>
+
+<div class="opciones-vista">
+    <a class="btn btn-info" onclick="regresar();"><i class="fas fa-arrow-left"></i> Regresar</a>
+    <select class="select2 select-stand-paginas">
+        <option value="" disabled="">Seleccionar...</option>
+        <?php foreach($this->listaEmpresas as $item): ?>
+        <option value="<?php echo $item['idempresas'] ?>" <?php if( $this->empresa['idempresas'] == $item['idempresas'] ) echo "selected='select'"; ?>><?php echo $item['nombre'] ?></option>
+        <?php endforeach; ?>
+    </select>
+    <button type="button" class="btn btn-success btn-cambiar-fondo" data-toggle="tooltip" data-placement="top" title="La dimensión recomendada es de 2000 px de ancho y 1109 px de alto"><i class="fas fa-images"></i> <span>Cambiar Fondo</span></button>
+    <div class="opciones-vista-video">
+        <button type="button" class="btn btn-success btn-fondo-video pf-8">
+            <i class="fas fa-images"></i>
+            <span><?php echo (isset($this->configuracion['fondo_video']) && $this->configuracion['fondo_video']['hash'] != '') ? 'Cambiar' : 'Subir'; ?> Video</span>
+        </button>
+        <input
+            type="checkbox"
+            class="check-activar-fondo-video"
+            value="1">
+    </div>
+    <button type="button" class="btn btn-dark btn-guardar-cambios"><i class="fas fa-save"></i> <span>Guardar Cambios</span></button>
+</div>
+
+<script>
+    $(".select2").select2();
+    $(".select-stand-paginas").change(function(){
+        let idempresas = $(this).val();
+        window.location.href = 'cliente/paginas-stand-configuracion/'+idempresas;
+    });
+    function regresar(){
+        window.location.href = "cliente/empresas";
+    }
+
+    document.querySelector('.check-activar-fondo-video').addEventListener('click', (e) => {
+        document.querySelector('input[name="activar_fondo_video"]').value = e.target.checked;
+    })
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        setTimeout(() => {
+            <?php if( isset($this->configuracion['activar_fondo_video']) && $this->configuracion['activar_fondo_video'] ) : ?>
+                document.querySelector('.check-activar-fondo-video').click();
+                document.querySelector('input[name="activar_fondo_video"]').click();
+            <?php endif; ?>
+        }, 100);
+    });
+</script>

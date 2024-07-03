@@ -1,0 +1,45 @@
+<style>
+    
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title">Transferencia en Vivo</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/cliente/guardar-expositores-conferencias?idexpositores=<?php echo $this->idexpositores; ?>" data-callback="respuesta(response, 'Conferencias guardado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="form-label">Enlace</label>
+            <span>
+                <input type="text" name="enlace_conferencia" class="form-control" value="<?php echo $this->enlace_conferencia; ?>">
+            </span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info btn-submit btn-uploader-form" data-id-form='validar_formulario'>Transmitir Ahora</button>
+    </div>
+</form>
+
+<script>
+
+    $("#validar_formulario").validate({
+        rules: {
+            enlace_conferencia: {
+                required: false
+            }
+        },
+        messages: {
+            enlace: {
+                required: 'Por favor, ingrese el enlace'
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+
+</script>

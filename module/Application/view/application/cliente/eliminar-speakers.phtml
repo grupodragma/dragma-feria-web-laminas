@@ -1,0 +1,17 @@
+
+<div class="modal-header">
+    <h4 class="modal-title">¿Estas seguro que desea eliminar al speakers?</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/cliente/confirmar-eliminar-speakers?idspeakers=<?php echo $this->idspeakers; ?>" data-callback="respuesta(response, 'Speakers eliminado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+        <div class="titulo-eliminar"><?php echo $this->nombres; ?></div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info btn-submit" data-id-form='validar_formulario'>Eliminar Speakers</button>
+    </div>
+</form>

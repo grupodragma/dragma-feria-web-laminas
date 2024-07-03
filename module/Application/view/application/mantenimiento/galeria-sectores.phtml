@@ -1,0 +1,267 @@
+<style>
+    .btn-file{
+        margin-bottom: 4px;
+    }
+    .contenedor-imagenes .img {
+        width: 100%;
+        height: 140px;
+        background-color: grey;
+        margin: 0 auto;
+        border-radius: 4px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    .contenedor-imagenes .img .opciones{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #ffffffde;
+        border-radius: 8px 8px 0 0;
+        opacity: 0;
+        -webkit-transition: opacity 0.40s ease-in-out;
+        -moz-transition: opacity 0.40s ease-in-out;
+        -ms-transition: opacity 0.40s ease-in-out;
+        -o-transition: opacity 0.40s ease-in-out;
+        transition: opacity 0.40s ease-in-out;
+        text-align: center;
+    }
+    .contenedor-imagenes .img .opciones i.fas {
+        font-size: 18px;
+        padding: 6px;
+        cursor: pointer;
+    }
+    .contenedor-imagenes .img .opciones i.fas:first-child{
+        margin-right: 10px;
+    }
+    .contenedor-imagenes .img:hover .opciones{
+        filter: alpha(opacity=50);
+        opacity: 0.5;
+    }
+    .contenedor-tabs .tab-content{
+        padding: 14px 0;
+    }
+    .contenedor-imagenes .img .opciones-encabezado{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        color: #fff;
+        background-color: #00000094;
+        padding: 2px 10px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 12px;
+        border-radius: 8px 8px 0 0;
+    }
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title">Galeria Sectores</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/mantenimiento/guardar-agregar-paginas" data-callback="respuesta(response, 'Páginas agregado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- TABS [INICIO] -->
+                <div class="contenedor-tabs">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab_default-1" role="tab">Subir Imagen</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_default-3" role="tab">Imagenes</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab_default-1" role="tabpanel">
+                            <button type="button" class="btn btn-default btn-file"><i class="fas fa-upload"></i> Seleccionar Imagen</button>
+                            <div class="progress-bar" style="width: 0%;display:none;">0%</div>
+                            <input type="file" id="file" class="form-control" data-size="1000000" data-file="image/png,image/jpeg" data-width="1920" data-height="1200" onchange="File.upload(this, this.files);" accept="image/png,image/jpeg" style="display: none;">
+                            <div class="panel-tag panel-tag--alert-danger mb-5 mt-5">Imagen recomendada de 1920 px de ancho y 1200 px de alto</div>
+                        </div>
+                        <div class="tab-pane fade" id="tab_default-3" role="tabpanel">
+                            <div class="contenedor-imagenes">
+                                <div class="row"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- TABS [FIN] -->
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+    </div>
+</form>
+
+<script>
+
+    $(document).ready(function(){
+        File.action = 'sectores';
+        File.id = '<?php echo $this->idsectores; ?>';
+        File.init();
+    });
+
+    $(".btn-file").click(function(){
+        $(this).parent().find("#file").click();
+    });
+
+    var File = {
+        btnFile: $(".btn-file"),
+        progressBar: $(".progress-bar"),
+        contenedorImagenes: $(".contenedor-imagenes"),
+        id: '',
+        action: '',
+        divOptionsHeader: $("<div>").addClass("opciones-encabezado").text('Primario'),
+        init: function(){
+            this.list(this.action, this.id);
+        },
+        upload: function(obj, file){
+            let _this = this;
+            let files = file[0];
+            let formdata = new FormData();
+            let reader = new FileReader();
+            let ajax = new XMLHttpRequest();
+            let imgWidth = parseInt($(obj).attr("data-width"));
+            let imgHeight = parseInt($(obj).attr("data-height"));
+            let validFiles = $(obj).attr("data-file").split(",");
+            if( validFiles.indexOf(files.type) == -1 ){
+                this.message('invalid-format', 'warning');
+                return;
+            }
+            this.btnFile.addClass("disabled");
+            reader.readAsDataURL(files);
+            reader.onload = function (e) {
+                let image = new Image();
+                image.src = e.target.result;
+                image.onload = function () {
+                    let width = this.width;
+                    let height = this.height;
+                    //console.log(imgWidth+" X "+imgHeight);
+                    if ((width < imgWidth || width > imgWidth) && (height < imgHeight || height > imgHeight)) {
+                        _this.message('invalid-dimension', 'warning');
+                        _this.restore();
+                        $(obj).val('');
+                        return false;
+                    }
+                    _this.progressBar.show();
+                    formdata.append("file", files);
+                    formdata.append("action", _this.action);
+                    formdata.append("id", _this.id);
+                    ajax.upload.addEventListener("progress", _this.progressHandler, false);
+                    ajax.addEventListener("load", _this.completeHandler, false);
+                    ajax.addEventListener("error", _this.errorHandler, false);
+                    ajax.addEventListener("abort", _this.abortHandler, false);
+                    ajax.open("POST", "/panel/subir-imagen-galeria");
+                    ajax.send(formdata);
+                };
+            }
+        },
+        progressHandler: function(event) {
+            let percent = Math.round( (event.loaded / event.total) * 100 );
+            console.log( percent );
+            File.progressBar.css("width", percent + "%").text(percent + "%");
+        },
+        completeHandler: function(event) {
+            console.log( event );
+            let response = event.target;
+            let data = JSON.parse(response.responseText);
+            if( response.status === 200 ) {
+                console.log(data);
+                if(data.result == 'success') {
+                    File.message(data.result, 'success');
+                    File.list();
+                } else if(data.result == 'invalid-format') {
+                    File.message(data.result, 'warning'); 
+                }
+            }
+            File.restore();
+        },
+        errorHandler: function(event) {
+            File.message('error-file', 'danger');
+            File.restore();
+        },
+        abortHandler: function(event) {
+            File.message('upload-file-cancel', 'danger');
+            FFile.restore();
+        },
+        message: function(type, typeMessage){
+            switch(type){
+                case 'invalid-format': alerta("El tipo de formato no es valido. Por favor, vuelva a intentarlo.", typeMessage); break;
+                case 'invalid-size': alerta("El peso máximo no es valido. Por favor, vuelva a intentarlo.", typeMessage); break;
+                case 'invalid-dimension': alerta("La imagen no cumple con las dimensiones recomendadas.", typeMessage); break;
+                case 'success': alerta("La imagen se subio correctamente.", typeMessage); break;
+                case 'error-file': alerta("Ocurrio un error al subir el archivo. Intente nuevamente.", typeMessage); break;
+                case 'upload-file-cancel': alerta("La subida ha sido cancelada.", typeMessage); break;
+            }
+        },
+        restore: function(){
+            File.btnFile.removeClass("disabled");
+            File.progressBar.hide().css("width","0%").text("0%");
+        },
+        list: function(action = null, id = null){
+            let _this = this;
+            let _action = action ? action : this.action;
+            let _id = id ? id : this.id;
+            $.get("/panel/listar-galeria", {action: _action, id: _id}, function(response){
+                let data = response.data;
+                if(data){
+                    _this.contenedorImagenes.find(".row").html("");
+                    for(let i in data){
+                        let divCol = $("<div>").addClass("col-md-3 col-xs-4 col-sm-3 mb-20");
+                        let divImg = $("<div>").addClass("img").attr({
+                            "data-id": data[i].idgaleria,
+                            "data-action": response.action
+                        });
+                        let divOptions = $("<div>").addClass("opciones");
+                        let iconCheck = $("<i>").addClass("fas fa-check").attr("onclick", "File.selected(this)");
+                        let iconRemove = $("<i>").addClass("fas fa-times").attr("onclick", "File.delete(this)");
+                        divOptions.append(iconCheck).append(iconRemove);
+                        if(parseInt(data[i].primario))divImg.append(_this.divOptionsHeader);
+                        divImg.append(divOptions);
+                        divImg.css({"background-image": "url('"+response.action+"/galeria/"+data[i].hash_imagen+"')"});
+                        divCol.append(divImg);
+                        File.contenedorImagenes.find(".row").append(divCol);
+                    }
+                }
+            },'json');
+        },
+        delete: function(obj){
+            let contendor = $(obj).parent().parent();
+            let id = contendor.attr("data-id");
+            let action = contendor.attr("data-action");
+            if(confirm("¿Estas seguro de eliminar la imagen?")){
+                $.get("/panel/eliminar-galeria", {action: action, id: id}, function(response){
+                    if(response.result == 'success'){
+                        alerta("Imagen eliminado correctamente.", "success");
+                        contendor.parent().remove();
+                    }
+                },'json');
+            }
+        },
+        selected: function(obj){
+            let _this = this;
+            let contendor = $(obj).parent().parent();
+            let id = contendor.attr("data-id");
+            let action = contendor.attr("data-action");
+            if(confirm("¿Estas seguro de seleccionarlo como imagen principal?")){
+                $.get("/panel/seleccionar-galeria", {action: action, id: id}, function(response){
+                    if(response.result == 'success'){
+                        _this.selectedRemoveAll();
+                        contendor.prepend(_this.divOptionsHeader);
+                        alerta("Imagen eliminado correctamente.", "success");
+                    }
+                },'json');
+            }
+        },
+        selectedRemoveAll: function(){
+            this.contenedorImagenes.find(".row .col-md-3").each(function(){
+                $(this).find(".opciones-encabezado").remove();
+            });
+        }
+    }
+
+</script>

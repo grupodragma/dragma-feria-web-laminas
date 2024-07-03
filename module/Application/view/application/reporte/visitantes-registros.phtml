@@ -1,0 +1,179 @@
+<?php //print_r($this->layout()->datosUsuario); ?>
+
+<style>
+    .select2 {
+        width: 200px !important;
+    }
+    .tabla-opciones-izquierda span.select2-container {
+        margin-left: 4px;
+    }
+    .tabla-opciones-izquierda span.select2-container:nth-child(2) {
+        margin-left: 0px;
+    }
+    .dataTables_filter {
+        float: right;
+    }
+</style>
+
+<div class="panel">
+    <div class="panel-container show">
+        <div class="panel-content">
+            <table id="dataTables" class="table table-bordered table-hover table-striped w-100">
+                <thead>
+                    <tr>
+                        <th>Feria</th>
+                        <th>Fecha Registro</th>
+                        <th>Visitante</th>
+                        <th>Tipo Registro</th>
+                        <th>Usuario</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+    
+    var tablaOpcionIzquierda = '';
+    var tablaOpcionDerecha = '';
+    var responsiveHelper_dataTables = undefined;
+    var dataTable;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480
+    };
+    dataTable = $('#dataTables').dataTable({
+        "ajax": "/reporte/listar-visitantes-registros?tiporegistro=&idusuarios=",
+        "sDom": "<'row'<'col-xs-11 col-sm-6 tabla-opciones-izquierda'><'col-sm-6 col-xs-1 tabla-opciones-derecha'f>r>" +
+                "t" +
+                "<'row'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+        "autoWidth": false,
+        "oLanguage": {
+            "sUrl": "js/datagrid/datatables/Spanish.json",
+        },
+        "aoColumnDefs": [
+            {"bSortable": false, "aTargets": [1]}
+        ],
+        "preDrawCallback": function () {
+            if (!responsiveHelper_dataTables) {
+                responsiveHelper_dataTables = new ResponsiveDatatablesHelper($('#dataTables'), breakpointDefinition);
+            }
+        },
+        "rowCallback": function (nRow) {
+            responsiveHelper_dataTables.createExpandIcon(nRow);
+        },
+        "drawCallback": function (oSettings) {
+            responsiveHelper_dataTables.respond();
+            tablaOpcionIzquierda = $(".tabla-opciones-izquierda");
+            tablaOpcionDerecha = $(".tabla-opciones-derecha");
+        },
+        "ordering": false,
+        responsive: true,
+        "pageLength": 30
+    });
+
+    $(document).ready(function () {
+        setTimeout(function(){
+            
+            tablaOpcionIzquierda.find(".input-group-addon").addClass("input-group-text d-inline-flex width-3 align-items-center justify-content-center border-bottom-right-radius-0 border-top-right-radius-0 border-right-0");
+            tablaOpcionIzquierda.find(".input-group-addon").find("i").removeAttr("class").addClass("fas fa-search");
+            tablaOpcionIzquierda.find("input[type='search']").attr("placeholder", "Buscar");
+            
+            //Opciones Izquierda
+            var selectEstado = $("<select/>");
+            selectEstado.addClass("form-control select2 select-tipo-registros");
+            selectEstado.css({"width":"200px !important","margin-right":"5px"});
+            selectEstado.append('<option value="">Todos los Tipos</option>');
+            selectEstado.append('<option value="P">Presencial</option>');
+            selectEstado.append('<option value="V">Virtual</option>');
+            tablaOpcionIzquierda.append(selectEstado)
+
+            <?php if( $this->layout()->datosUsuario['tipo'] != "R" ) : ?>
+                var selectUsuarios = $("<select/>");
+                selectUsuarios.addClass("form-control select2 select-usuarios");
+                selectUsuarios.css({"width":"200px !important","margin-left":"5px"});
+                selectUsuarios.append('<option value="">Todos los Usuarios</option>');
+                <?php foreach($this->usuarios as $usuario) : ?>
+                selectUsuarios.append('<option value="<?php echo $usuario['idusuario']; ?>"><?php echo $usuario['usuario']; ?></option>');
+                <?php endforeach; ?>
+                tablaOpcionIzquierda.append(selectUsuarios)
+            <?php endif; ?>
+
+            //Opciones Derecha
+            var botonDescargarReporte = $("<button/>");
+            botonDescargarReporte.attr({
+                type: "button",
+                class: "btn btn-success",
+                onclick: "descargarReporte(this, event, 'visitantes-registros')",
+                style: "margin-right: 5px; float: right"
+            });
+            botonDescargarReporte.append('<i class="fas fa-download"></i> <span class="hidden-xs">Descargar Reporte</span>');
+            
+            tablaOpcionDerecha.append(botonDescargarReporte);
+            
+            //Opciones Adicionales
+            $(".select2").select2();
+            cargarDatosCampoBusqueda();
+
+            //Filtrar Datos
+            $(".select-tipo-registros").change(function(){
+                filtrarBusqueda();
+            })
+            $(".select-usuarios").change(function(){
+                filtrarBusqueda();
+            })
+
+        }, 500);
+    });
+
+    
+
+    function descargarReporte(obj, event, accion){
+        console.log("event", event);
+        event.preventDefault();
+        $(obj).addClass("disabled");
+        $(obj).find("span").text("Descargando Reporte...");
+        if(accion == 'visitantes-registros') {
+            let idusuarios = ( typeof $(".select-usuarios").val() != "undefined" ) ? $(".select-usuarios").val() : "";
+            let tiporegistro = ( typeof $(".select-tipo-registros").val() != "undefined" ) ? $(".select-tipo-registros").val() : "";
+            $.get('/reporte/descargar-reporte-visitantes-registros?tiporegistro='+tiporegistro+'&idusuarios='+idusuarios, function(response) {
+                console.log("response", response)
+                if(response.result == "success") {
+                    downloadURI('tmp/' + response.file, 'Reporte_Visitantes_Registros.xlsx');
+                }
+                $(obj).find("span").text("Descargar Reporte");
+                $(obj).removeClass("disabled");
+            }, 'json');
+        }
+    }
+
+    function filtrarBusqueda(){
+        let idusuarios = ( typeof $(".select-usuarios").val() != "undefined" ) ? $(".select-usuarios").val() : "";
+        let tiporegistro = ( typeof $(".select-tipo-registros").val() != "undefined" ) ? $(".select-tipo-registros").val() : "";
+        dataTable.api().ajax.url('/reporte/listar-visitantes-registros?tiporegistro='+tiporegistro+'&idusuarios='+idusuarios).load();
+    }
+
+    function cargarDatosCampoBusqueda(){
+        $("#dataTables_filter").find("label span:first").addClass("input-group-addon input-group-text d-inline-flex width-3 align-items-center justify-content-center border-bottom-right-radius-0 border-top-right-radius-0 border-right-0").append("<i class='fas fa-search'></i>");
+        $("#dataTables_filter").find("input[type='search']").attr("placeholder", "Buscar");
+    }
+
+    function listarDatos() {
+        dataTable.api().ajax.reload(null, false);
+    }
+
+    function respuesta(response, mensaje) {
+        ocultarModal();
+        if (response.result == 'success') {
+            listarDatos();
+            alerta(mensaje, 'success');
+        }
+    }
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

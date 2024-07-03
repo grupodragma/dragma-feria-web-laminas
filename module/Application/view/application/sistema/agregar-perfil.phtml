@@ -1,0 +1,75 @@
+<style>
+    .lista-modulos .frame-wrap{
+        margin-bottom: 0.9rem;
+    }
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title">Agregar Perfil</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/sistema/guardar-agregar-perfil" data-callback="respuesta(response, 'Perfil agregado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="form-label">Nombres</label>
+            <span>
+                <input type="text" name="nombre" class="form-control">
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Descripción</label>
+            <span>
+                <input type="text" name="descripcion" class="form-control">
+            </span>
+        </div>
+        <div class="panel-hdr">
+            <h2><i class="fas fa-fw fa-lg fa-lock"></i>&nbsp;Acceso a Módulos</h2>
+        </div>
+        <div class="lista-modulos">
+            <?php foreach ($this->modulos as $modulo) : ?>
+            <h3 class="frame-heading"><?php echo $modulo['nombre']; ?></h3>
+            <div class="frame-wrap">
+                <?php foreach($modulo['submodulos'] as $submodulo): ?>
+                <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" name="submodulos[]" value="<?php echo $submodulo['idsubmodulo']; ?>" class="custom-control-input" id="defaultInline<?php echo $submodulo['idsubmodulo']; ?>">
+                    <label class="custom-control-label" for="defaultInline<?php echo $submodulo['idsubmodulo']; ?>"><span class="<?php echo $submodulo['icono']; ?>"></span> <?php echo $submodulo['nombre'] ?></label>
+                </div>
+                <?php endforeach;?>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info btn-submit btn-uploader-form" data-id-form='validar_formulario'>Agregar Perfil</button>
+    </div>
+</form>
+
+<script>
+
+    $("#validar_formulario").validate({
+        rules: {
+            nombre: {
+                required: true
+            },
+            descripcion: {
+                required: true
+            },
+        },
+        messages: {
+            nombre: {
+                required: 'Por favor, ingrese el nombre'
+            },
+            descripcion: {
+                required: 'Por favor, ingrese la descripción'
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+
+</script>

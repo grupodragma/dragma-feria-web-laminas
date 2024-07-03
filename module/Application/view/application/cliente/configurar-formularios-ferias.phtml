@@ -1,0 +1,213 @@
+<style>
+.label-info {
+    background-color: #5bc0de;
+}
+.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+.bootstrap-tagsinput{
+    width: 100%;
+}
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title">Configurar Formulario</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form autocomplete="off">
+    <div class="modal-body">
+        <div class="contenedor-dinamico lista-submodulos" data-content="formularios">
+            <div class="encabezado">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label class="form-label">Requerido</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Nombre</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Elemento</label>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label">Opciones</label>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+            </div>
+            <div class="plantilla" style="display: none;">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <span>
+                                <select class="form-control" data-name="requerido">
+                                    <option value="1" selected="select">SI</option>
+                                    <option value="0">NO</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="col-md-3">
+                            <span>
+                                <input type="text" class="form-control" data-name="nombre">
+                            </span>
+                        </div>
+                        <div class="col-md-2">
+                            <span>
+                                <select class="select2 form-control" data-name="elemento">
+                                    <option selected="select" disabled="">Seleccionar...</option>
+                                    <option value="input">Input</option>
+                                    <option value="select">Select</option>
+                                    <option value="radio">Radio</option>
+                                    <option value="checkbox">Checkbox</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="col-md-5">
+                            <span>
+                                <select class="tagsselect" data-name="opcion" multiple data-role="tagsinput"></select>
+                            </span>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-danger btn-plantilla" onclick="Fila.eliminar(this)"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contenido">
+                <?php if(!empty($this->config_formulario)) : foreach($this->config_formulario as $form) : ?>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <span>
+                                <select class="form-control" data-name="requerido">
+                                    <option value="1" <?php if( isset($form['requerido']) && (int)$form['requerido'] ) { echo "selected='select'"; } else { echo "selected='select'"; } ?>>SI</option>
+                                    <option value="0" <?php if( isset($form['requerido']) && !(int)$form['requerido'] ) { echo "selected='select'"; } else { echo ""; } ?>>NO</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="col-md-3">
+                            <span>
+                                <input type="text" class="form-control" data-name="nombre" value="<?php echo $form['nombre']; ?>">
+                            </span>
+                        </div>
+                        <div class="col-md-2">
+                            <span>
+                                <select class="select2 form-control" data-name="elemento">
+                                    <option selected="select" disabled="">Seleccionar...</option>
+                                    <option value="input" <?php if( $form['elemento'] == 'input' ) { echo "selected='select'"; }; ?>>Input</option>
+                                    <option value="select" <?php if( $form['elemento'] == 'select' ) { echo "selected='select'"; }; ?>>Select</option>
+                                    <option value="radio" <?php if( $form['elemento'] == 'radio' ) { echo "selected='select'"; }; ?>>Radio</option>
+                                    <option value="checkbox" <?php if( $form['elemento'] == 'checkbox' ) { echo "selected='select'"; }; ?>>Checkbox</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="col-md-5">
+                            <span>
+                                <select class="tagsselect" data-name="opcion" multiple data-role="tagsinput">
+                                    <?php if(!empty($form['opcion'])) : foreach($form['opcion'] as $value) : ?>
+                                    <option value="<?php echo $value; ?>"><?php echo $value; ?></option>
+                                    <?php endforeach; endif; ?>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-danger btn-plantilla" onclick="Fila.eliminar(this)"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; endif; ?>
+            </div>
+            <div class="opcion">
+                <button type="button" class="btn btn-success btn-block agregar-elemento" onclick="Fila.agregar(this)"><i class="fas fa-plus"></i> Agregar Módulo</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info guardar-datos" onclick="Form.guardar()">Guardar Datos</button>
+    </div>
+</form>
+
+<script>
+
+    $(document).ready(function(){
+        <?php if(!empty($this->config_formulario)) : ?>
+        setTimeout(function(){
+            $(".agregar-elemento").click();
+        }, 100);
+        <?php endif; ?>
+
+    });
+
+    $(document).on("keyup", ".contenedor-dinamico .form-group", function(){
+    });
+
+    var Fila = {
+        agregar: function(obj){
+            let idInputIcono = $.now();
+            let contenedor = $(obj).parents(".contenedor-dinamico");
+            let plantilla = contenedor.find(".plantilla");
+            let plantillaContenido = $("<div>").html(plantilla.html());
+            let contenido = contenedor.find(".contenido");
+            contenido.append(plantillaContenido.html());
+            contenido.find(".select2").select2();
+            contenido.find(".tagsselect").tagsinput();
+        },
+        eliminar: function(obj){
+            $(obj).parents(".form-group").remove();
+        }
+    }
+
+    var Form = {
+        contentFormularios: $("div[data-content='formularios']"),
+        guardar: function(){
+            var _this = this;
+            var elementosForm = [];
+            this.contentFormularios.find(".contenido .form-group").each(function(){
+                let requerido = parseInt($(this).find("[data-name='requerido']").val());
+                let nombre = $(this).find("[data-name='nombre']").val();
+                let keyinput = nombre.toLowerCase().replace(/\s/g, '_').normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+                let elemento = $(this).find("[data-name='elemento']").val();
+                let opcion = _this.getItems($(this).find("[data-name='opcion']"));
+                if(keyinput === 'correo'){
+                    requerido = 1;
+                }
+                if(nombre != '' && elemento != ''){
+                    elementosForm.push({
+                        requerido: requerido,
+                        nombre: nombre,
+                        keyinput: keyinput,
+                        elemento: elemento,
+                        opcion: opcion
+                    });
+                }
+            });
+            //console.log("data", elementosForm);
+            $.post("/cliente/guardar-configurar-formularios-ferias", {forms: elementosForm, idferias: '<?php echo $this->idferias; ?>'}, function(response){
+                if(response.result == 'success'){
+                    ocultarModal('tres');
+                }
+            }, 'json');
+        },
+        getItems: function(obj){
+            let data = [];
+            $(obj).find("option").each(function(){
+                data.push($(this).text());
+            });
+            return data;
+        }
+    }
+
+</script>

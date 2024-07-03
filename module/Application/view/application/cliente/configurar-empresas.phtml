@@ -1,0 +1,94 @@
+<style>
+    
+</style>
+
+<div class="modal-header">
+    <h4 class="modal-title">Configurar Empresa: <?php echo $this->nombre; ?> </h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fal fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/cliente/guardar-configurar-empresas" data-callback="respuesta(response, 'Configuración guardado correctamente.')" autocomplete="off">
+    <input type="hidden" name="idempresas" value="<?php echo $this->idempresas; ?>">
+    <div class="modal-body">
+        <div class="contenedor-tabs">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab_default-2" role="tab"><i class="fas fa-fw fa-lg fa-object-ungroup"></i> Expositores</a></li>
+            </ul>
+            <div class="tab-content">
+                <!-- INICIO TAB -->
+                <div class="tab-pane fade show active" id="tab_default-1" role="tabpanel">
+                    <div class="form-group">
+                        <label class="form-label">Fondo</label>
+                        <div class="contenedor-imagen-personalizado">
+                            <img src="<?php echo ( $this->config_expositor_fondo_hash_imagen != '' ) ? 'empresas/expositores/fondo/'.$this->config_expositor_fondo_hash_imagen : 'img/no-imagen.jpg'; ?>" width="1280" class="imagen" alt="">
+                            <div class="panel-tag panel-tag--alert-danger mb-5 mt-5">Imagen recomendada de 1723 px de ancho y 835 px de alto</div>
+                            <button type="button" class="btn btn-dark btn-block cambiar-imagen-personalizado"><i class="fas fa-upload"></i> Cambiar Imagen</button>
+                            <input type="file" data-width="1723" data-height="835" onchange="cambiarImagenDimension(this, event);" class="hidden" name="config_expositor_fondo_hash_imagen" accept=".jpg,.jpeg,.png" style="display: none;">
+                            <div class="hidden mensaje">La imagen que intenta subir, no cumple con las dimensiones recomendadas. Intente otra vez.</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- FIN TAB -->
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-info btn-submit btn-uploader-form" data-id-form="validar_formulario">Guardar Cambios</button>
+    </div>
+</form>
+
+<script>
+
+    $(".cambiar-imagen-personalizado").click(function () {
+        $(this).parent().find("input[type='file']").click();
+    });
+
+    var _URL = window.URL || window.webkitURL;
+
+    function cambiarImagenDimension(obj, event){
+        var contenedor = $(obj).parent();
+        var reader = new FileReader();
+        var img = contenedor.find("img");
+        var img_width = parseInt($(obj).attr("data-width"));
+        var img_height = parseInt($(obj).attr("data-height"));
+        var mensaje = contenedor.find(".mensaje").text();
+        var dataImagenInicial = $(obj).attr("data-imagen-inicial");
+        dataImagenInicial = (dataImagenInicial !== undefined ) ? dataImagenInicial : 'img/no-imagen.jpg';
+        console.log(dataImagenInicial);
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = function (e) {
+            var image = new Image();
+            image.src = e.target.result;
+            image.onload = function () {
+                var width = this.width;
+                var height = this.height;
+                if (width != img_width || height != img_height) {
+                    alert(mensaje);
+                    $(obj).val('');
+                    img.attr("src", dataImagenInicial);
+                    return false;
+                } 
+                img.attr("src", e.target.result);
+            };
+        }
+    }
+
+    $("#validar_formulario").validate({
+        rules: {
+            config_terminos_condiciones:{
+                required: false
+            },
+            config_buscador_titulo:{
+                required: true
+            },
+        },
+        messages: {},
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+
+</script>

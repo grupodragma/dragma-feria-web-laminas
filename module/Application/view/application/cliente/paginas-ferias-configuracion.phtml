@@ -1,0 +1,18 @@
+<?php
+    $data = ['feria'=> $this->feria, 'pagina'=> $this->pagina, 'idpaginasferias'=> $this->idpaginasferias, 'configuracion'=> $this->configuracion, 'cliente'=> $this->cliente, 'planes_paginas'=> $this->planes_paginas];
+    switch( $this->pagina['hash_url'] ) {
+        case 'home': echo $this->partial('partial/paginas/plantilla-home', $data); break;
+        case 'registro': echo $this->partial('partial/paginas/plantilla-registro', $data); break;
+        case 'registro-presencial': echo $this->partial('partial/paginas/plantilla-registro-presencial', $data); break;
+        case 'recepcion': echo $this->partial('partial/paginas/plantilla-recepcion', $data); break;
+        case 'hall': echo $this->partial('partial/paginas/plantilla-hall', $data); break;
+        case 'zonas': echo $this->partial('partial/paginas/plantilla-zonas', $data); break;
+        case 'hall-conferencias': echo $this->partial('partial/paginas/plantilla-hall-conferencias', $data); break;
+        case 'stand-vip': echo $this->partial('partial/paginas/plantilla-stand-vip', $data); break;
+        case 'stand-vip-nuevo': echo $this->partial('partial/paginas/plantilla-stand-vip-nuevo', $data); break;
+        case 'stand-standard': echo $this->partial('partial/paginas/plantilla-stand-standard', $data); break;
+		case 'stand-standard-nuevo': echo $this->partial('partial/paginas/plantilla-stand-standard-nuevo', $data); break;     
+        case 'cronograma': echo $this->partial('partial/paginas/plantilla-cronograma', $data); break;
+        default: echo 'No se encontro una plantilla.'; break;
+    }
+?>

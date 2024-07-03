@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h4 class="modal-title">¿Estas seguro que desea eliminar las páginas ferias?</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+
+<form id="validar_formulario" data-accion="/cliente/confirmar-eliminar-paginas-ferias?idpaginasferias=<?php echo $this->idpaginasferias; ?>" data-callback="respuesta(response, 'Páginas Ferias eliminado correctamente.')" autocomplete="off">
+    <div class="modal-body">
+        <div class="titulo-eliminar"><code>Luego de aceptar, el registro se borrara irreversiblemente.</code></div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-info btn-submit" data-id-form='validar_formulario'>Eliminar Páginas Ferias</button>
+    </div>
+</form>
