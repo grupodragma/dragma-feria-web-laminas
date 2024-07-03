@@ -1,0 +1,30 @@
+@media screen and (min-width: 990px) and (max-width: 1350px) {
+
+}
+
+@media screen and (min-width: 992px) {
+
+    .nav-function-top .page-sidebar .primary-nav .nav-menu{
+        margin-left: 0.5rem;
+    }
+
+}
+
+@media screen and (max-width: 992px) {
+
+    .page-wrapper .page-content .subheader {
+        margin-bottom: 1rem;
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+
+    .login-contenedor .margin-bottom-6rem{
+        margin-bottom: inherit!important;
+    }
+    .login-contenedor .margin-top-6rem{
+        margin-top: inherit!important;
+    }
+
+}
