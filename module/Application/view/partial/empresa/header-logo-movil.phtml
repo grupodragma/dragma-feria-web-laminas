@@ -1,0 +1,6 @@
+<div class="logo-live-stand">
+    <div class="logo-live-center-stand">
+        <img src="<?php echo ( $this->empresa['hash_logo'] != '' ) ? $this->layout()->url_backend."/empresas/logo/".$this->empresa['hash_logo'] : ''; ?>">
+        <a style="display: none" href="<?php echo $this->layout()->idiomaSeleccionado.'/panel/expositores-vivo/zona/'.$this->zona['orden'].'/empresa/'.$this->empresa['orden'].'/'.$this->empresa['hash_url']; ?>"> <?php echo $this->layout()->language->translate('CHATEA EN DIRECTO')['text']; ?><img src="imagenes/tin.svg"></a>
+    </div>
+</div>

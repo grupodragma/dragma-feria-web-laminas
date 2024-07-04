@@ -1,0 +1,394 @@
+<?php $this->headTitle('EXPOSITORES EN VIVO - '.mb_strtoupper($this->empresa['nombre']).' - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+<?php //print_r($this->layout()->datosUsuario); ?>
+<?php
+    echo $this->partial('partial/menus/encabezado-flechas', [
+        'zona'=> $this->zona,
+        'ordenzona'=> $this->ordenzona,
+        'zonaEmpresaAnterior'=> $this->zonaEmpresaAnterior,
+        'zonaEmpresaSiguiente'=> $this->zonaEmpresaSiguiente,
+        'totalZonas'=> $this->totalZonas,
+        'accion'=> 'expositores-vivo'
+    ]);
+?>
+
+<section class="expositor-envivo">
+   <div class="info-envivo" >
+      <div class="center" id="envivo">
+         <div class="video <?php echo ( $this->expositor['enlace_conferencia'] != '' ) ? '' : 'fondo'; ?>" <?php if( $this->expositor['enlace_conferencia'] == '' && $this->expositor['hash_fondo_conferencia'] != '' ) echo "style='opacity:1;background-image: url(".$this->layout()->url_backend.'/expositores/conferencia/'.$this->expositor['hash_fondo_conferencia'].")'"; ?>>
+            <iframe width="100%" height="315" src="<?php echo $this->expositor['enlace_conferencia']; ?>" title="" allowfullscreen></iframe>
+         </div>
+         <div class="space-vivo"></div>
+         <div class="chat-info">
+            <div class="asesor-line">
+               <div class="asesor-foto">
+                  <h2><?php echo $this->layout()->language->translate('ASESOR VIRTUAL EN LÍNEA')['text']; ?></h2>
+                  <img src="<?php echo $this->layout()->url_backend; ?>/expositores/foto/<?php echo $this->expositor['hash_foto_networking'];?>" alt="">						
+                  <h2><?php echo $this->expositor['nombres']; ?></h2>
+               </div>
+               <div class="icons">
+                  <a class="<?php if( $this->expositor['correo'] == '' ) { echo "disabled"; } ?> _corrreo" href="mailto:<?php echo $this->expositor['correo'];?>" target="_blank"> <img src="imagenes/sms.svg"></a>
+                  <a class="<?php if( $this->expositor['telefono'] == '' ) { echo "disabled"; } ?> _telefono" href="tel:<?php echo $this->expositor['telefono'];?>" target="_blank"> <img src="imagenes/call.svg"></a>
+                  <a class="<?php if( $this->expositor['telefono'] == '' ) { echo "disabled"; } ?> _wsp" href="javascript:abrirVentanaWindow('https://api.whatsapp.com/send?phone=<?php echo $this->expositor['telefono'];?>&text=%C2%A1Hola!,%20Tengo%20una%20consulta.')">
+                    <img src="imagenes/wsp.svg" alt="">
+                  </a>
+               </div>
+               <div class="space-asesor">
+               </div>
+               <div class="botones-meet">
+                  <h2 style="color:#FFF;font-weight:bold;font-size:15px"> <?php echo $this->empresa['nombre']; ?> </h2>
+                  <?php if( $this->expositor['enlace_conferencia_asesor'] != '' && $this->estadoAgendaVirtualUsuario ) : ?>
+                  <a class="atencion_virtual" href="javascript:abrirVentanaWindow('<?php echo $this->expositor['enlace_conferencia_asesor']; ?>');"><i class="fas fa-video"></i>&nbsp;&nbsp;<?php echo $this->layout()->language->translate('ATENCIÓN VIRTUAL')['text']; ?><br> <?php echo $this->layout()->language->translate('EN LÍNEA')['text']; ?></a>
+                  <?php endif; ?>
+                  <a href="#" class="reserva_cita en_directo_open"> <i class="fas fa-calendar-alt"></i>&nbsp;&nbsp;<?php echo $this->layout()->language->translate('RESERVA TU CITA')['text']; ?></a>
+               </div>
+            </div>
+            <div class="chat-line">
+               <div class="chat-center">
+                    <h2><?php echo $this->layout()->language->translate('CHATEA EN DIRECTO')['text']; ?></h2>
+                    <div class="chat-dialog">
+                        <div class="container-chats darker" data-template="chat-agent" style="display: none;">
+                            <img src="<?php echo ( $this->expositor['hash_foto_networking'] != '' ) ? $this->layout()->url_backend."/expositores/foto/".$this->expositor['hash_foto_networking'] : "imagenes/user-icon.png"; ?>" alt="Avatar" class="left chat-icon" />
+                            <p data-chat="mensaje">Hola Bienvenido a la Feria Virtual <?php echo $this->layout()->feria['nombre']." ".date('Y'); ?></p>
+                            <br />
+                            <p style="font-weight: bold;" data-chat="usuario"></p>
+                        </div>
+                        <div class="container-chats" data-template="chat-visit" style="display: none;">
+                            <img src="imagenes/user-icon.png" alt="Avatar" class="right chat-icon" />
+                            <p data-chat="mensaje"></p>
+                            <br />
+                            <p style="font-weight: bold;" data-chat="usuario"></p>
+                        </div>
+                    </div>
+                    <div class="chat-typing"></div>
+                    <form id="formChat">
+                        <div class="mandar-chat">
+                            <div class="center">
+                                <input placeholder="Escribir mensaje" id="m" class="campos-tarjeta" autocomplete="off" required>
+                                <div class="space-tarjeta"></div>
+                                <input type="submit" value="→" class="send-tarjeta" />
+                            </div>
+                        </div>
+                    </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<div id="en_directo" class="well-directo">
+   <div class="modal-contents-directo">
+      <form id="contact-form-envivo" autocomplete="false">
+        <h2><?php echo $this->layout()->language->translate('AGENDA UNA REUNIÓN VIRTUAL')['text']; ?></h2>
+        <big><?php echo $this->layout()->language->translate('Selecciona la Fecha y hora disponible para tu reunión virtual con uno de nuestros asesores')['text']; ?></big>
+        <div>
+            <div class="horarios-disponibles" style="display: none;">
+                <h5>Horarios Disponibles</h5>
+                <ul class="horarios"></ul>
+            </div>
+            <div>
+                <input type="text" id="fecha_agenda" name="fecha" class="form-control" readonly="readonly">
+            </div>
+        </div>
+        <div class="mensaje">
+            <p class="titulos"><?php echo $this->layout()->language->translate('Escribe un comentario')['text']; ?></p>
+            <textarea name="comentario" id="comentario" rows="5" class="comentarios-envivo"></textarea>
+        </div>
+        <input type="hidden" name="idempresas" value="<?php echo $this->empresa['idempresas']; ?>">
+        <input type="submit" value="<?php echo $this->layout()->language->translate('AGENDAR REUNIÓN')['text']; ?>" class="send-home-envivo">
+      </form>
+   </div>
+</div>
+
+<div class="franja-amarillo">
+    <div class="responsive-franja"><?php echo $this->partial('partial/menus/pie-pagina', ['empresa'=> $this->empresa, 'zona'=> $this->zona, 'accion'=> 'expositores-vivo', 'totalProductos'=> $this->totalProductos, 'totalPromociones'=> $this->totalPromociones, 'totalPlanos'=> $this->totalPlanos]); ?></div>
+    <a class="space"></a>
+    <?php
+        echo $this->partial('partial/menus/pie-pagina-flechas', [
+            'empresa'=> $this->empresa,
+            'zona'=> $this->zona,
+            'ordenempresa'=> $this->ordenempresa,
+            'ordenzona'=> $this->ordenzona,
+            'empresaAnterior'=> $this->empresaAnterior,
+            'empresaSiguiente'=> $this->empresaSiguiente,
+            'totalEmpresas'=> $this->totalEmpresas
+        ]);
+    ?>
+</div>
+
+<?php
+    $dataPartial = [
+        'empresas'=> $this->empresas,
+        'ordenzona'=> $this->ordenzona
+    ];
+    echo $this->partial('partial/empresa/slider', $dataPartial);
+?>
+
+<script type="text/javascript">
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    //Capturar Orden Empresa
+    UsuariosEventos.ordenzona = '<?php echo $this->ordenzona; ?>';
+    UsuariosEventos.ordenempresa = '<?php echo $this->ordenempresa; ?>';
+
+    $("form#contact-form-envivo").validate({
+        ignore: [],
+        rules: {
+            fecha: {
+                required: true
+            },
+            comentario: {
+                required: true
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        },
+        submitHandler: function(form) {
+            let btnSubmit = $(form).find("input[type='submit']");
+            btnSubmit.attr("disabled", "");
+            $.post("/cliente/guardar-agenda-virtual", $(form).serializeArray(), function(response){
+                console.log(response);
+                if(response.result === 'success') {
+                    alert('<?php echo $this->layout()->language->translate('Sus datos se registraron satisfactoriamente.')['text']; ?>');
+                }
+                $('#en_directo').popup('hide');
+                btnSubmit.removeAttr("disabled");
+                $(form).trigger('reset');
+                $("#fecha_agenda").val(`${moment().format('DD/MM/YYYY')} 09:00`);
+            }, 'json');
+        }
+    });
+
+    $(document).on("click", "#en_directo .en_directo_close", function(){
+        $("form#contact-form-envivo").trigger('reset');
+        $("#fecha_agenda").val(`${moment().format('DD/MM/YYYY')} 09:00`);
+    })
+
+    $(".reserva_cita").click(function(){
+        obtenerHorariosDisponibles();
+    });
+
+    $(document).on("ready", function () {
+
+        obtenerHorariosDisponibles();
+
+        $('#en_directo').popup({
+            transition: 'all 0.3s',
+            closebutton: true,
+            escape: false,
+            blur: false
+        });
+
+        $('#fecha_agenda').daterangepicker({
+            locale: {
+                format: "DD/MM/YYYY HH:mm",
+                applyLabel: "Guardar",
+                cancelLabel: "Cancelar",
+                daysOfWeek: [
+                    "Do",
+                    "Lu",
+                    "Ma",
+                    "Mi",
+                    "Ju",
+                    "Vi",
+                    "Sa"
+                ],
+                monthNames: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Setiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],
+                firstDay: 1,
+                timeInitial: '09:00'
+            },
+            singleDatePicker: true,
+            timePicker: true,
+            timePicker24Hour: true,
+            timePickerIncrement: 30,
+            linkedCalendars: false,
+            autoUpdateInput: true,
+            showCustomRangeLabel: false,
+            startDate: new Date()
+        }, function(start, end, label) {
+            console.log(start.format('DD/MM/YYYY HH:mm'));
+            let dateSelected = start.format('DD/MM/YYYY HH:mm');
+            validarFechaAgenda(dateSelected);
+        });
+
+    });
+
+    function validarFechaAgenda(fecha){
+        $.post("/cliente/validar-agendas-disponibles", { fecha, idempresas: codigoUnico }, function(response) {
+            if(response.result === 'not-range-date') {
+                $("#fecha_agenda").val(`${moment().format('DD/MM/YYYY')} 09:00`);
+                alert('Fecha inválida');
+            } else {
+                if(!response.agenda_virtual.usuario_fecha_disponible) {
+                    $("#fecha_agenda").val(`${moment().format('DD/MM/YYYY')} 09:00`);
+                    alert('Horario no disponible. Por favor, seleccione otro horario.');
+                }
+                procesarHorariosDisponibles(response.agenda_virtual.horarios_disponibles);
+            }
+        }, 'json');
+    }
+
+    function obtenerHorariosDisponibles(){
+        let fecha = moment().format('YYYY-MM-DD HH:mm');
+        $.post("/cliente/obtener-horarios-disponibles", { fecha, idempresas: codigoUnico }, function(response){
+            if(response.result === 'success'){
+                procesarHorariosDisponibles(response.agenda_virtual.horarios_disponibles);
+            }
+        }, 'json');
+    }
+
+    function procesarHorariosDisponibles(data){
+        $(".horarios-disponibles").hide();
+        $(".horarios-disponibles .horarios").html("");
+        if(data.length) {
+            for(let horario of data){
+                let li = $('<li>');
+                li.text(horario.fecha.split(" ")[1]);
+                li.addClass((horario.estado)?'on':'off');
+                $(".horarios-disponibles .horarios").append(li);
+            }
+            $(".horarios-disponibles").show();
+        }
+    }
+
+    //SocketIO
+    var dataTemplateVisita = $("div[data-template='chat-visit']");
+    var dataTemplateAgente = $("div[data-template='chat-agent']");
+    var listaChat = $(".chat-dialog");
+    var contenedorChat = $(".chat-dialog");
+    var chatTyping = $(".chat-typing");
+    var timeout=undefined;
+    var usuario = '<?php echo $this->layout()->datosUsuario['nombres']." ".$this->layout()->datosUsuario['apellido_paterno']." ".$this->layout()->datosUsuario['apellido_materno']; ?>';
+    //Datos Sesion
+    var sesionTipo = '<?php echo $this->layout()->datosUsuario['tipo']; ?>';
+    var sesionIdUsuario = '<?php echo ( $this->layout()->datosUsuario['tipo'] == 'E' ) ? $this->layout()->datosUsuario['idexpositores'] : $this->layout()->datosUsuario['idvisitantes']; ?>';
+    var idexpositores = '<?php echo $this->expositor['idexpositores']; ?>';
+    var codigoUnico = '<?php echo $this->empresa['idempresas']; ?>';
+    var version = 1;
+
+    console.log("idferias selected", idferias);
+    console.log("idplataformas selected", idplataformas);
+
+    socket.on("connect", function () {
+        socket.emit('validarUsuario', {
+            idempresas: '<?php echo $this->empresa['idempresas']; ?>',
+            tipo: sesionTipo,
+            idusuario: sesionIdUsuario,
+            nombres: usuario,
+            idexpositor: idexpositores,
+            codigoUnico: codigoUnico,
+            version: version
+        });
+    });
+
+    $('form#formChat').submit(function(e){
+        e.preventDefault();
+        socket.emit('typing', {typing:false, idempresas: '<?php echo $this->empresa['idempresas']; ?>'});
+        enviarMensaje();
+    });
+
+    $('#m').keypress((e)=>{
+        if(e.which!=13){
+            socket.emit('typing', {
+            	usuario:usuario,
+            	typing:true,
+            	idempresas: '<?php echo $this->empresa['idempresas']; ?>',
+            	codigoUnico: codigoUnico
+            });
+            clearTimeout(timeout);
+            timeout=setTimeout(typingTimeout, 3000);
+        } else {
+            clearTimeout(timeout);
+            typingTimeout();
+        }
+    });
+
+    function typingTimeout() {
+        socket.emit('typing', {
+        	typing:false,
+        	idempresas: '<?php echo $this->empresa['idempresas']; ?>',
+        	codigoUnico: codigoUnico
+        });
+    }
+
+    function enviarMensaje(){
+        socket.emit('chat message', {
+        	codigoUnico: codigoUnico,
+        	idplataformas: idplataformas,
+            idferias: idferias,
+            tipo: sesionTipo,
+            idusuario: sesionIdUsuario,
+            idempresas: '<?php echo $this->empresa['idempresas']; ?>',
+            msg: $('#m').val(),
+            version: Panel.version
+        });
+        $('#m').val('');
+    }
+
+    socket.on('chat message', function(data){
+
+        console.log(data);
+
+        if(Object.keys(data.usuario).length > 0) {
+
+            let chatAgent = $("<div>").addClass("container-chats darker").html(dataTemplateAgente.html());
+            let chatVisit = $("<div>").addClass("container-chats").html(dataTemplateVisita.html());
+            let content = '';
+
+            if( data.usuario.tipo == 'E' ) {
+                chatAgent.find("[data-chat='usuario']").text(data.usuario.nombres);
+                chatAgent.find("[data-chat='mensaje']").text(data.msg);
+                content = chatAgent;
+            } else {
+                chatVisit.find("[data-chat='usuario']").text(data.usuario.nombres);
+                chatVisit.find("[data-chat='mensaje']").text(data.msg);
+                content = chatVisit;
+            }
+
+            listaChat.append(content);
+            contenedorChat.animate({ scrollTop: 999999999999999999 }, "slow");
+
+        }
+
+    });
+
+    socket.on('transmitirAhora', function(data){
+        console.log(data);
+        let panel = $(".expositor-envivo");
+        if(data.idempresas == '<?php echo $this->empresa['idempresas']; ?>' && data.idexpositores == '<?php echo $this->expositor['idexpositores']; ?>') {
+            panel.find(".fondo").removeClass("fondo").removeAttr("style");
+            panel.find(".video").css({'opacity': '1'});
+            panel.find(".video iframe").attr("src", data.enlace_conferencia);
+        }
+    });
+   
+    socket.on('display', (data) => {
+        if(data.typing==true){
+            if(usuario != data.usuario)chatTyping.text(`${data.usuario} <?php echo $this->layout()->language->translate('esta escribiendo')['text']; ?>...`);
+        } else {
+            chatTyping.text("");
+        }
+    });
+
+    $(".informacion-tarjeta .cerrar").click(function(){
+        $(".contenedor-tarjeta").hide();
+    });
+   
+    <?php $this->inlineScript()->captureEnd(); ?>
+   
+</script>

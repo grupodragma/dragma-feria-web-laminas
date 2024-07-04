@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>GRUPO DRAGMA - RECORRIDO INTERACTIVO 360°</title>
+    </head>
+    <body>
+        <h1 style="color: #0080b9; font-size: 0.9vw; font-family: arial; text-align: center;">Hola <span><?php echo $this->visitante['nombres']." ".$this->visitante['apellido_paterno']." ".$this->visitante['apellido_materno']; ?></span></h1>
+        <h2 style="color: #0080b9; font-size: 0.9vw; font-family: arial; text-align: center;">¡Gracias por registrarte correctamente a <span><?php echo $this->layout()->feria['nombre']; ?> <?php echo date('Y'); ?></span>&nbsp;!</h2>
+        <table width="650" border="0" align="center" cellpadding="0" cellspacing="0" style="background-image:url('<?php echo $this->layout()->url_backend."/correos/imagen/".$this->datosCorreo['config_hash_fondo_plantilla']; ?>'); border-radius:80px; padding:50px;">
+            <tbody>
+                <tr>
+                    <td>
+                        <table width="300" border="0" align="center" cellpadding="0" cellspacing="0" style="border-spacing: 0;">
+                            <tbody>
+                                <tr style="border-spacing: 0;">
+                                    <td>
+                                        <a href="<?php echo ( $this->layout()->feria['dominio'] != "" ) ? $this->layout()->feria['dominio'] : "javascript:void(0)"; ?>" target="_blank" style="margin: 0 auto;">
+                                            <img src="<?php echo $this->layout()->url_backend."/correos/imagen/".$this->datosCorreo['config_hash_logo_feria']; ?>" width="300" height="145" style="display: block;" alt="">
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <br />
+                        <h4 style="color: #fff; width: 500px; font-size: 1.3vw; font-family: arial; text-align: center; margin-top: 0px; border-bottom: 2px solid #fff; padding-bottom: 10px; margin: 0 auto;"><?php echo $this->visitante['nombres']." ".$this->visitante['apellido_paterno']." ".$this->visitante['apellido_materno']; ?></h4>
+                        <br />
+                        <br />
+                        <p style="color: #fff; width: 350px; font-size: 1.5vw; font-weight: 600; font-family: arial; text-align: center; margin-top: 10px; margin-bottom: 20px; padding-bottom: 10px; margin: 0 auto;">
+                            ¡ SOY PARTE DE <?php echo mb_strtoupper($this->layout()->feria['nombre']); ?> <?php echo date('Y'); ?> !
+                        </p>
+                        <br />
+                        <table width="185" border="0" align="center" cellpadding="0" cellspacing="0" style="border-spacing: 0;">
+                            <tbody>
+                                <tr style="border-spacing: 0;">
+                                    <td>
+                                        <a href="<?php echo ( $this->layout()->feria['dominio'] != "" ) ? $this->layout()->feria['dominio'] : "javascript:void(0)"; ?>" target="_blank" style="margin: 0 auto;">
+                                            <img src="<?php echo $this->layout()->url_backend."/correos/imagen/".$this->datosCorreo['config_hash_qr']; ?>" width="185" height="185" style="display: block;" alt="">
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <h4 style="color: #fff; width: 400px; font-size: 0.75vw; font-family: arial; text-align: center; margin-top: 0px; padding-bottom: 10px; margin: 0 auto;">Compartir en:</h4>
+                        <table width="200" border="0" align="center" cellpadding="0" cellspacing="0" style="border-spacing: 0;">
+                            <tbody>
+                                <tr style="border-spacing: 0; border: 1px solid #fff;">
+                                    <td>
+                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo ( $this->layout()->feria['dominio'] != "" ) ? $this->layout()->feria['dominio'] : "javascript:void(0)"; ?>" target="_blank">
+                                            <img src="https://dragma3d.com/mailing/rid-01.png" width="50" height="46" style="display: block;" alt="">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="https://api.whatsapp.com/send/?phone&app_absent=0&text=<?php echo ( $this->layout()->feria['dominio'] != "" ) ? $this->layout()->feria['dominio'] : "javascript:void(0)"; ?>" target="_blank">
+                                            <img src="https://dragma3d.com/mailing/rid-02.png" width="50" height="46" style="display: block;" alt="">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="https://twitter.com/intent/tweet?url=<?php echo ( $this->layout()->feria['dominio'] != "" ) ? $this->layout()->feria['dominio'] : "javascript:void(0)"; ?>" target="_blank">
+                                            <img src="https://dragma3d.com/mailing/rid-03.png" width="50" height="46" style="display: block;" alt="">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo ( $this->layout()->feria['dominio'] != "" ) ? $this->layout()->feria['dominio'] : "javascript:void(0)"; ?>" target="_blank">
+                                            <img src="https://dragma3d.com/mailing/rid-04.png" width="50" height="46" style="display: block;" alt="">
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <table width="270" border="0" align="center" cellpadding="0" cellspacing="0" style="border-spacing: 0;">
+                            <tbody>
+                                <tr style="border-spacing: 0;">
+                                    <td>
+                                        <a href="<?php echo ( $this->layout()->feria['dominio'] != "" ) ? $this->layout()->feria['dominio'] : "javascript:void(0)"; ?>" target="_blank" style="margin: 0 auto;">
+                                            <img src="<?php echo $this->layout()->url_backend."/correos/imagen/".$this->datosCorreo['config_hash_logo_cliente']; ?>" width="270" height="50" style="display: block;" alt="">
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <br />
+        <h4 style="color: #1d7cb9; width: 400px; font-size: 1.3vw; font-family: arial; text-align: center; margin-top: 0px; margin-bottom: 1px; padding-bottom: 1px; margin: 0 auto;"><?php echo $this->datosCorreo['config_pie_pagina_titulo_linea_1']; ?></h4>
+        <h3 style="color: #1d7cb9; width: 400px; font-size: 2.2vw; font-weight: 900; font-family: arial; text-align: center; margin-top: 1px; padding-bottom: 1px; margin: 0 auto; margin-bottom: 1px;"><?php echo $this->datosCorreo['config_pie_pagina_titulo_linea_2']; ?></h3>
+        <h4 style="color: #1d7cb9; width: 400px; font-size: 1.3vw; font-family: arial; text-align: center; margin-top: 0px; padding-bottom: 2px; margin: 0 auto;"><?php echo $this->datosCorreo['config_pie_pagina_titulo_linea_3']; ?></h4>
+        <br />
+        <h3 style="color: #fff; background-color: #1d7cb9; border-radius: 25px; width: 400px; padding: 9px; font-style: italic; font-size: 1.5vw; font-weight: 900; font-family: arial; text-align: center; margin-top: 1px; margin: 0 auto;">INGRESA A:</h3>
+        <h4 style="color: #1d7cb9; width: 600px; font-size: 1.9vw; padding: 8px; border-radius: 35px; font-family: arial; text-align: center; margin-top: 5px; margin: 0 auto; border: 5px solid #1d7cb9;">
+            <a href="<?php echo ( $this->layout()->feria['dominio'] != "" ) ? $this->layout()->feria['dominio'] : "javascript:void(0)"; ?>" style="color:#1d7cb9;text-decoration: none;">www.<?php echo $this->layout()->feria['dominio']; ?></a>
+        </h4>
+    </body>
+</html>

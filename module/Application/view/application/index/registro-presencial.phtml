@@ -1,0 +1,324 @@
+<?php $this->headTitle('REGISTRO - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<style>
+
+    select {
+        color: #111;
+        border-radius: 10px;
+    }
+    select.gray {
+       color: #111;
+    }
+    option {
+    	color: #111;
+    }
+    .grayout option:first-child {
+      color: #111;
+    }
+
+    select {
+        margin: 0;
+        margin-bottom: 4%;
+        margin-top: 0%;
+        border-radius: 5px;
+        vertical-align: top;
+    	padding-top:2vh;
+    	padding-bottom:2vh;
+        padding: 1.2vh;
+        background-color: #fff;
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/4b/Feather-arrows-chevron-down.svg');
+        background-position: 97% center;
+        background-position: right 0px center;
+        background-repeat: no-repeat;
+        background-size: 18px;
+        border: 1px solid #CCC;
+        -webkit-appearance: button;
+        -webkit-border-radius: 3px;
+        -webkit-padding-end: 30px;
+        -webkit-padding-start: 8px;
+        -webkit-user-select: none;
+        -moz-appearance: none;
+    	font-size: 1vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    	 color: #111;
+        white-space: nowrap;
+        width: 100%;
+        transition: border 300ms;
+    }
+
+    @media screen and (max-width: 580px) {
+    	.info-modulo{
+    		display:none;
+    	}
+
+        select {
+            margin: 0;
+            margin-bottom: 4%;
+            margin-top: 0%;
+            border-radius: 2px !important;
+            vertical-align: top;
+            padding-top:2vh;
+            padding-bottom:2vh;
+            padding: 1.2vh;
+            background-color: #fff;
+            background-image:none;
+            background-position: 97% center;
+            background-position: right 0px center;
+            background-repeat: no-repeat;
+            background-size: 18px;
+            border: 1px solid #999;
+            -webkit-appearance: button;
+            -webkit-border-radius: 3px;
+            -webkit-padding-end: 30px;
+            -webkit-padding-start: 8px;
+            -webkit-user-select: none;
+            -moz-appearance: none;
+            font-size: 1em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #555;
+            white-space: nowrap;
+            width: 100%;
+            transition: border 300ms;
+        }
+
+    }
+</style>
+
+<?php echo $this->partial('partial/fondos/movil', ['accion'=> 'registro-presencial','configuracion'=> $this->configuracion]); ?>
+
+<section class="registro-home">
+    <a class="show-hide" href="#" onclick="smooth()"><?php echo $this->layout()->language->translate('VER REGISTRO')['text']; ?></a>
+
+    <div class="white-form-enter" id="show">
+        <div class="fondo-logo-form">
+            <img src="<?php echo ( isset($this->configuracion['imagen_logo'])) ? $this->layout()->url_backend.'/paginas/registro-presencial/'.$this->configuracion['imagen_logo']['hash'] : $this->layout()->url_backend.'/img/plantillas/registro-presencial/imagen_logo.jpg'; ?>" alt="">
+        </div>
+
+        <div data-qr="<?php echo $this->qr; ?>" data-form="iniciar-sesion" style="<?php echo ( $this->qr == "OK" ) ? 'display: none' : ''; ?>">
+            <div class="all-2">
+                <div class="first-form-2" style="margin-left: 25%;">
+                    <center>
+                        <p><i class="fas fa-user"></i>&nbsp;<?php echo $this->layout()->language->translate('Iniciar Sesión')['text']; ?></p>
+                    </center>
+                </div>
+            </div>
+            <div class="all">
+                <form id="frmLoginRecepcion" autocomplete="off">
+                    <input type="hidden" name="csrf_token" value="<?php echo $this->csrf_token ?>">
+                    <div class="first-form" style="width: 100% !important;">
+                        <input type="text" name="usuario" id="usuario" class="campos-contacto-home" placeholder="Usuario*" autofocus="" required="" />
+                        <div class="msgError"></div>
+                    </div>
+                    <div class="alert form_mensaje alert-danger" style="display: none;"></div>
+                    <div class="first-form" style="width: 100% !important;">
+                        <input type="password" name="contrasena" id="contrasena" class="campos-contacto-home" placeholder="Contraseña*" required="" />
+                        <div class="msgError"></div>
+                    </div>
+                    <input type="submit" name="button" value="INICIAR SESIÓN" class="send-home-contacto" />
+                </form>
+            </div>
+        </div>
+
+        <div data-qr="<?php echo $this->qr; ?>" data-form="registrar-visitante" style="<?php echo ( $this->qr == "OK" ) ? '' : 'display: none'; ?>">
+            <div class="all-2">
+                <div class="first-form-2" style="margin-left: 25%;">
+                    <center>
+                        <p><i class="fas fa-info"></i>&nbsp;Ingresar Datos*</p>
+                    </center>
+                </div>
+            </div>
+            <div class="all">
+                <form id="frmLogin" method="post" autocomplete="off">
+                    <input type="hidden" name="csrf_token" value="<?php echo $this->csrf_token ?>">
+                    <div class="first-form" style="width: 100% !important;">
+                        <input type="number" name="dni" class="campos-contacto-home" placeholder="DNI*" autofocus="" required="" />
+                    </div>
+                    <div class="alert form_mensaje alert-danger" style="display: none;"></div>
+                    <?php if(!empty($this->layout()->feria['config_formulario']) ) : foreach($this->layout()->feria['config_formulario'] as $form) : ?>
+                    <div class="first-form" style="width: 100% !important;">
+                        <?php if($form['elemento'] == 'input') : ?>
+                        <input type="text" name="<?php echo $form['keyinput']; ?>" id="<?php echo $form['keyinput'] ?>" class="campos-contacto-home" placeholder="<?php echo $this->layout()->language->translate($form['nombre'].'*')['text']; ?>" <?php if( (int)$form['requerido'] ){ echo 'required=""'; } ?>>
+                        <?php elseif($form['elemento'] == 'select') : ?>
+                        <select name="<?php echo $form['keyinput']; ?>" id="<?php echo $form['keyinput'] ?>" class="campos-contacto-home" placeholder="<?php echo $this->layout()->language->translate($form['nombre'].'*')['text']; ?>" <?php if( (int)$form['requerido'] ){ echo 'required=""'; } ?>>
+                        <option value=""><?php echo $this->layout()->language->translate($form['nombre'].'*')['text']; ?></option>
+                        <?php if(!empty($form['opcion'])) : foreach($form['opcion'] as $item) : ?>
+                        <option value="<?php echo $item; ?>"><?php echo $item; ?></option>
+                        <?php endforeach; endif; ?>
+                        </select>
+                        <?php endif; ?>
+                    </div>
+                    <?php endforeach; endif; ?>
+                    <input type="submit" name="button" value="<?php echo $this->layout()->language->translate('REGISTRAR')['text']; ?>" class="send-home-contacto" />
+                    <?php if( $this->layout()->feria['config_terminos_condiciones'] != '' ): ?>
+                    <div class="condicion">
+                        <h5 style="font-weight: 300; text-align: center; margin-bottom: 2vh;"><?php echo $this->layout()->language->translate('Autorización de uso de datos.')['text']; ?></h5>
+                        <div class="inputs" style="color: #555; font-size: 12px; display: flex; justify-content: center;">
+                            <input type="radio" name="condicion" value="S" required="" checked="checked"><span><?php echo $this->layout()->language->translate('Si, acepto')['text']; ?> </span>
+                            <input type="radio" name="condicion" value="N" required=""><span><?php echo $this->layout()->language->translate('No, acepto')['text']; ?></span>
+                        </div>
+                        <div class="legal">
+                            <p><?php echo $this->layout()->language->translate($this->layout()->feria['config_terminos_condiciones'])['text']; ?></p>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="slide active" style="background-image: url(<?php echo(isset($this->configuracion[ 'imagen_fondo' ]))?$this->layout()->url_backend.'/paginas/registro-presencial/'.$this->configuracion['imagen_fondo']['hash']:$this->layout()->url_backend.'/img/plantillas/registro-presencial/imagen_fondo.jpg';?>);"
+    ></div>
+
+</section>
+
+<script>
+
+    $("form#frmLoginRecepcion").validate({
+        ignore: [],
+        rules: {},
+        errorPlacement: function (error, element) {
+            element.parents(".first-form").find(".msgError").html(error);
+        },
+        submitHandler: function(form) {
+            let btnSubmit = $(form).find("input[type='submit']");
+            btnSubmit.attr("disabled", "");
+            $.post("/login-recepcion", $(form).serialize(), function(response){
+                $(form).find(".form_mensaje").removeClass("alert-danger alert-success").hide().html("");
+                if(response.result === 'success') {
+                    LocalStorage.set("USER_RCP", response.datos);
+                    Cookie.set("SESSION_RCP", "RECEPCION", 1) //1 hora
+                    $("[data-form='iniciar-sesion']").hide();
+                    $("[data-form='registrar-visitante']").show();
+                } else {
+                    $(form).find(".form_mensaje").addClass("alert-warning").html("<p>El usuario ingresado no se reconoce en el sistema.</p>").show();
+                }
+                btnSubmit.removeAttr("disabled");
+                $(form).trigger('reset');
+                generarCsrfToken();
+            }, 'json');
+        }
+    });
+
+    var mensaje = $(".form_mensaje");
+    var formUsuario = $("form#frmLogin");
+    var configFormulario;
+    
+    <?php if(!empty($this->layout()->feria['config_formulario']) ) : foreach($this->layout()->feria['config_formulario'] as $form) : ?>
+    configFormulario = '<?php echo json_encode($this->layout()->feria['config_formulario']); ?>';
+    <?php endforeach; endif; ?>
+    var dataConfigFormulario = JSON.parse(configFormulario);
+
+    $(document).ready(function () {
+        validarSesion();
+        formUsuario.find("input[name='dni']").keyup(function (e) {
+            if ([67, 17].indexOf(e.keyCode) !== -1) return;
+            limpiarCampos();
+            mensaje.removeClass("alert-danger alert-success").hide().html("");
+            let _this = $(this);
+            delay(function () {
+                let numero_documento = _this.val();
+                $.post("/cliente/validar-existe-visitante", { numero_documento }, function (response) {
+                    if (response.ok) {
+                        mensaje.addClass("alert-success").html("<p><?php echo $this->layout()->language->translate('Ya se encuentra registrado.')['text']; ?></p>").show();
+                        document.getElementsByClassName("send-home-contacto")[1].setAttribute("value", "ACTUALIZAR REGISTRO")
+                        if(dataConfigFormulario.length){
+                            for(form of dataConfigFormulario){
+                                if(response.datos[form['keyinput']] !== undefined){
+                                    switch(form['elemento']){
+                                        case 'input': $("input[name='"+form['keyinput']+"']").val(response.datos[form['keyinput']]); break;
+                                        case 'select': $("select[name='"+form['keyinput']+"']").val(response.datos[form['keyinput']]); break;
+                                    }
+                                }
+                            }
+                        }
+                        if (response.datos.condicion == "S") {
+                            formUsuario.find("input[name='condicion']").eq(0).prop('checked', true);
+                        } else {
+                            formUsuario.find("input[name='condicion']").eq(1).prop('checked', true);
+                        }
+                    } else {
+                        mensaje.addClass("alert-danger").html("<p><?php echo $this->layout()->language->translate('Todavía no está registrado, complete los campos.')['text']; ?></p>").show();
+                        document.getElementsByClassName("send-home-contacto")[1].setAttribute("value", "REGISTRAR")
+                    }
+                }, "json" );
+            }, 500);
+        });
+
+        formUsuario.submit(function (e) {
+            if(!validarSesionFormulario()){
+                let _this = $(this);
+                _this.find("input[type='submit']").attr("disabled", "");
+                e.preventDefault();
+                let dataForm = _this.serializeArray();
+                dataForm.push({name: 'idusuario', value: LocalStorage.get("USER_RCP")?.idusuario});
+                $.post("/login-presencial", dataForm, function (response) {
+                    if (response.result == "success") {
+                        alert('El usuario se registro correctamente.');
+                    }
+                    resetFormRegisterUser(_this);
+                }, "json");
+            } else {
+                window.location.href = window.location.href;
+            }
+        });
+    });
+
+    function validarSesionFormulario(){
+        if(!Cookie.exist("SESSION_RCP") || !LocalStorage.exist("USER_RCP")){
+            <?php if( $this->qr == "OK" ) : ?>
+            return false;
+            <?php endif; ?>
+            alert("Su sesión a caducado, por favor inicie sesión nuevamente.")
+            Cookie.remove("SESSION_RCP")
+            LocalStorage.remove("USER_RCP")
+            return true;
+        }
+    }
+
+    function validarSesion(){
+        if(Cookie.exist("SESSION_RCP")){
+            $("[data-form='iniciar-sesion']").hide();
+            $("[data-form='registrar-visitante']").show();
+        } else {
+            LocalStorage.remove("USER_RCP");
+        }
+    }
+
+    function resetFormRegisterUser(obj){
+        limpiarCampos();
+        formUsuario.find("input[name='dni']").val("");
+        mensaje.removeClass("alert-danger alert-success").hide().html("");
+        $(obj).find("input[type='submit']").removeAttr("disabled");
+        generarCsrfToken();
+    }
+
+    function generarCsrfToken(){
+        $.post("/generar-csrf-token", function(response) {
+            $("input[name='csrf_token']").val(response.csrf_token);
+        }, "json");
+    }
+
+    function limpiarCampos() {
+        formUsuario.find(":input").not("input[name='dni'], :submit, :radio, input[name='csrf_token']").val("");
+        formUsuario.find(":checkbox, :radio").prop("checked", false);
+    }
+
+    var delay = (function () {
+        var timer = 0;
+        return function (callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+</script>

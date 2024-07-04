@@ -1,0 +1,134 @@
+<form id="form-clientes" class="formLogin" autocomplete="off">
+    <h1>INGRESA AQUÍ</h1>
+
+    <div class="form-controls">
+        <input type="text" id="fd_dni" name="dni" class="campos-contacto-datos" placeholder="D.N.I.*" />
+        <div class="msgError"></div>
+    </div>
+
+    <input type="hidden" name="csrf_token" value="<?php echo $this->csrf_token ?>">
+
+    <?php if(!empty($this->layout()->feria['config_formulario']) ) : foreach($this->layout()->feria['config_formulario'] as $form) : ?>
+        <?php if($form['elemento'] == 'input') : ?>
+            <div class="form-controls">
+                <input type="text" name="<?php echo $form['keyinput']; ?>" id="<?php echo $form['keyinput'] ?>" class="campos-contacto-datos" placeholder="<?php echo $this->layout()->language->translate($form['nombre'].'*')['text']; ?>" <?php if( (int)$form['requerido'] ){ echo 'required=""'; } ?>>
+                <div class="msgError"></div>
+            </div>
+        <?php elseif($form['elemento'] == 'select') : ?>
+            <div class="form-controls" style="display: none;">
+                <select name="<?php echo $form['keyinput']; ?>" id="<?php echo $form['keyinput'] ?>" class="grayout" placeholder="<?php echo $this->layout()->language->translate($form['nombre'].'*')['text']; ?>" <?php if( (int)$form['requerido'] ){ echo 'required=""'; } ?>>
+                    <option value=""><?php echo $this->layout()->language->translate($form['nombre'].'*')['text']; ?></option>
+                    <?php if(!empty($form['opcion'])) : foreach($form['opcion'] as $item) : ?>
+                    <option value="<?php echo $item; ?>"><?php echo $item; ?></option>
+                    <?php endforeach; endif; ?>
+                </select>
+                <div class="msgError"></div>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; endif; ?>
+
+    <?php if( $this->layout()->feria['config_terminos_condiciones'] != '' ): ?>
+    <div class="autorizo condicion">
+        <label>
+            <input type="checkbox" id="disableBtn" name="condicion" value="S" />
+            <span class="checkmark"></span>
+        </label>
+        <strong> <a href="#"><?php echo $this->layout()->language->translate('Autorización de uso de datos.')['text']; ?></a></strong>
+    </div>
+    <div class="legalize condicion">
+        <p><?php echo $this->layout()->language->translate($this->layout()->feria['config_terminos_condiciones'])['text']; ?></p>
+    </div>
+    <?php endif; ?>
+
+    <input type="submit" value="ENVIAR" class="send-registro-recepcion" />
+</form>
+
+<script>
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    var delay = (function () {
+        var timer = 0;
+        return function (callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+    var formUsuario = $("form.formLogin");
+    var configFormulario;
+
+    <?php if(!empty($this->layout()->feria['config_formulario']) ) : foreach($this->layout()->feria['config_formulario'] as $form) : ?>
+    configFormulario = '<?php echo json_encode($this->layout()->feria['config_formulario']); ?>';
+    <?php endforeach; endif; ?>
+    var dataConfigFormulario = JSON.parse(configFormulario);
+
+    $("#fd_dni").keyup(function (e) {
+        if ([67, 17].indexOf(e.keyCode) !== -1) return;
+        let numero_documento = $(this).val().trim();
+        delay(function () {
+            if (numero_documento == "") return;
+            $.post(
+                "/cliente/validar-numero-documento",
+                { numero_documento: numero_documento },
+                function (response) {
+                    if (response.datos) {
+                        if(dataConfigFormulario.length){
+                            for(form of dataConfigFormulario){
+                                if(response.datos[form['keyinput']] !== undefined){
+                                    switch(form['elemento']){
+                                        case 'input': $("input[name='"+form['keyinput']+"']").val(response.datos[form['keyinput']]); break;
+                                        case 'select': $("select[name='"+form['keyinput']+"']").val(response.datos[form['keyinput']]); break;
+                                    }
+                                }
+                            }
+                        }
+                        if (response.datos.condicion == "S") {
+                            formUsuario.find("input[name='condicion']").eq(0).prop('checked', true);
+                        } else {
+                            formUsuario.find("input[name='condicion']").eq(1).prop('checked', true);
+                        }
+                    } else {
+                        formUsuario.trigger('reset');
+                        $("input[name='dni']").val(numero_documento);
+                        formUsuario.find(".condicion").show();
+                    }
+                },
+                "json"
+            );
+        }, 500);
+    });
+    
+    $("form.formLogin").validate({
+        ignore: [],
+        rules: {
+            dni: {
+                required: true,
+                number: true
+            }
+        },
+        errorPlacement: function (error, element) {
+            element.parents(".form-controls").find(".msgError").html(error);
+        },
+        submitHandler: function(form) {
+            let btnSubmit = $(form).find("input[type='submit']");
+            btnSubmit.attr("disabled", "");
+            $.post("/login", $(form).serialize(), function(response){
+                console.log(response);
+                if(response.result === 'success') {
+                    Panel.modalLoginUser.css({'display': 'none'});
+                    document.getElementById("menu-user").style.display = 'inherit';
+                    document.getElementById("sesion-user").innerHTML = response.usuario.nombres;
+                    Panel.sesionUsuario = true;
+                    Panel.validarPromocion();
+                    if(response.correo && response.correo.id !== ''){
+                        Panel.enviarCorreo(response.correo.accion, response.correo.id, $('<input>'), '');
+                    }
+                }
+                btnSubmit.removeAttr("disabled");
+                $(form).trigger('reset');
+            }, 'json');
+        }
+    });
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+</script>

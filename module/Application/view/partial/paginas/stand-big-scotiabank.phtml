@@ -1,0 +1,125 @@
+<?php
+    $data = ['empresa'=> $this->empresa, 'zona'=> $this->zona];
+    echo $this->partial('partial/empresa/header-logo-movil', $data);
+?>
+
+<div class="home-fondo-stands-playa <?php echo ($this->fondo_video['estado']) ? 'bg-none' : ''; ?>" style="background-image: url(<?php echo (isset($this->configuracion['imagen_fondo'])) ? $this->layout()->url_backend.'/paginas/stand-big-scotiabank/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-big-scotiabank/imagen_fondo.jpg';?>);">
+    <div class="stand-middle-scotia">
+        <img src="imagenes/stand-big-scotia.png" alt="">
+
+        <div class="logo-stand-scotia-plin">
+            <div class="logo-stand-scotia-center-plin">
+                <a onclick="Panel.validarSesion(event)" href="<?php echo $this->layout()->idiomaSeleccionado.'/panel/expositores-vivo/zona/'.$this->zona['orden'].'/empresa/'.$this->empresa['orden'].'/'.$this->empresa['hash_url']; ?>" class="en-vivo <?php if( $this->empresa['config_estado_boton_envivo'] == "1" ) echo "ocultar"; ?>"> <?php echo $this->layout()->language->translate(($this->empresa['titulo_boton_envivo']!='')?$this->empresa['titulo_boton_envivo']:'AGENDA TU CITA')['text']; ?><img src="imagenes/tin.svg" alt=""></a>
+            </div>
+        </div>
+
+        <div class="paneles-stand-scotia">
+            <div class="paneles-stand-scotia-middle">
+                <div class="left-scotia">
+                    <a class="banner_izquierda_1" href="javascript:abrirVentanaWindow('<?php echo ( $this->empresa['banner_izquierda_1'] != '' ) ? $this->empresa['banner_izquierda_1'] : ''; ?>')">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_banner_1'])) ? $this->layout()->url_backend.'/paginas/stand-big-scotiabank/'.$this->configuracion['imagen_banner_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-big-scotiabank/imagen_banner_1.jpg'; ?>" alt="">
+                    </a>
+                </div>
+
+                <div class="space"></div>
+
+                <div class="center-scotia">
+                    <a href="<?php echo ( $this->empresa['enlace_video_1'] != '' ) ? $this->empresa['enlace_video_1'] : 'javascript:void(0)'; ?>" class="tv1_open">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_tv_1'])) ? $this->layout()->url_backend.'/paginas/stand-big-scotiabank/'.$this->configuracion['imagen_tv_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-big-scotiabank/imagen_tv_1.jpg'; ?>" alt="">
+                    </a>
+                </div>
+
+                <div class="space-2"></div>
+
+                <div class="right-scotia">
+                    <a class="banner_izquierda_2" href="javascript:abrirVentanaWindow('<?php echo ( $this->empresa['banner_izquierda_2'] != '' ) ? $this->empresa['banner_izquierda_2'] : ''; ?>')">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_banner_2'])) ? $this->layout()->url_backend.'/paginas/stand-big-scotiabank/'.$this->configuracion['imagen_banner_2']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-big-scotiabank/imagen_banner_2.jpg'; ?>" alt="">
+                    </a>
+                </div>
+
+                <div class="space-3"></div>
+
+                <div class="left-scotia-2">
+                    <a class="banner_derecha_1" href="javascript:abrirVentanaWindow('<?php echo ( $this->empresa['banner_derecha_1'] != '' ) ? $this->empresa['banner_derecha_1'] : ''; ?>')">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_banner_3'])) ? $this->layout()->url_backend.'/paginas/stand-big-scotiabank/'.$this->configuracion['imagen_banner_3']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-big-scotiabank/imagen_banner_3.jpg'; ?>" alt="">
+                    </a>
+                </div>
+
+                <div class="space-4"></div>
+                <div class="center-scotia-2">
+                    <a href="<?php echo ( $this->empresa['enlace_video_2'] != '' ) ? $this->empresa['enlace_video_2'] : 'javascript:void(0)'; ?>" class="tv2_open">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_tv_2'])) ? $this->layout()->url_backend.'/paginas/stand-big-scotiabank/'.$this->configuracion['imagen_tv_2']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-big-scotiabank/imagen_tv_2.jpg'; ?>" alt="">
+                    </a>
+                </div>
+
+                <div class="space-4"></div>
+
+                <div class="right-scotia-2">
+                    <a class="banner_derecha_2" href="javascript:abrirVentanaWindow('<?php echo ( $this->empresa['banner_derecha_2'] != '' ) ? $this->empresa['banner_derecha_2'] : ''; ?>')">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_banner_4'])) ? $this->layout()->url_backend.'/paginas/stand-big-scotiabank/'.$this->configuracion['imagen_banner_4']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-big-scotiabank/imagen_banner_4.jpg'; ?>" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="box-counter-scotia">
+            <div class="box-counter-center-scotia">
+                <div class="counter-scotia-1">
+                    <img src="imagenes/counter-scotia-2.png" alt="">
+                    <div class="logo-company">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_logo_3'])) ? $this->layout()->url_backend.'/paginas/stand-big-scotiabank/'.$this->configuracion['imagen_logo_3']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-big-scotiabank/imagen_logo_3.svg'; ?>" alt="">
+                    </div>
+                </div>
+
+                <div class="space"></div>
+                <div class="counter-scotia-2">
+                    <img src="imagenes/counter-scotia.png" alt="">
+                    <div class="logo-company">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_logo_4'])) ? $this->layout()->url_backend.'/paginas/stand-big-scotiabank/'.$this->configuracion['imagen_logo_4']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-big-scotiabank/imagen_logo_4.svg'; ?>" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php if( $this->empresa['enlace_wsp'] != '' ) : ?>
+        <div class="navbar6">
+            <div class="boton" style="animation-delay: 1.7s;">
+                <a href="javascript:abrirVentanaWindow('<?php echo $this->empresa['enlace_wsp']; ?>')" data-tooltip="<?php echo $this->layout()->language->translate('CHATEA CON UN ASESOR')['text']; ?>" class="chat_open wsp"><img src="imagenes/logo-stands-02.svg" alt="" onclick="Panel.validarSesion(event)"></a>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <?php if( $this->empresa['enlace_wsp_2'] != '' ) : ?>
+        <!-- <div class="navbar6-otro">
+            <div class="boton" style="animation-delay: 1.7s;">
+                <a href="javascript:abrirVentanaWindow('<?php echo $this->empresa['enlace_wsp_2']; ?>')" data-tooltip="<?php echo $this->layout()->language->translate('CHATEA CON UN ASESOR')['text']; ?>" class="chat_open wsp"><img src="imagenes/logo-stands-02.svg" alt=""></a>
+            </div>
+        </div> -->
+        <?php endif; ?>
+
+    </div>
+</div>
+
+<div id="chat" class="well-chat">
+    <div class="caja-chat">
+        <h2>CONVERSA CON NOSOTROS</h2>
+        <div id="web_chat"></div>
+        <div>
+            <input type="text" id="name" placeholder="Nombre" class="campos-chat" /><br />
+            <textarea placeholder="Escribe tu consulta..." id="text" class="campos-comentarios"></textarea>
+            <input type="button" onclick="send();" value="ENVIAR" class="send-chat" /><br />
+        </div>
+    </div>
+</div>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    <?php if( $this->fondo_video['estado'] ) : ?>
+        anamorph("<?php echo $this->layout()->url_backend.'/paginas/stand-big-scotiabank/'.$this->fondo_video['ruta']; ?>", 0.5, "https://www.jqueryscript.net/dummy/6.jpg");
+    <?php endif; ?>
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

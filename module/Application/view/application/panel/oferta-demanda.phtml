@@ -1,0 +1,129 @@
+<div class="logo-sale">
+    <div class="logo-sale-center">
+        <span> OFERTA Y DEMANDA</span>
+    </div>
+</div>
+
+<section class="home-sale">
+    <section class="drawer" id="drawer-name" data-drawer-target>
+        <div class="drawer__overlay" data-drawer-close tabindex="-1"></div>
+        <div class="drawer__wrapper">
+            <button class="drawer__close" data-drawer-close aria-label="Close Drawer"></button>
+            <div class="drawer__content">
+                <ul class="menu-responsive">
+                    <a href="hall.html">RECEPCIÓN</a>
+                    <a href="hall-planos-1.html">CONFERENCIAS</a>
+                    <a href="conferencias.html" class="resaltar">EXPOSITORES EN VIVO</a>
+                    <a href="#">RUEDA DE NEGOCIOS</a>
+                    <a href="#">OFERTA Y DEMANDA</a>
+                    <a href="#">VR 360°</a>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="contenedor-oferta">
+        <div class="container-grid-ofertas">
+            <div data-template="ofertas" style="display: none;">
+                <a href="#" data-oferta="classmodal">
+                    <small data-oferta="pais"></small>
+                    <h2 data-oferta="fecha"></h2>
+                    <img data-oferta="imagen" src="">
+                    <p data-oferta="nombre"></p>
+                    <p data-oferta="descripcion"></p>
+                    <div data-oferta="estado">
+                        <div class="circulo">
+                        </div>
+                        <div class="estadito">
+                            <strong></strong>
+                            <big></big>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div id="grid-oferta" data-aos="fade-up" data-contenedor="ofertas"></div>
+        </div>
+    </div>
+
+</section>
+
+<div class="navbar" style="display:none;">
+    <div class="boton1"></div>
+    <div class="boton2">
+        <img src="imagenes/iconos-menu-02-01.svg" width="30%">
+        <a href="https://centrovirtualdeconvenciones.com/feria-ccl-mapa/index.htm">MAPA</a>
+    </div>
+    <div class="boton3">
+        <img src="imagenes/iconos-menu-03.svg" width="30%">
+        <a href="https://centrovirtualdeconvenciones.com/feria-ccl-auditorio/index.htm">CONFERENCIA</a>
+    </div>
+</div>
+
+<div data-template="modal-oferta">
+    <div data-modal="contenido" class="well-2">
+        <div class="modal-contents-caja">
+            <div><img data-modal="imagen" width="100%"></div>
+            <div class="botones-two">
+                <a href="#" data-modal="estado">EN CURSO</a>
+                <div class="space"></div>
+                <a href="#">ABIERTO PARA OFERTAS</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-template="contenido-modal"></div>
+
+<script type="text/javascript">
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    $(document).on("ready", function () {
+        cargarDatosOfertas();
+    });
+
+    const templateOfertas = $("div[data-template='ofertas']");
+    const contenedorOfertas = $("div[data-contenedor='ofertas']");
+    const tamplateModalOfertas = $("div[data-template='modal-oferta']");
+    const contenidoModalOfertas = $("div[data-template='contenido-modal']");
+
+    function cargarDatosOfertas(){
+        $.post("<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/lista-ofertas", function(data){
+            if( data.length ) {
+                contenedorOfertas.html("");
+                console.log(data);
+                for(i in data ){
+                    let div = $('<div>').html(templateOfertas.html());
+                    let contenidoModal = $('<div>').html(tamplateModalOfertas.html());
+                    let imagenEmpresa = ( data[i].hash_logo_empresa != null ) ? "/empresas/logo/" + data[i].hash_logo_empresa : "/img/no-imagen.jpg";
+                    div.find('[data-oferta="imagen"]').attr("src", "<?php echo $this->layout()->url_backend; ?>" + imagenEmpresa);
+                    let classEstado = ( data[i].estado == '1' ) ? 'box-estado' : 'box-estado-red';
+                    let TextEstado = ( data[i].estado == '1' ) ? 'ABIERTO' : 'CERRADO';
+                    let DescEstado = ( data[i].estado == '1' ) ? 'Abierto para ofertas' : 'Cerrado para ofertas';
+                    div.find('[data-oferta="estado"]').addClass(classEstado);
+                    div.find('[data-oferta="estado"]').find(".estadito strong").text(TextEstado);
+                    div.find('[data-oferta="estado"]').find(".estadito big").text(DescEstado);
+                    div.find('[data-oferta="classmodal"]').addClass('caja_'+i+'_open');
+                    div.find('[data-oferta="classmodal"]').attr("href", "javascript:void(0)");
+                    div.find('[data-oferta="pais"]').addClass(data[i].pais);
+                    div.find('[data-oferta="nombre"]').addClass(data[i].nombre);
+                    div.find('[data-oferta="descripcion"]').addClass(data[i].descripcion);
+                    contenedorOfertas.append(div);
+                    //DATOS MODAL
+                    //contenidoModal.find('[data-modal="contenido"]').attr("id", "caja_"+i);
+                    let imagenOferta = ( data[i].hash_imagen != null ) ? "<?php echo $this->layout()->url_backend; ?>/ofertas/imagen/"+ data[i].hash_imagen : "<?php echo $this->layout()->url_backend; ?>/img/no-imagen.jpg";
+                    contenidoModal.find('[data-modal="imagen"]').attr("src", imagenOferta);
+                    contenidoModalOfertas.append(contenidoModal);
+                    /*$('#caja_'+i).popup({
+                        transition: "all 0.3s",
+                        closebutton: true,
+                    });*/
+                }
+            }
+        }, 'json');
+    }
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

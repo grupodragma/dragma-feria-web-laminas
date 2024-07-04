@@ -1,0 +1,1176 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
+
+
+.sliderss {
+  position: absolute;
+
+  width: 170vh;
+  height:56.4vh;
+
+  
+  
+
+}
+
+.wrapper {
+  overflow: hidden;
+  position: relative;
+ 
+ height:56.4vh;
+  z-index: 1;
+}
+
+#items {
+  width: 1000000000px;
+  position: relative;
+  top: 0;
+  left: -1635px;
+}
+
+#items.shifting {
+  transition: left .2s ease-out;
+}
+
+.slidess {
+  width: 170vh;
+  height: 56.4vh;
+  cursor: pointer;
+  float: left;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 1s;
+  position: relative;
+ 
+}
+
+
+.slidess .content {
+  width: 100%;
+ 
+  
+ 
+   
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+ 
+}
+
+.slidess .content .imagen {
+  
+  height: auto;
+  
+  width:60%;
+  
+ 
+  
+ 
+  display: flex;
+  
+ 
+}
+
+ 
+
+.slidess .content .descr {
+  width: 40%;
+  padding:1%;
+  height: 56.5vh;
+ 
+ 
+  flex-direction:column;
+ 
+  
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .name {
+  width: 100%;
+  margin-bottom:1%;
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .name h1 {
+	color:#1C6BB6;
+	font-size:1.1vw;
+	margin:0;
+	font-weight:600;
+  width: 100%;
+  display: flex;
+  
+ 
+}
+ 
+
+.slidess .content .descr .detalles {
+  width: 100%;
+  margin-bottom:1%;
+
+  flex-direction:column; 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .detalles .desc {
+  width: 100%;
+
+  border-bottom:1px solid #888;
+  padding:1%;
+  flex-direction:row; 
+  margin-bottom:2.5%;
+ 
+ 
+
+  display: flex;
+  
+ 
+}
+ 
+
+.slidess .content .descr .detalles .desc small {
+  width: 40%;
+  font-size:0.85vw;
+  color:#777;
+  font-weight:600;
+
+ 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .detalles .desc span  {
+  width: 60%;
+  font-size:0.85vw;
+  color:#777;
+  font-weight:400;
+
+ 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .detalles .desc p  {
+  width: 100%;
+  font-size:0.85vw;
+  padding:0;
+  margin:0;
+  color:#777;
+  font-weight:400;
+
+ 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+
+ 
+
+.slidess .content .descr .botones {
+  width: 100%;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  
+ 
+  font-weight:600;
+  
+}
+
+.slidess .content .descr .botones .brochure-plano {
+	
+	
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	height:50px;
+	flex-direction:row;
+	background-color:#fff;
+border:0.4vh solid #3462B5;
+    color: #3462B5;
+    border-radius: 15px;
+
+  
+}
+
+
+
+
+.slidess .content .descr .botones a {
+	
+	color:#fff;
+	border-radius:10px;
+	
+	  
+	padding:1.7%;
+	text-decoration:none;
+	margin-left:3%;
+	margin-right:3%;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	height:50px;
+	flex-direction:column;
+	text-align:center;
+  
+  background:#FC1312;
+}
+
+.slidess .content .descr .botones a big {
+	
+	
+	
+	
+	font-size:0.8vw;
+	
+}
+
+.slidess .content .descr .botones a img {
+	width:25px;
+	
+	
+	
+	
+	
+	
+}
+.slidess .content .descr .botones a small {
+	
+	
+	
+	
+	font-size:0.6vw;
+	
+}
+
+.slidess .content .descr .botones a.wsp-empresa {
+	width:10%;
+	background-color:none;
+	padding:0;
+	margin:0;
+	-webkit-box-shadow: 0px 0px 6px 6px rgba(0, 0, 0, 0.0);
+    box-shadow: 0px 0px 6x 6px rgba(0, 0, 0, 0.03);
+	background: rgb(212, 59, 59);
+    background: radial-gradient(circle, rgba(0,0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%);
+	
+	
+}
+
+.slidess .content .descr .botones a.wsp-empresa img {
+	width:100%;
+	
+	
+	padding:0;
+	margin:0;
+	
+	
+}
+
+
+
+.control {
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 20px;
+  margin-top: -20px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.prev,
+.next {
+  background-size: 22px;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.prev {
+  background-image: url(../imagenes/ChevronLeft.png);
+  left: -10px;
+}
+
+.next {
+  background-image: url(../imagenes/ChevronRight.png);
+  right: -10px;
+}
+
+.prev:active,
+.next:active {
+  transform: scale(0.8);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 1550px) {
+	
+	
+	
+	
+	
+	
+	.sliderss {
+  position: absolute;
+
+  width: 174vh;
+  height:55.4vh;
+
+  
+  
+
+}
+
+.wrapper {
+  overflow: hidden;
+  position: relative;
+ 
+ height:55.4vh;
+  z-index: 1;
+}
+
+#items {
+  width: 1000000000px;
+  position: relative;
+  top: 0;
+  left: -1280px;
+}
+
+#items.shifting {
+  transition: left .2s ease-out;
+}
+
+.slidess {
+  width: 174vh;
+  height: 55.4vh;
+  cursor: pointer;
+  float: left;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 1s;
+  position: relative;
+ 
+}
+
+
+.slidess .content {
+  width: 100%;
+ 
+  
+ 
+   
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+ 
+}
+
+.slidess .content .imagen {
+  
+  height: auto;
+  
+  width:60%;
+  
+ 
+  
+ 
+  display: flex;
+  
+ 
+}
+
+
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 1450px) {
+	
+	
+	
+	
+	
+	
+	.sliderss {
+  position: absolute;
+
+  width: 178vh;
+  height:55.4vh;
+
+  
+  
+
+}
+
+.wrapper {
+  overflow: hidden;
+  position: relative;
+ 
+ height:55.4vh;
+  z-index: 1;
+}
+
+#items {
+  width: 1000000000px;
+  position: relative;
+  top: 0;
+  left: -1100px;
+}
+
+#items.shifting {
+  transition: left .2s ease-out;
+}
+
+.slidess {
+  width: 178vh;
+  height: 55.4vh;
+  cursor: pointer;
+  float: left;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 1s;
+  position: relative;
+ 
+}
+
+
+.slidess .content {
+  width: 100%;
+ 
+  
+ 
+   
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+ 
+}
+
+.slidess .content .imagen {
+  
+  height: auto;
+  
+  width:60%;
+  
+ 
+  
+ 
+  display: flex;
+  
+ 
+}
+
+ 
+
+.slidess .content .descr {
+  width: 40%;
+  padding:1%;
+  height: 55.4vh;
+ 
+ 
+  flex-direction:column;
+ 
+  
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .name {
+  width: 100%;
+  margin-bottom:1%;
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .name h1 {
+	color:#1C6BB6;
+	font-size:1.1vw;
+	margin:0;
+	font-weight:600;
+  width: 100%;
+  display: flex;
+  
+ 
+}
+ 
+
+.slidess .content .descr .detalles {
+  width: 100%;
+  margin-bottom:1%;
+
+  flex-direction:column; 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .detalles .desc {
+  width: 100%;
+
+  border-bottom:1px solid #888;
+  padding:1%;
+  flex-direction:row; 
+  margin-bottom:2.5%;
+ 
+ 
+
+  display: flex;
+  
+ 
+}
+ 
+
+.slidess .content .descr .detalles .desc small {
+  width: 40%;
+  font-size:0.85vw;
+  color:#777;
+  font-weight:600;
+
+ 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .detalles .desc span  {
+  width: 60%;
+  font-size:0.85vw;
+  color:#777;
+  font-weight:400;
+  display: flex;
+}
+.slidess .content .descr .detalles .desc strong {
+  
+  font-size:0.95vw;
+
+  
+}
+
+
+.slidess .content .descr .detalles .desc p  {
+  width: 100%;
+  font-size:0.85vw;
+  padding:0;
+  margin:0;
+  color:#777;
+  font-weight:400;
+
+ 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+
+ 
+
+.slidess .content .descr .botones {
+  width: 100%;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  
+ 
+  font-weight:600;
+  
+}
+
+.slidess .content .descr .botones .brochure-plano {
+	
+	
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	height:40px;
+	flex-direction:row;
+	background-color:#fff;
+border:0.4vh solid #3462B5;
+    color: #3462B5;
+    border-radius: 15px;
+
+  
+}
+
+
+
+
+.slidess .content .descr .botones a {
+	
+	color:#fff;
+	border-radius:10px;
+	
+	  
+	padding:1.2%;
+	font-size:0.6vw;
+	text-decoration:none;
+	margin-left:3%;
+	margin-right:3%;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	height:40px;
+	flex-direction:column;
+	text-align:center;
+  
+  background:#FC1312;
+}
+
+.slidess .content .descr .botones a big {
+	
+	
+	
+	
+	font-size:0.8vw;
+	
+}
+
+.slidess .content .descr .botones a img {
+	width:18px;
+	
+	
+	
+	
+	
+	
+}
+.slidess .content .descr .botones a small {
+	
+	
+	
+	
+	font-size:0.6vw;
+	
+}
+
+.slidess .content .descr .botones a.wsp-empresa {
+	width:10%;
+	background-color:none;
+	padding:0;
+	margin:0;
+	-webkit-box-shadow: 0px 0px 6px 6px rgba(0, 0, 0, 0.0);
+    box-shadow: 0px 0px 6x 6px rgba(0, 0, 0, 0.03);
+	background: rgb(212, 59, 59);
+    background: radial-gradient(circle, rgba(0,0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%);
+	
+	
+}
+
+.slidess .content .descr .botones a.wsp-empresa img {
+	width:100%;
+	
+	
+	padding:0;
+	margin:0;
+	
+	
+}
+
+
+
+.control {
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 20px;
+  margin-top: -20px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.prev,
+.next {
+  background-size: 22px;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.prev {
+  background-image: url(../imagenes/ChevronLeft.png);
+  left: -10px;
+}
+
+.next {
+  background-image: url(../imagenes/ChevronRight.png);
+  right: -10px;
+}
+
+.prev:active,
+.next:active {
+  transform: scale(0.8);
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
+
+@media screen and (max-width: 580px) {
+   
+   
+   
+
+.sliderss {
+  position: relative;
+
+  width: 100%;
+  height:auto;
+
+  
+  
+
+}
+
+.wrapper {
+  overflow: hidden;
+  
+  position: relative;
+ 
+ height:auto;
+  z-index: 1;
+}
+
+#items {
+  width: 10000px;
+  position: relative;
+  top: 0;
+  left: -480px;
+}
+
+#items.shifting {
+  transition: left .2s ease-out;
+}
+
+.slidess {
+  width: 480px;
+  height: auto;
+  cursor: pointer;
+  float: left;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 1s;
+  position: relative;
+ 
+}
+
+
+.slidess .content {
+  width: 96%;
+ 
+  
+ 
+   
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+ 
+}
+
+.slidess .content .imagen {
+  
+  height: auto;
+  
+  width:100%;
+  
+ 
+  
+ 
+  display: flex;
+  
+ 
+}
+
+.slidess .content .imagen img {
+	
+  
+  height: auto;
+  
+  width:100%;
+  
+ 
+  
+ 
+  display: flex;
+  
+ 
+}
+
+
+
+.slidess .content .descr {
+  width: 100%;
+  padding:1%;
+  height: auto;
+  margin-top:5%;
+ 
+  flex-direction:column;
+ 
+  
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .name {
+  width: 100%;
+  margin-bottom:3%;
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .name h1 {
+	color:#1C6BB6;
+	font-size:1.2em;
+	margin:0;
+	font-weight:600;
+  width: 100%;
+  display: flex;
+  
+ 
+}
+
+
+.slidess .content .descr .detalles {
+  width: 100%;
+  margin-bottom:3%;
+
+  flex-direction:column; 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .detalles .desc {
+  width: 100%;
+
+  border-bottom:1px solid #888;
+  padding:2%;
+  flex-direction:row; 
+  margin-bottom:5%;
+ 
+
+
+  display: flex;
+  
+ 
+}
+ 
+
+.slidess .content .descr .detalles .desc small {
+  width: 40%;
+  font-size:0.9em;
+  color:#777;
+  font-weight:600;
+
+ 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+.slidess .content .descr .detalles .desc span  {
+  width: 60%;
+  font-size:0.9em;
+  color:#777;
+  font-weight:400;
+ 
+
+ 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+.slidess .content .descr .detalles .desc strong {
+  
+  font-size:1em;
+
+  
+}
+
+.slidess .content .descr .detalles .desc p  {
+  width: 100%;
+  font-size:0.9em;
+  
+  font-weight:400;
+
+ 
+  
+ 
+
+
+  display: flex;
+  
+ 
+}
+
+
+
+
+
+.slidess .content .descr .botones {
+  width: 100%;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  
+  color:#777;
+  font-weight:600;
+  z-index:19;
+
+}
+
+
+.slidess .content .descr .botones a {
+	
+	
+	color:#fff;
+	border-radius:10px;
+	  -webkit-box-shadow:none;
+    box-shadow:none;
+	
+	height:50px;
+	text-decoration:none;
+	margin-left:0.7%;
+	margin-right:0.7%;
+	padding:3px;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	
+	flex-direction:column;
+	
+   
+ 
+}
+
+
+.slidess .content .descr .botones .brochure-plano {
+	
+	
+	
+	height:40px;
+	width:auto;
+	padding:2%;
+	font-size:0.7em;
+	flex-direction:row;
+	background-color:#fff;
+	
+   
+
+  
+}
+
+.slidess .content .descr .botones a img {
+	width:20px;
+	
+	
+	
+	
+	
+	
+}
+
+.slidess .content .descr .botones a big {
+	
+	
+	
+	
+	font-size:4em;
+	padding:0;
+	
+}
+.slidess .content .descr .botones a small {
+	
+	
+	padding:0;
+	
+	font-size:4em;
+	
+}
+
+
+
+
+.slidess .content .descr .botones a.wsp-empresa {
+	width:11%;
+	background-color:none;
+	padding:0;
+	margin-right:11px;
+
+	-webkit-box-shadow: 0px 0px 6px 6px rgba(0, 0, 0, 0.0);
+    box-shadow: 0px 0px 6x 6px rgba(0, 0, 0, 0.03);
+	background: rgb(212, 59, 59);
+    background: radial-gradient(circle, rgba(0,0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%);
+	
+	
+}
+
+.slidess .content .descr .botones a.wsp-empresa img {
+	width:100%;
+	
+	
+	padding:0;
+	margin:0;
+	
+	
+}
+
+
+
+
+.control {
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 20px;
+  margin-top: -20px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.prev,
+.next {
+  background-size: 22px;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.prev {
+  background-image: url(https://cdn0.iconfinder.com/data/icons/navigation-set-arrows-part-one/32/ChevronLeft-512.png);
+  left: -10px;
+}
+
+.next {
+  background-image: url(https://cdn0.iconfinder.com/data/icons/navigation-set-arrows-part-one/32/ChevronRight-512.png);
+  right: -10px;
+}
+
+.prev:active,
+.next:active {
+  transform: scale(0.8);
+}
+
+}

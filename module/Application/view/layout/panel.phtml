@@ -1,0 +1,690 @@
+<?= $this->doctype() ?>
+
+<!DOCTYPE html>
+<html lang="<?php echo $this->layout()->idiomaSeleccionado; ?>">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Language" content="<?php echo $this->layout()->idiomaSeleccionado; ?>" />
+        <title><?php echo $this->headTitle()->renderTitle(); ?></title>
+        <?php echo $this->headMeta(); ?>
+        <meta name="author" content="Dragma">
+        <base href="<?php echo $this->layout()->base_url; ?>" />
+        <link href="<?php echo ( $this->layout()->feria['config_hash_favicon'] != '' ) ? $this->layout()->url_backend."/portal/favicon/".$this->layout()->feria['config_hash_favicon'] : $this->layout()->url_backend."/img/not-favicon.jpg"; ?>" rel="shortcut icon" title="Icono Feria" />
+        <meta name="viewport" content="width=480" initial-scale="1" />
+        <link rel="alternate" hreflang="es" href="https://dragmastands.com/" />
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+        <link href="css/style.css?t=<?php echo time(); ?>" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" media="screen, print" href="css/fontawesome.min.css">
+        <link href="slick/slick.css" rel="stylesheet" type="text/css" />
+        <link href="slick/slick-theme.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="css/carruselplanos.css">
+        <link rel="stylesheet" href="css/daterangepicker.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/floating-wpp.css" rel="stylesheet" type="text/css" />
+        <link href="css/base.css?t=<?php echo time(); ?>" rel="stylesheet" type="text/css" />
+    </head>
+
+    <?php echo $this->partial('partial/css/personalizado', []); ?>
+    <?php echo $this->partial('partial/css/select-idioma', []); ?>
+
+    <body>
+
+        <div class="container-language">
+            <select class="select-idioma" onchange="Panel.cambiarIdioma(this)" class="grayout">
+                <?php if($this->layout()->listaIdiomas): foreach($this->layout()->listaIdiomas as $key => $idioma): ?>
+                <option value="<?php echo $key; ?>" <?php if( $key === $this->layout()->idiomaSeleccionado ) echo 'selected="select"'; ?>><?php echo $this->layout()->language->translate($idioma)['text']; ?></option>
+                <?php endforeach; endif; ?>
+            </select>
+        </div>
+
+        <div class="header-index">
+            <!-- <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel" class="logos"> -->
+            <a href="javascript:void(0)" class="logos">
+                <img src="<?php echo $this->layout()->url_backend; ?>/ferias/logo/<?php echo $this->layout()->feria['hash_logo']; ?>" width="60%" alt="">
+            </a>
+            <div class="eye">
+                <button class="hide-counter" onclick="contadorPaginas(this)"><i class="fas fa-eye" aria-hidden="true"></i></button>
+                <div class="contador">
+                    <div id="myDIVI" class="eyes-on" style="display: none;">
+                        <div class="as">
+                            <a href="javascript:void(0)" onclick="ChatGrupal.ocultarListaUsuarios('total-usuarios')">
+                                <img src="imagenes/list-1.svg" alt="">
+                                <strong>Total de Participantes <span data-contador="total-participantes">1</span></strong>
+                            </a>
+                        </div>
+                        <div class="as2">
+                            <a href="javascript:void(0)" onclick="ChatGrupal.ocultarListaUsuarios('usuarios-paginas')">
+                                <img src="imagenes/list-2.svg" alt="">
+                                <strong>Participantes AQUÍ <span data-contador="total-aqui">1</span></strong>
+                            </a>
+                        </div>
+                        <div class="as3">
+                            <a href="javascript:void(0)" onclick="ChatGrupal.ocultarListaUsuarios('usuarios-presenciales')">
+                                <img src="imagenes/list-3.svg" alt="">
+                                <strong>Participantes Presenciales <span data-contador="total-presenciales">1</span></strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="logos-2">
+                <img src="imagenes/logo-ccl-01.svg" width="38%" style="display:none;" alt="">
+                <img src="<?php echo $this->layout()->url_backend; ?>/clientes/logo/<?php echo $this->layout()->cliente['hash_logo']; ?>" width="26%" alt="">
+            </div>
+            <div class="logos-3">
+                <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/registro" style="display: none;"><i class="fas fa-user"></i>&nbsp;INGRESAR AL EVENTO</a>
+                <ul class="nav-right" id="menu-user" style="margin: 2px;<?php if(!isset($this->layout()->datosUsuario)) echo 'display:none;'; ?>">
+                    <li class="desplegable">
+                        <a href="javascript:void(0)" data-toggle="dropdown" class="sub-menu"><?php echo $this->layout()->language->translate('Hola')['text']; ?>, <span id="sesion-user"><?php echo $this->layout()->datosUsuario['nombres']; ?></span> <span class="caret"></span>&nbsp;<i class="fas fa-sort-down"></i>
+                        </a>
+                        <ul role="menu" class="drop-contenido">
+                            <li><a onclick="Panel.logout()" href="<?php echo $this->layout()->idiomaSeleccionado; ?>/logout"><?php echo $this->layout()->language->translate('Salir')['text']; ?></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <a href="#" data-drawer-trigger aria-controls="drawer-name" aria-expanded="false" class="button-menu"><img src="imagenes/menu-01.svg" width="68%" alt=""></a>
+        </div>
+
+        <div class="modal modal-login-user">
+            <?php echo $this->partial('partial/usuario/login-form', []); ?>
+        </div>
+
+        <div class="franja-azul">
+            <?php echo $this->partial('partial/menus/encabezado', []); ?>
+        </div>
+
+        <div class="box-alert alerta-anuncio">
+            <div class="texto-alerta"><p>Se detecto un bloqueador de anuncios.</p></div>
+            <div class="boton-alerta ok"><a href="javascript:void(0)">OK</a></div>
+        </div>
+
+        <div class="box-alert-expo" data-conferencia="contenido" style="display: none;">
+            <div class="icon-alert">
+                <img src="imagenes/bell-01.svg" alt="">
+            </div>
+            <div class="textos-alerta">
+                <div class="text-alert">
+                    <h2 data-conferencia="titulo"></h2>
+                    <p>Haz click para ingresar a la conferencia</p>
+                </div>
+                <div class="boton-alert">
+                    <a data-conferencia="enlace" href="javascript:void(0)">OK</a>
+                </div>
+            </div>
+        </div>
+
+        <?php if( $this->layout()->datosUsuarioLogin && $this->layout()->promociones ) : ?>
+        <div class="modal3" id="modal-one" aria-hidden="true" style="display: none;" modal-promocion="contenedor">
+            <div class="modal-dialog">
+                <a href="javascript:void(0)" onclick="Panel.cerrarPromocionZonas('<?php echo $this->layout()->promociones['idpromociones']; ?>')" class="btn-close-4" aria-hidden="true">×</a>
+                <a href="<?php echo ( $this->layout()->promociones['url_externo'] == "" ) ? $this->layout()->idiomaSeleccionado."/panel/stand/zona/".$this->layout()->promociones['orden_zona']."/empresa/".$this->layout()->promociones['orden_empresa']."/".$this->layout()->promociones['hash_url_empresa'] : $this->layout()->promociones['url_externo']; ?>" <?php if ( $this->layout()->promociones['url_externo'] != "" ) { echo 'target="_blank"'; } ?>>
+                    <img modal-promocion="imagen" src="" alt="">
+                </a>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <?php if( $this->layout()->feria['config_promocion_hash_imagen'] != '' ) : ?>
+        <div class="modal2 modal-promocion" id="modal-one" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <a href="javascript:void(0)" class="btn-close-3 cerrar-promocion" aria-hidden="true">×</a>
+                <img src="<?php echo $this->layout()->url_backend."/promocion/imagen/".$this->layout()->feria['config_promocion_hash_imagen']; ?>" alt="">
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <a href="#" class="claim-book"><img src="imagenes/reclamaciones.svg" width="40%" alt=""> </a>
+
+        <?php echo $this->partial('partial/menus/encabezado-movil', []); ?>
+
+        <?php if( $this->layout()->datosUsuarioLogin && $this->layout()->datosUsuarioLogin['tipo'] == 'E' ) : ?>
+        <div class="people-line" chat-grupal="contenedor-lista-usuarios" style="display: none">
+            <small class="close3">X</small>
+            <div class="center-people-line" chat-grupal="lista-usuarios"></div>
+        </div>
+        <div class="people-line" chat-grupal="contenedor-lista-usuarios-paginas" style="display: none">
+            <small class="close3">X</small>
+            <div class="center-people-line" chat-grupal="lista-usuarios-paginas"></div>
+        </div>
+        <div class="people-line" chat-grupal="contenedor-lista-usuarios-presenciales" style="display: none">
+            <small class="close3">X</small>
+            <div class="center-people-line" chat-grupal="lista-usuarios-presenciales"></div>
+        </div>
+        <?php endif; ?>
+
+        <!-- CHAT EXPOSITOR [INICIO] -->
+        <div class="chat-box2" chat-grupal="contenedor" style="display: none">
+            <small class="close3">X</small>
+            <span chat-grupal="encabezado"></span>
+            <div class="chat-body">
+                <div class="msg-insert" chat-grupal="mensajes"></div>
+                <div class="chat-text-2">
+                    <button class="emox2" style="display: none" onclick="toggleEmojiDrawer(this)"><img src="imagenes/emoticon.svg" alt=""></button>
+                    <div id="drawr2" class="emoji-drawer" style="display: none">
+                        <small class="close4">X</small>
+                        <div class="emoji" onclick="addEmoji(this)">😀</div>
+                        <div class="emoji" onclick="addEmoji(this)">😃</div>
+                        <div class="emoji" onclick="addEmoji(this)">😄</div>
+                        <div class="emoji" onclick="addEmoji(this)">😁</div>
+                        <div class="emoji" onclick="addEmoji(this)">😆</div>
+                        <div class="emoji" onclick="addEmoji(this)">😆</div>
+                        <div class="emoji" onclick="addEmoji(this)">😅</div>
+                        <div class="emoji" onclick="addEmoji(this)">😉</div>
+                        <div class="emoji" onclick="addEmoji(this)">👏</div>
+                        <div class="emoji" onclick="addEmoji(this)">👍</div>
+                    </div>
+                    <input placeholder="Escribe algo..." chat-grupal="input">
+                    <button type="button" class="chat-submit2" onclick="ChatGrupal.enviarMensaje(this)">
+                        <i class="material-icons">send</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- CHAT EXPOSITOR [FIN] -->
+
+        <!-- LISTA CHATS CIRCULOS [INICIO] -->
+        <div class="back-bol" chat-grupal="contenedor-usuarios-chat">
+            <div class="chats-bolas">
+                <button class="icono-chat" data-tooltip="Ver todos los mensajes" onclick="myFunctionchat()"><img src="imagenes/chat-icon.svg" alt=""></button>
+                <div id="myDIVIchat">
+                    <div class="center" chat-grupal="contenedor-usuarios-chat-slider"></div>
+                </div>
+            </div>
+        </div>
+        <!-- LISTA CHATS CIRCULOS [FIN] -->
+        
+        <?= $this->content; ?>
+
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="js/socket.io.js"></script>
+        <script type="text/javascript" src="js/jquery.popupoverlay.js"></script>
+        <script type="text/javascript" src="js/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="js/jquery.validate_messages_es.js"></script>
+        <script type="text/javascript" src="js/usuario-eventos.js?t=<?php echo time(); ?>"></script>
+        <script type="text/javascript" src="js/drawer.js"></script>
+        <script type="text/javascript" src="slick/slick.min.js"></script>
+        <script type="text/javascript" src="js/aoss.js"></script>
+        <script type="text/javascript" src="js/moment.min.js"></script>
+        <script type="text/javascript" src="js/daterangepicker.js"></script>
+        <script type="text/javascript" src="js/anamorph.min.js"></script>
+        <script type="text/javascript" src="js/floating-wpp.js"></script>
+        <script type="text/javascript" src="js/init.js?t=<?php echo time(); ?>"></script>
+        
+        <script>
+            const idiomaSeleccionado = "<?php echo $this->layout()->idiomaSeleccionado; ?>";
+            const idferias = '<?php echo $this->layout()->feria['idferias']; ?>';
+            const idplataformas = '<?php echo $this->layout()->feria['idplataformas']; ?>';
+            const datosUsuarioLogin = JSON.parse('<?php echo json_encode($this->layout()->datosUsuarioLogin) ?>');
+            const datosExpositor = JSON.parse('<?php echo json_encode($this->layout()->datosExpositor) ?>');
+            const urlBackend = '<?php echo $this->layout()->url_backend; ?>';
+            const datosFeria = JSON.parse(JSON.stringify(<?php echo json_encode($this->layout()->feria) ?>));
+            //SocketIO
+            const host = "<?php echo $this->layout()->node_server['host']; ?>";
+            const port = "<?php echo $this->layout()->node_server['port']; ?>";
+            const socket = io(host + ":" + port);
+            
+            socket.on("connect", function () {
+                console.log(`Conectado correctamente al servidor ${host} puerto ${port}`);
+                <?php if( $this->layout()->datosUsuarioLogin ) : ?>
+                if(Object.keys(datosExpositor).length){
+                    datosUsuarioLogin.logo_empresa = datosExpositor.hash_logo_chat;
+                    datosUsuarioLogin.empresa = datosExpositor.nombre;
+                }
+                socket.emit("usuarioConectado", {
+                    idferias: idferias,
+                    pagina: window.location.href,
+                    usuario: datosUsuarioLogin
+                });
+                <?php endif ?>
+            });
+
+            <?php if( $this->layout()->datosUsuarioLogin ) : ?>
+
+            Chat.usuarioSelected = datosUsuarioLogin;
+            Chat.usuarioSelected.idferias = idferias;
+
+            socket.on('usuariosGeneralConectados', function(data) {
+                //Total Aquí
+                const totalAqui = data.filter(item => item.idferias === idferias && item.pagina === window.location.href).length;
+                $("[data-contador='total-aqui']").text(totalAqui)
+                //Total Participantes
+                const totalParticipantes = data.filter(item => item.idferias === idferias).length;
+                $("[data-contador='total-participantes']").text(totalParticipantes);
+
+                //Total Participantes por Página
+                const usuarios = data.filter(item => item.idferias === idferias && item.usuario.idusuario != datosUsuarioLogin.idusuario);
+                const usuariosPagina = usuarios.filter(item => item.pagina === window.location.href)
+                //Listar Usuarios Páginas
+                ChatGrupal.listaUsuariosPaginasContenedor.html("");
+                usuariosPagina.forEach(function(item){
+                    let a = $("<div>").html(ChatGrupal.listaUsuariosItemHtml);
+                    a.find(".iconrr a").each(function(){
+                        if($(this).attr("onclick")){
+                            const attrOnClickNewValue = $(this).attr("onclick").replace("event)", "event, "+item.usuario.idusuario+", '"+item.usuario.tipo+"')")
+                            $(this).attr("onclick", attrOnClickNewValue);
+                        }
+                    });
+                    a.attr({
+                        "href": "javascript:void(0)",
+                        "data-socketid": item.socketid,
+                        "onclick": "ChatGrupal.iniciarConversacion('"+item.usuario.idusuario+"')",
+                    });
+                    a.addClass(( datosUsuarioLogin.tipo === 'V' || item.usuario.tipo === 'E' ) ? "disabled" : "");
+                    a.addClass("se");
+                    a.find("[data-item='letra-inicial']").text(item.usuario.nombres.charAt(0));
+                    a.find("[data-item='usuario']").text(`${item.usuario.nombres} ${item.usuario.apellido_paterno} ${item.usuario.apellido_materno}`);
+                    a.find("[data-item='empresa']").text(item.usuario.empresa || "");
+                    a.find("[data-item='cargo']").text(item.usuario.cargo || "");
+                    a.find("[data-item='correo']").text(item.usuario.correo || "");
+                    a.find("[data-item='telefono']").text(item.usuario.telefono || "");
+                    ChatGrupal.listaUsuariosPaginasContenedor.append(a);
+                })
+
+                //Total Usuarios Chat Auditorio
+                ChatGeneral.chatContador.text(`(${ totalParticipantes })`);
+                //Listar Usuarios Grupal
+                ChatGrupal.listaUsuariosContenedor.html("");
+                usuarios.forEach(function(item){
+                    let a = $("<div>").html(ChatGrupal.listaUsuariosItemHtml);
+                    a.find(".iconrr a").each(function(){
+                        if($(this).attr("onclick")){
+                            const attrOnClickNewValue = $(this).attr("onclick").replace("event)", "event, "+item.usuario.idusuario+", '"+item.usuario.tipo+"')")
+                            $(this).attr("onclick", attrOnClickNewValue);
+                        }
+                    });
+                    a.attr({
+                        "href": "javascript:void(0)",
+                        "data-socketid": item.socketid,
+                        "onclick": "ChatGrupal.iniciarConversacion('"+item.usuario.idusuario+"')",
+                    });
+                    a.addClass(( datosUsuarioLogin.tipo === 'V' || item.usuario.tipo === 'E' ) ? "disabled" : "");
+                    a.addClass("se");
+                    a.find("[data-item='letra-inicial']").text(item.usuario.nombres.charAt(0));
+                    a.find("[data-item='usuario']").text(`${item.usuario.nombres} ${item.usuario.apellido_paterno} ${item.usuario.apellido_materno}`);
+                    a.find("[data-item='empresa']").text(item.usuario.empresa  || "");
+                    a.find("[data-item='cargo']").text(item.usuario.cargo || "");
+                    a.find("[data-item='correo']").text(item.usuario.correo || "");
+                    a.find("[data-item='telefono']").text(item.usuario.telefono || "");
+                    ChatGrupal.listaUsuariosContenedor.append(a);
+                })
+            });
+
+            socket.on('usuariosPresenciales', function(usuarios){
+                //console.log("presenciales", usuarios);
+                //Total Visitantes Presenciales
+                $("[data-contador='total-presenciales']").text(usuarios.length);
+                if(!usuarios.length){
+                    return;
+                }
+                //Listar Visitantes Presenciales
+                ChatGrupal.listaUsuariosPresencialesContenedor.html("");
+                usuarios.forEach(function(item){
+                    let fechaRegistro = moment(item.fecha_registro).format('DD/MM/YYYY');
+                    let horaRegistro = moment(item.fecha_registro).format('HH:mm');
+                    let a = $("<div>").html(ChatGrupal.listaUsuariosItemHtml);
+                    a.addClass("se");
+                    a.attr({
+                        "href": "javascript:void(0)"
+                    });
+                    a.find("[data-item='letra-inicial']").text(item.nombres.charAt(0));
+                    a.find("[data-item='usuario']").text(`${item.nombres} ${item.apellido_paterno} ${item.apellido_materno}`);
+                    a.find("[data-item='empresa']").text(item.empresa || "");
+                    a.find("[data-item='cargo']").text(item.cargo || "");
+                    a.find("[data-item='correo']").text(item.correo  || "");
+                    a.find("[data-item='telefono']").text(item.telefono || "");
+                    a.find("[data-item='hora']").text(fechaRegistro);
+                    a.find("[data-item='fecha']").text(horaRegistro);
+                    ChatGrupal.listaUsuariosPresencialesContenedor.append(a);
+                })
+            })
+
+            socket.on('idUsuariosDesconectado', function(data) {
+                //console.log("idUsuariosDesconectado", data)
+                if(Object.keys(data).length) {
+                    const dataIdSocketUsuarios = ChatGrupal.chatContenedor.find(".chat-head").attr("data-idsocketusuarios");
+                    if(dataIdSocketUsuarios && dataIdSocketUsuarios.split("|").find(idsocket => idsocket === data.usuario.socketid)){
+                        //console.log("Usuario chat localizado")
+                        let mensaje = $("<div>").addClass("msg-send2").text(`El usuario ${ data.usuario.usuario.nombres } no se encuentra disponible.`);
+                        ChatGrupal.chatMensajes.append(mensaje);
+                        ChatGrupal.scrollTop();
+                    }
+                }
+            });
+
+            socket.on('iniciarConversacionGrupal', function(data) {
+                //console.log("iniciarConversacionGrupal", data)
+
+                chatCircular(data, 'iniciarConversacionGrupal');
+
+                let divEncabezado = '';
+
+                if(data.chatHistorial.length){
+                    ChatGrupal.chatMensajes.html("");
+                    ChatGrupal.listarChatHistorial(data.chatHistorial);
+                } else {
+                    ChatGrupal.chatMensajes.html("");
+                }
+                
+                if ( data.expositor && Chat.usuarioSelected.tipo === 'E') {
+                    divEncabezado = $("<div>").addClass("chat-head").html(ChatGrupal.chatEncabezadoVisitanteHtml);
+                    divEncabezado.find("[data-item='letra-inicial']").text(data.visitante.usuario.nombres.charAt(0));
+                    divEncabezado.find("[data-item='usuario']").text(`${data.visitante.usuario.nombres} ${data.visitante.usuario.apellido_paterno} ${data.visitante.usuario.apellido_materno}`);
+                    divEncabezado.find("[data-item='empresa']").text(data.visitante.usuario.empresa);
+                    divEncabezado.find("[data-item='cargo']").text(data.visitante.usuario.cargo);
+                } else {
+                    divEncabezado = $("<div>").addClass("chat-head").html(ChatGrupal.chatEncabezadoExpositorHtml);
+                    divEncabezado.find("[data-item='logo']").attr("src", `${urlBackend}/empresas/logo/${data.expositor.usuario.logo_empresa}`);
+                    divEncabezado.find("[data-item='empresa']").text(data.expositor.usuario.empresa);
+                }
+
+                divEncabezado.attr("data-idusuarios", data.idchatgrupal)
+                divEncabezado.attr("data-idsocketusuarios", data.idSocketUsuarios.join("|"))
+                
+                ChatGrupal.chatEncabezado.html(divEncabezado);
+                
+                if( data.accion == 'iniciar' ) {
+                    ChatGrupal.chatContenedor.show();
+                } else {
+                    if( datosUsuarioLogin.idusuario === data.usuario.usuario.idusuario ){
+                        ChatGrupal.chatContenedor.show();
+                    }
+                }
+
+            });
+
+            socket.on('mensajeGrupal', function(data) {
+                //Validar si el chat esta abierto
+                let chatEncabezado = ChatGrupal.chatContenedor.find(".chat-head");
+                if(chatEncabezado.length && chatEncabezado.is(":visible") && chatEncabezado.attr("data-idusuarios") !== data.idchatgrupal){
+                    //console.log("No insertar mensaje")
+                    return;
+                }
+
+                chatCircular(data, 'mensajeGrupal');
+
+                //console.log("mensajeGrupal", data)
+                const usuario = data.usuario.usuario;
+                let seleccionarPlantilla = ( usuario.tipo === 'E' ) ? ChatGrupal.chatMensajePlantillaExpositor : ChatGrupal.chatMensajePlantilla;
+                let mensaje = $("<div>").addClass("msg-send2").html(seleccionarPlantilla);
+                if( usuario.tipo === 'E' ) {
+                    mensaje.find(".logo").attr("src", `${urlBackend}/empresas/logo/${usuario.logo_empresa}`);
+                } else {
+                    mensaje.find(".prefix").text(`${usuario.nombres.charAt(0).toUpperCase()}`);
+                }
+                mensaje.find(".user").text(`${usuario.nombres} ${usuario.apellido_paterno} ${usuario.apellido_materno}: `);
+                mensaje.find(".msg").text(`${data.msg}`);
+                ChatGrupal.chatMensajes.append(mensaje);
+                ChatGrupal.scrollTop();
+            });
+
+            function chatCircular(data, accion) {
+                //Activar mensajes en el chat circular
+                if( datosUsuarioLogin.idusuario === data.expositor.usuario.idusuario || datosUsuarioLogin.idusuario === data.visitante.usuario.idusuario ) {
+                    let existeChatCirculo = ChatGrupal.listaChatSlider.find("a[data-idusuarios='"+data.idchatgrupal+"']");
+                    if( !existeChatCirculo.length ) {
+                        ChatGrupal.nuevoMensaje[data.idchatgrupal] = data;
+                        let a = $("<a>").attr({
+                            "data-idusuarios": data.idchatgrupal,
+                            "href": "javascript:void(0)",
+                            "onclick": `ChatGrupal.abrirNuevoMensaje(this, "${data.idchatgrupal}")`,
+                            "class": "actives"
+                        });
+
+                        if( datosUsuarioLogin.tipo === 'V' ) {
+                            let img = $("<img>").attr("src", `${urlBackend}/empresas/logo/${data.expositor.usuario.logo_empresa}`);
+                            a.append(img);
+                        } else {
+                            a.text(`${data.visitante.usuario.nombres.charAt(0).toUpperCase()}`);
+                        }
+
+                        if( accion === 'iniciarConversacionGrupal' ) {
+                            a.removeClass("actives");
+                        }
+                        
+                        ChatGrupal.listaChatSlider.append(a)
+                    } else {
+                        if( datosUsuarioLogin.idusuario !== data.usuario.usuario.idusuario ){
+                            existeChatCirculo.addClass(accion == "mensajeGrupal" ? "actives" : "")
+                        }
+                    }
+                }
+            }
+
+            ChatGrupal.campoInput.keypress((e) => {
+                if(e.which === 13){
+                    ChatGrupal.enviarMensaje()
+                }
+            });
+            
+            <?php endif ?>
+            
+            UsuariosEventos.idioma = idiomaSeleccionado;
+            Panel.idioma = idiomaSeleccionado;
+            Panel.sesionUsuario = '<?php echo (isset($this->layout()->datosUsuario)) ? true : false; ?>';
+            Panel.idferias = idferias;
+            Panel.version = 1;
+            Panel.idplataformas = idplataformas;
+            Panel.urlBackend = urlBackend;
+            Panel.init();
+
+            Tiempo.timeInit = 5; //Tiempo en segundos
+            Tiempo.socket = socket;
+            Tiempo.iniciar();
+
+            $(document).ready(function () {
+                $("#tv").popup({
+                    transition: "all 0.3s",
+                    closebutton: true,
+                });
+                $(".alerta-anuncio .ok").click(function(){
+                    $(this).parent().hide();
+                });
+                $(".cerrar-promocion").click(function(){
+                    $('.modal-promocion').hide();
+                });
+            });
+
+            let idCronogramasExistente = 0;
+
+            socket.on("cronograma", (data) => {
+                if(data.length){
+                    if(idCronogramasExistente != data[0].idcronogramas) {
+                        console.log(`En 5 minutos se apróxima la conferencia ${ data[0].titulo }`);
+                        let urlRedirect = `${ Panel.idioma }/`;
+                        if( Panel.idplataformas === 2 ){ //Congreso
+                            urlRedirect += `panel/auditorio/${ data[0].sala_hashurl }/${ data[0].idcronogramas }`;
+                        } else {
+                            urlRedirect += `panel/auditorio/${ data[0].idcronogramas }`;
+                        }
+                        $("[data-conferencia='titulo']").text(data[0].titulo);
+                        $("[data-conferencia='enlace']").attr("href", urlRedirect);
+                        $("[data-conferencia='contenido']").show();
+                        setTimeout(() => {
+                            $("[data-conferencia='contenido']").hide();
+                        }, 10000);
+                    }
+                    idCronogramasExistente = data[0].idcronogramas;
+                }
+            });
+
+        </script>
+
+        <?= $this->inlineScript() ?>
+
+        <script>
+            $(window).load(function () {
+                $(".se-pre-con").fadeOut("slow");
+            });
+
+            $(document).on('click', '.chat-head .si img, .chat-head2 .si2 img', function(){
+                var src = $(this).attr('src');
+                $('.chat-body').slideToggle('fast');
+                if(src == 'https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_down-16.png'){
+                    $(this).attr('src', 'https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_up-16.png');
+                }
+                else{
+                    $(this).attr('src', 'https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_down-16.png');
+                }
+            });
+
+            function myFunction3() {
+                var x = document.getElementById("myDIVI3");
+                if (x.style.display === "none") {
+                    x.style.display = "flex";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+
+            var closebtns = $(".close3, .close6");
+            var i;
+
+            for (i = 0; i < closebtns.length; i++) {
+                closebtns[i].addEventListener("click", function () {
+                    this.parentElement.style.display = "none";
+                });
+            }
+
+            function addEmoji(obj) {
+                let msg = '';
+                let input = $(obj).parents('.chat-text-2, .chat-text-3').find("input");
+                msg += input.val();
+                msg += $(obj).html();
+                input.val(msg);
+                $(obj).parent().hide();
+            }
+
+            function toggleEmojiDrawer(obj) {
+                let drawr = $(obj).parent().find(".emoji-drawer");
+                if (drawr.is(":visible")) {
+                    drawr.hide()
+                } else {
+                    drawr.show()
+                }
+            }
+
+            function abrirVentanaWindow(url, title, w, h, e) {
+                if(!Panel.sesionUsuario){
+                    Panel.validarSesion(null);
+                    return;
+                }
+                e?.preventDefault();
+                if( url == '' || url == '#' )return;
+                var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;  
+                var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;  
+                width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;  
+                height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;  
+                var left = ((width / 2) - (w / 2)) + dualScreenLeft;  
+                var top = ((height / 2) - (h / 2)) + dualScreenTop;  
+                var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);  
+                if (window.focus) {  
+                    newWindow.focus();  
+                }  
+            }
+
+            $(".regular").slick({
+                dots: false,
+                infinite: true,
+                arrows: true,
+                prevArrow: '<button type="button" class="slick-prev"></button>',
+                nextArrow: '<button type="button" class="slick-next"></button>',
+                centerMode: true,
+                slidesToShow: 5,
+                slidesToScroll: 3,
+                autoplay: true,
+                autoplaySpeed: 4000,
+                pauseOnHover: true,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 2,
+                        },
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2,
+                            centerMode: false,
+                        },
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2,
+                        },
+                    },
+                ],
+            });
+
+            var PiePagina = {
+                contenedorTarjeta: $('.contenedor-tarjeta'),
+                enviarTarjeta: function(obj, event){
+                    if(!Panel.sesionUsuario){
+                        Panel.validarSesion(null);
+                        return;
+                    }
+                    event.preventDefault();
+                    let _this = this;
+                    let idvisitantes = '<?php echo ( isset($this->layout()->datosUsuario['idvisitantes']) ) ? $this->layout()->datosUsuario['idvisitantes'] : ''; ?>';
+                    let idexpositores = '<?php echo is_countable($this->empresa) ? $this->empresa['idexpositores'] : 0 ?>';
+                    _this.contenedorTarjeta.hide();
+                    $.post("<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/enviar-datos-tarjeta", {idvisitantes: idvisitantes, idexpositores: idexpositores}, function(response){
+                        if(response.result == 'success'){
+                            _this.contenedorTarjeta.show();
+                            _this.contenedorTarjeta.find("[data-tarjeta='titulo']").text(response.data.nombres+" "+response.data.apellido_paterno+" "+response.data.apellido_materno);
+                            _this.contenedorTarjeta.find("[data-tarjeta='descripcion']").text("Gracias por enviar sus datos personales.");
+                            _this.contenedorTarjeta.find("[data-tarjeta='telefono']").text(response.data.telefono);
+                            _this.contenedorTarjeta.find("[data-tarjeta='correo']").text(response.data.correo);
+                        }
+                    },'json');
+
+                }
+            }
+
+            function contadorPaginas(obj) {
+                let parent = $(obj).parent();
+                if(parent.find(".eyes-on").is(":visible")){
+                    parent.find(".eyes-on").hide();
+                } else {
+                    parent.find(".eyes-on").show();
+                }
+            }
+
+            function myFunctionchat() {
+                var x = document.getElementById("myDIVIchat");
+                if (x.style.display === "flex") {
+                    x.style.display = "none";
+                } else {
+                    x.style.display = "flex";
+                }
+            }
+
+            function myFunctionchat2() {
+                var x = document.getElementById("myDIVIchat2");
+                if (x.style.display === "flex") {
+                    x.style.display = "none";
+                } else {
+                    x.style.display = "flex";
+                }
+            }
+
+            <?php if($this->layout()->promociones) : ?>
+            Panel.mostrarPromocionZonas('<?php echo $this->layout()->promociones['idpromociones']; ?>', '<?php echo $this->layout()->promociones['imagen_promocion']; ?>');
+            <?php endif; ?>
+
+            $(".cerrar_burbuja").click(function() {
+                $(this).parent().hide();
+            })
+            
+        </script>
+
+        <?php echo $this->partial('partial/scripts/index', []); ?>
+
+    </body>
+    
+</html>

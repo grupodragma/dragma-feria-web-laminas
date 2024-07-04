@@ -1,0 +1,93 @@
+<?php $this->headTitle('CONFERENCIAS - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<?php echo $this->partial('partial/fondos/movil', ['accion'=> 'hall-conferencias','configuracion'=> $this->configuracion]); ?>
+
+<section class="home-conferencias">
+    <div class="slide active <?php echo ($this->fondo_video['estado']) ? 'bg-none' : ''; ?>" style="background-image: url(<?php echo ( isset($this->configuracion['imagen_fondo'])) ? $this->layout()->url_backend.'/paginas/hall-conferencias/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall-conferencias/imagen_fondo.jpg'; ?>)">
+    
+        <div class="logo-evento-conferencias">
+            <!--<div class="center-logo"><img src="<?php echo $this->layout()->url_backend; ?>/ferias/logo/<?php echo $this->layout()->feria['hash_logo']; ?>" /></div>-->
+        </div>
+
+        <div class="cajas-artes-conferencias">
+            <div class="arte-3-conferencias">
+                <?php
+                    $derecha_1_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_derecha_1']) && $this->configuracion['banner_opciones']['imagen_derecha_1'] === '' && @$this->configuracion['banner_opciones_url']['imagen_derecha_1'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_derecha_1']: 'javascript:void(0)';
+                    $derecha_1_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_derecha_1'] === '' && @$this->configuracion['banner_opciones_url']['imagen_derecha_1'] !== '' ) ? '_blank' : '_self';
+                ?>
+                <a class="empresas" href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_derecha_1']) && $this->configuracion['banner_opciones']['imagen_derecha_1'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_derecha_1'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_derecha_1'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_derecha_1'])[2]:$derecha_1_no_empresa;?>" target="<?php echo $derecha_1_metodo_enlace; ?>"><img src="<?php echo ( isset($this->configuracion['imagen_derecha_1'])) ? $this->layout()->url_backend.'/paginas/hall-conferencias/'.$this->configuracion['imagen_derecha_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall-conferencias/imagen_derecha_1.jpg'; ?>" alt=""></a>
+            </div>
+            <div class="espacito-conferencias"></div>
+            <div class="arte-2-conferencias">
+                <?php
+                    $derecha_2_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_derecha_2']) && $this->configuracion['banner_opciones']['imagen_derecha_2'] === '' && @$this->configuracion['banner_opciones_url']['imagen_derecha_2'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_derecha_2']: 'javascript:void(0)';
+                    $derecha_2_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_derecha_2'] === '' && @$this->configuracion['banner_opciones_url']['imagen_derecha_2'] !== '' ) ? '_blank' : '_self';
+                ?>
+                <a class="empresas" href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_derecha_2']) && $this->configuracion['banner_opciones']['imagen_derecha_2'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_derecha_2'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_derecha_2'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_derecha_2'])[2]:$derecha_2_no_empresa;?>" target="<?php echo $derecha_2_metodo_enlace; ?>"><img src="<?php echo ( isset($this->configuracion['imagen_derecha_2'])) ? $this->layout()->url_backend.'/paginas/hall-conferencias/'.$this->configuracion['imagen_derecha_2']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall-conferencias/imagen_derecha_2.jpg'; ?>" alt=""></a>
+            </div>
+            <div class="espacito-conferencias"></div>
+            <div class="arte-1-conferencias">
+                <?php
+                    $derecha_3_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_derecha_3']) && $this->configuracion['banner_opciones']['imagen_derecha_3'] === '' && @$this->configuracion['banner_opciones_url']['imagen_derecha_3'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_derecha_3']: 'javascript:void(0)';
+                    $derecha_3_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_derecha_3'] === '' && @$this->configuracion['banner_opciones_url']['imagen_derecha_3'] !== '' ) ? '_blank' : '_self';
+                ?>
+                <a class="empresas" href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_derecha_3']) && $this->configuracion['banner_opciones']['imagen_derecha_3'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_derecha_3'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_derecha_3'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_derecha_3'])[2]:$derecha_3_no_empresa;?>" target="<?php echo $derecha_3_metodo_enlace; ?>"> <img src="<?php echo ( isset($this->configuracion['imagen_derecha_3'])) ? $this->layout()->url_backend.'/paginas/hall-conferencias/'.$this->configuracion['imagen_derecha_3']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall-conferencias/imagen_derecha_3.jpg'; ?>" alt=""></a>
+            </div>
+        </div>
+
+        <div class="navbar-conference" style="position:relative;">
+            <?php if( isset($this->botones['titulo']) && isset($this->botones['titulo_fondo']) && isset($this->botones['titulo_color']) ) : ?>
+            <div class="boton-conference ocultar" style="animation-delay: 1s;"><span style="background:<?php echo $this->botones['titulo_fondo']; ?>;color:<?php echo $this->botones['titulo_color']; ?>"><?php echo $this->layout()->language->translate($this->botones['titulo'])['text']; ?></span></div>
+            <?php else : ?>
+            <div class="boton-conference ocultar" style="animation-delay: 1s;"><span><?php echo $this->layout()->language->translate('AUDITORIO VIRTUAL')['text']; ?></span></div>
+            <?php endif; ?>
+            <span class="lista-opciones nav-ver">
+                <?php if( empty($this->botones['opciones']) ) : ?>
+                <div class="boton-conference2" data-key="virtual_conferencias" style="animation-delay: 1.3s;">
+                    <div class="marco-boton"><img src="<?php echo $this->layout()->url_backend; ?>/plantillas/imagenes/iconos-menu-03.svg" alt=""></div>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/cronogramas"><?php echo $this->layout()->language->translate('PROG. CONFERENCIAS')['text']; ?></a>
+                </div>
+                <div class="boton-conference2" data-key="virtual_zona" style="animation-delay: 1.6s;">
+                    <div class="marco-boton"><img src="<?php echo $this->layout()->url_backend; ?>/plantillas/imagenes/iconos-menu-agenda.svg" alt=""></div>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/zonas/1"><?php echo $this->layout()->language->translate('ZONA FERIAL')['text']; ?></a>
+                </div>
+                <div class="boton-conference2" data-key="virtual_auditorio" style="animation-delay: 1.9s;">
+                    <div class="marco-boton"><img src="<?php echo $this->layout()->url_backend; ?>/plantillas/imagenes/iconos-menu-01.svg" alt=""></div>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/auditorio"><?php echo $this->layout()->language->translate('AUDITORIO')['text']; ?></a>
+                </div>
+                <div class="boton-conference2" data-key="buscador" style="animation-delay: 1.9s;">
+                    <div class="marco-boton"><img src="<?php echo $this->layout()->url_backend; ?>/plantillas/imagenes/iconos-menu-01.svg" alt=""></div>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/busqueda-productos"><?php echo $this->layout()->language->translate('BUSCADOR')['text']; ?></a>
+                </div>
+                <?php else : ?>
+                    <?php foreach($this->botones['opciones'] as $item) : if( $item['texto'] === '' ) continue; ?>    
+                        <div class="boton-conference2" style="animation-delay: 1.9s;">
+                            <div class="marco-boton"><img src="<?php echo ( $item['icono'] !== 'img/boton-no-found.png' ) ? $this->layout()->url_backend."/paginas/botones/".$item['icono'] : $this->layout()->url_backend."/img/boton-no-found.png"; ?>" alt=""></div>
+                            <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/<?php echo $item['pagina_redireccion'] ?>" style="background:<?php echo $item['color_fondo']; ?>;color:<?php echo $item['color_texto']; ?>"><?php echo $this->layout()->language->translate($item['texto'])['text']; ?></a>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </span>
+        </div>
+
+    </div>
+</section>
+
+<?php echo $this->partial('partial/panel/icono-soporte', []); ?>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+        <?php if( $this->fondo_video['estado'] ) : ?>
+            anamorph("<?php echo $this->layout()->url_backend.'/paginas/hall-conferencias/'.$this->fondo_video['ruta']; ?>", 0.5, "<?php echo ( isset($this->configuracion['imagen_fondo'])) ? $this->layout()->url_backend.'/paginas/hall-conferencias/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall-conferencias/imagen_fondo.jpg'; ?>");
+        <?php endif; ?>
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

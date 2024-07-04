@@ -1,0 +1,68 @@
+<!-- MODULO MENUS [INICIO] -->
+<div class="girl-box<?php echo $this->class; ?>">
+    <div class="buttons-other">
+        <?php if(!empty($this->layout()->menus['piePagina'])) : foreach( $this->layout()->menus['piePagina'] as $item) : ?>
+        <?php
+            $href = $item['hash_url'];
+            $target = '';
+            $ocultarUrl = '';
+            $bloquearEnlace = '';
+            $funcion = '';
+            $hrefClass = '';
+            if(!empty($this->empresa)){
+                if($href == 'realidad-virtual'){
+                    $href = $this->layout()->idiomaSeleccionado.'/panel/'.$href.'/'.$this->empresa['idempresas'];
+                } else if($href == 'productos') {
+                    if($this->totalProductos == 0) {
+                        $bloquearEnlace = 'style="display:none"';
+                    }
+                    $hrefClass = "productos";
+                    $href = $this->layout()->idiomaSeleccionado.'/panel/'.$href.'/zona/'.$this->zona['orden'].'/empresa/'.$this->empresa['orden'].'/'.$this->empresa['hash_url'];
+                } else if($href == 'promociones') {
+                    if($this->totalPromociones == 0) {
+                        $bloquearEnlace = 'style="display:none"';
+                    }
+                    $hrefClass = "promociones";
+                    $href = $this->layout()->idiomaSeleccionado.'/panel/'.$href.'/zona/'.$this->zona['orden'].'/empresa/'.$this->empresa['orden'].'/'.$this->empresa['hash_url'];
+                } else if($href == 'planos') {
+                    if($this->totalPlanos == 0) {
+                        $bloquearEnlace = 'style="display:none"';
+                    }
+                    $hrefClass = "planos";
+                    $href = $this->layout()->idiomaSeleccionado.'/panel/'.$href.'/zona/'.$this->zona['orden'].'/empresa/'.$this->empresa['orden'].'/'.$this->empresa['hash_url'];
+                } else if($href == 'en-vivo') {
+                    $href = $this->layout()->idiomaSeleccionado.'/panel/expositores-vivo/zona/'.$this->zona['orden'].'/empresa/'.$this->empresa['orden'].'/'.$this->empresa['hash_url'];
+                    $hrefClass = "resaltar en-vivo";
+                } else if ($href == 'informacion') {
+                    $href = "javascript:abrirVentanaWindow('".$this->empresa['enlace_web']."')";
+                    $hrefClass = "informacion";
+                } else if ($href == 'send-business-card'){
+                    if( $this->layout()->datosUsuario['tipo'] == 'E' ) $ocultarUrl = 'style="display:none"';
+                    $href = $this->layout()->idiomaSeleccionado.'/panel/'.$href;
+                    $funcion = 'PiePagina.enviarTarjeta(this, event)';
+                } else {
+                    $href = $this->layout()->idiomaSeleccionado.'/panel/'.$href;
+                }
+                if($this->accion != 'expositores-vivo' && $href == $this->layout()->idiomaSeleccionado.'/panel/send-business-card'){
+                    $ocultarUrl = 'style="display:none"';
+                }
+            }
+        ?>
+        <a href="<?php echo $href; ?>" onclick="<?php echo $funcion; ?>" <?php echo $ocultarUrl; ?> <?php echo $bloquearEnlace; ?> <?php echo $target; ?> class="<?php echo ( $this->layout()->menus['hash_url_activo'] == $item['hash_url'] ) ? 'resaltar' : ''; ?> <?php echo $hrefClass; ?>"><i class="fas fa-check"></i>&nbsp;<?php echo $this->layout()->language->translate(mb_strtoupper($item['nombre']))['text']; ?></a>
+        <?php endforeach; endif; ?>
+    </div>
+    <div class="girl-da" style="visibility: hidden;">
+        <span>
+            <button class="hide-counter2" onclick="contadorPaginas(this)"><i class="fas fa-eye"></i></button>
+            <div class="caja-girl">
+                <div class="contador2">
+                    <div class="eyes-on" id="myDIVI2">
+                        <p>¡Hola! En que podemos ayudarte?</p>
+                    </div>
+                </div>
+            </div>
+            <img src="imagenes/girl-an.png" alt="">
+        </span>
+    </div>
+</div>
+<!-- MODULO MENUS [FIN] -->

@@ -16,7 +16,8 @@ return [
         'type' => SessionArrayStorage::class
     ],
     'session_containers' => [
-        'DatosSession'
+        'DatosSession',
+        'FormSession'
     ],
     'service_manager' => [
         'factories' => [

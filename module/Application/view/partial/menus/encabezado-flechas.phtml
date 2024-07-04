@@ -1,0 +1,7 @@
+<div class="franja-menu-bots">
+    <a style="<?php if( $this->ordenzona == 1 ) echo 'display: none'; ?>" class="zonas" href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/zonas/<?php echo ($this->ordenzona - 1); ?>"><i class="fas fa-arrow-circle-left"></i>&nbsp;<?php echo $this->layout()->language->translate('ANTERIOR')['text']; ?></a>
+    <a class="space"></a>
+    <a><?php echo $this->zona['nombre']; ?></a>
+    <a class="space"></a>
+    <a style="<?php if( $this->ordenzona >= $this->totalZonas ) echo 'display: none'; ?>" class="zonas" href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/zonas/<?php echo ($this->ordenzona + 1); ?>">&nbsp;<?php echo $this->layout()->language->translate('SIGUIENTE')['text']; ?>&nbsp;<i class="fas fa-arrow-circle-right"></i></a>
+</div>

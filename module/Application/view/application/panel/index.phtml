@@ -1,9 +1,1 @@
-<?php
-    //print_r($this->layout()->datosUsuario);
-    $data = ['dashboard'=> $this->dashboard, 'ferias'=> $this->ferias];
-    if($this->layout()->datosUsuario['idperfil'] == "1" || $this->layout()->datosUsuario['encargado'] == "1" ) {
-        echo $this->partial('partial/dashboard/administrador', $data);
-    } else {
-        echo $this->partial('partial/dashboard/usuario', $data);
-    }
-?>
+<script>document.location.href = '<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/recepcion';</script>

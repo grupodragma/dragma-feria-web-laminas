@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Local Configuration Override
  *
@@ -19,132 +18,94 @@ return [
         'username'       => 'root',
         'password'       => '',
         'driver_options' => [
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8" 
         ]
     ],
-    'secure_access' => [
-        'maximo_errores_login' => 50,
-        'tiempo_bloqueo' => 30
+    'secure_access' =>[
+        'maximo_errores_login'=>50,
+        'tiempo_bloqueo'=>30
     ],
-    'mail' => [
-        'from' => 'noreply@gmail.com',
-        'from_name' => 'SmartAdmin',
-        'transport' => 'sendmail',
-        'transport' => 'smtp',
-        'smtp_options' => [
-            'name' => 'mail.smtp2go.com',
-            'host' => 'mail.smtp2go.com',
+    'mail'=>[
+        'from'=>'no-reply@centrovirtualdeconvenciones.com',
+        'from_name'=>'Grupo Dragma - Feria Virtual',
+        'transport'=>'sendmail',
+        'transport'=>'smtp',
+        'smtp_options'=>[
+            'name' => 'centrovirtualdeconvenciones.com',
+            'host' => 'centrovirtualdeconvenciones.com',
             'connection_class' => 'login',
-            'port' => 25,
+            'port' => 587,
             'connection_config' => [
-                'username' => 'test@hotmail.com',
-                'password' => '',
+                'username' => 'jgomez@centrovirtualdeconvenciones.com',
+                'password' => 'demodemo123A$$$',
                 'ssl' => 'tls'
             ]
         ]
     ],
-    'node_server' => [
-        'host' => 'http://localhost',
-        'port' => '4500'
+    'url_backend'=> 'http://localhost:82',
+    'node_server'=> [
+        'host'=> 'http://localhost',
+        'port'=> '4500'
     ],
-    'servidor' => 'produccion', //produccion
-    'feria_colores_inicial' => [
-        'boton_primero' => [
-            'fondo' => '#3ca3c1',
-            'texto' => '#FFFFFF',
-            'hover_fondo' => '#F7AC22',
-            'hover_texto' => '#FFFFFF',
+    'servidor'=> 'produccion', //produccion
+    'feria_colores_inicial'=> [
+        'boton_primero'=> [
+            'fondo'=> '#3ca3c1',
+            'texto'=> '#FFFFFF',
+            'hover_fondo'=> '#F7AC22',
+            'hover_texto'=> '#FFFFFF',
         ],
-        'boton_segundo' => [
-            'fondo' => '#faa819',
-            'texto' => '#FFFFFF',
-            'hover_fondo' => '#3ca0a4',
-            'hover_texto' => '#FFFFFF',
+        'boton_segundo'=> [
+            'fondo'=> '#faa819',
+            'texto'=> '#FFFFFF',
+            'hover_fondo'=> '#3ca0a4',
+            'hover_texto'=> '#FFFFFF',
         ],
-        'encabezado_primero' => [
-            'fondo' => '#FFFFFF',
+        'encabezado_primero'=> [
+            'fondo'=> '#FFFFFF',
         ],
-        'encabezado_segundo' => [
-            'fondo' => '#3da3c1',
-            'texto' => '#FFFFFF',
-            'texto_linea_hover' => '#FFFFFF',
-            'buscador_fondo' => '#faa81a',
-            'buscador_texto' => '#444444',
-            'buscador_texto_linea_hover' => '#FFFFFF',
+        'encabezado_segundo'=> [
+            'fondo'=> '#3da3c1',
+            'texto'=> '#FFFFFF',
+            'texto_linea_hover'=> '#FFFFFF',
+            'buscador_fondo'=> '#faa81a',
+            'buscador_texto'=> '#444444',
+            'buscador_texto_linea_hover'=> '#FFFFFF',
         ],
-        'encabezado_tercero' => [
-            'fondo' => '#1C6DB5',
-            'texto' => '#FFFFFF',
+        'encabezado_tercero'=> [
+            'fondo'=> '#1C6DB5',
+            'texto'=> '#FFFFFF',
         ],
-        'pie_pagina_primero' => [
-            'fondo' => '#3da3c1',
+        'pie_pagina_primero'=> [
+            'fondo'=> '#3da3c1',
         ],
-        'pie_pagina_segundo' => [
-            'fondo' => '#FFCF2B',
-            'texto' => '#FFFFFF',
-            'texto_linea_hover' => '#111111',
-            'hover_fondo' => '#111111',
-            'hover_texto' => '#FFFFFF',
-            'fondo_menu' => '#44A0C0',
-            'fondo_menu_resaltado' => '#d43b3b'
+        'pie_pagina_segundo'=> [
+            'fondo'=> '#FFCF2B',
+            'texto'=> '#FFFFFF',
+            'texto_linea_hover'=> '#111111',
+            'hover_fondo'=> '#111111',
+            'hover_texto'=> '#FFFFFF',
+            'fondo_menu'=> '#44A0C0',
+            'fondo_menu_resaltado'=> '#d43b3b'
         ],
-        'flechas_zonas' => [
-            'fondo' => '#3da3c1',
-            'texto' => '#FFFFFF',
-            'hover_fondo' => '#3ca0a4',
-            'hover_texto' => '#FFFFFF',
+        'flechas_zonas'=> [
+            'fondo'=> '#3da3c1',
+            'texto'=> '#FFFFFF',
+            'hover_fondo'=> '#3ca0a4',
+            'hover_texto'=> '#FFFFFF',
         ],
-        'seccion_maestria' => [
-            'fondo' => '#dfdfdf',
-            'texto' => '#1F34AD',
-            'hover_fondo' => '#CCCCCC'
+        'seccion_maestria'=> [
+            'fondo'=> '#dfdfdf',
+            'texto'=> '#1F34AD',
+            'hover_fondo'=> '#CCCCCC'
         ]
     ],
-    'rutaChat' => 'docs/chat',
-    'plantilla_paginas_botones' => [
-        "icono" => "img/boton-no-found.png",
-        "color_fondo" => "",
-        "color_texto" => "",
-        "texto" => "",
-        "pagina_redireccion" => ""
+    'google_cloud_translate'=> [
+        'key'=> 'AIzaSyAcbSARX7En_cunQwAB0fq1Bba1yZwXTys'
     ],
-    'plantilla_paginas_conferencias' => [
-        "titulo" => "Auditorio virtual",
-        "titulo_fondo" => "#259FC1",
-        "titulo_color" => "#FFFFFF",
-        "opciones" => [
-            [
-              "icono" => "img/boton-no-found.png",
-              "icono_fondo" => "#259FC1",
-              "color_fondo" => "#FFFFFF",
-              "color_texto" => "#1b3362",
-              "texto" => "Auditorio",
-              "pagina_redireccion" => "auditorio"
-            ],
-            [
-              "icono" => "img/boton-no-found.png",
-              "icono_fondo" => "#259FC1",
-              "color_fondo" => "#FFFFFF",
-              "color_texto" => "#1b3362",
-              "texto" => "Prog. Conferencias",
-              "pagina_redireccion" => "auditorio"
-            ],
-            [
-              "icono" => "img/boton-no-found.png",
-              "icono_fondo" => "#259FC1",
-              "color_fondo" => "#FFFFFF",
-              "color_texto" => "#1b3362",
-              "texto" => "Zona Ferial",
-              "pagina_redireccion" => "auditorio"
-            ],
-            [
-              "icono" => "img/boton-no-found.png",
-              "icono_fondo" => "#259FC1",
-              "color_fondo" => "#FFFFFF",
-              "color_texto" => "#1b3362",
-              "texto" => "Buscador",
-              "pagina_redireccion" => "auditorio"
-            ]
+    'aplicacion_red_social'=> [
+        'facebook'=> [
+            'app_id'=> '883668405678192'
         ]
     ]
 ];

@@ -1,0 +1,71 @@
+<?php if( $this->expositor ) : ?>
+
+<?php if($this->layout()->feria['config_asesor_banner_color_texto'] != '' && $this->layout()->feria['config_asesor_banner_color_fondo'] != '') : ?>
+<style>
+    .info-modulo .center .contenido-hide h2,
+    .info-modulo .center .contenido-hide span,
+    .info-modulo .center .contenido-hide .foto .two-botons .horario p,
+    .info-modulo .center .contenido-hide .foto .two-botons .horario small{
+        color: <?php echo $this->layout()->feria['config_asesor_banner_color_texto']; ?>
+    }
+    .info-modulo .center{
+        opacity: 0.9;
+        background: <?php echo $this->layout()->feria['config_asesor_banner_color_fondo']; ?>
+    }
+</style>
+<?php endif; ?>
+
+<script>
+    let dataVisitanteChat = JSON.parse(JSON.stringify(<?php echo json_encode($this->layout()->datosUsuarioLogin); ?>));
+    let dataExpositorChat = JSON.parse(JSON.stringify(<?php echo json_encode($this->expositor); ?>));
+</script>
+
+<div class="info-modulo">
+    <div class="center">
+        <?php if( $this->layout()->datosUsuarioLogin && $this->layout()->datosUsuarioLogin['tipo'] != "E" ) : ?>
+        <a href="javascript:void(0)" class="burbuja2" onclick="ChatGrupal.iniciarConversacionStand(dataVisitanteChat, dataExpositorChat)">
+            <small class="close5 cerrar_burbuja">X</small>
+            <img src="imagenes/bubble-giro-01.svg" alt="">
+            <div class="date">
+                <h2>¡Hola <?php echo $this->layout()->datosUsuarioLogin['nombres']; ?>!</h2>
+                <p>¿En que puedo ayudarte?</p>
+                <img style="width:3vh;" src="imagenes/chat-cloud-white.svg" alt="">
+            </div>
+        </a>
+        <?php endif; ?>
+        <div class="contenido-hide">
+            <h2><?php echo $this->layout()->language->translate('ASESOR VIRTUAL EN LÍNEA')['text']; ?></h2>
+            <div class="foto">
+                <div class="all-agente">
+                    <div class="picture">
+                        <img src="<?php echo ( $this->expositor['hash_foto'] != '' ) ? $this->layout()->url_backend."/expositores/foto/".$this->expositor['hash_foto'] : $this->layout()->url_backend."/img/no-imagen.jpg"; ?>" alt="">
+                    </div>
+                    <span><?php echo $this->expositor['nombres']." ".$this->expositor['apellido_paterno']." ".$this->expositor['apellido_materno'] ?></span>
+                </div>
+                <div class="space"></div>
+                <div class="two-botons">
+                    <div class="box-responsive">
+                        <a class="bf_llamada <?php if( $this->expositor['telefono'] == '' ) { echo "disabled"; } ?>" onclick="Panel.validarSesion(event)" href="tel:<?php echo $this->expositor['telefono']; ?>"> <img src="imagenes/call.svg" alt=""></a>
+                        <a class="bf_wsp <?php if( $this->expositor['enlace_wsp'] == '' ) { echo "disabled"; } ?>" onclick="Panel.validarSesion(event)" href="javascript:abrirVentanaWindow('<?php echo $this->expositor['enlace_wsp']; ?>')"> <img src="imagenes/wsp.svg" alt=""></a>
+                        <!-- <a href="javascript:void(0)" onclick="abrirVentanaWindow('<?php echo $this->expositor['enlace_conferencia_asesor']; ?>');"> <img src="imagenes/video.svg" alt=""></a> -->
+                        <a href="javascript:void(0)" onclick="Panel.enviarCorreo('expositor', <?php echo $this->expositor['idexpositores']; ?>, this, <?php echo $this->empresa['idempresas']; ?>)"> <img src="imagenes/message.svg" alt=""></a>
+                    </div>
+                    <div class="tit">
+                        <span><?php echo $this->layout()->language->translate('ASESOR VIRTUAL EN LÍNEA')['text']; ?></span>
+                    </div>
+                    <div class="horario" style="<?php if( $this->expositor['horario_atencion'] === '00:00-00:00 | 00:00-00:00' ) { echo 'display: none;'; } ?>">
+                        <p><?php echo $this->layout()->language->translate('HORARIO DE ATENCIÓN')['text']; ?></p>
+                        <?php list($inicio, $fin) = ($this->expositor['horario_atencion'] != '') ? explode("-", explode(" | ", $this->expositor['horario_atencion'])[0]) : explode("-", "00:00-00:00"); ?>
+                        <small><?php echo $inicio; ?> <?php echo $this->layout()->language->translate('a')['text']; ?> <?php echo $fin; ?></small>
+                        <?php list($inicio, $fin) = ($this->expositor['horario_atencion'] != '') ? explode("-", explode(" | ", $this->expositor['horario_atencion'])[1]) : explode("-", "00:00-00:00"); ?>
+                        <small><?php echo $inicio; ?> <?php echo $this->layout()->language->translate('a')['text']; ?> <?php echo $fin; ?></small>
+                    </div>
+
+                    <div class="click"><a href="#" class="reserva_cita en_directo_open" data-popup-ordinal="0" id="open_17171811">Agenda tu Cita</a></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

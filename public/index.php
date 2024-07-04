@@ -1,7 +1,7 @@
 <?php
 
-use Zend\Mvc\Application;
-use Zend\Stdlib\ArrayUtils;
+use Laminas\Mvc\Application;
+use Laminas\Stdlib\ArrayUtils;
 
 date_default_timezone_set('America/Lima');
 setlocale(LC_ALL,"es_PE");

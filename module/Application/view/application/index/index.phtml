@@ -1,50 +1,119 @@
-<img src="img/logo-login.png" class="logo-login">
+<?php $this->headTitle('FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
 
-<form id="form-login" autocomplete="off" data-accion="/login" data-callback="resultado(response);">
-    <div class="form-group">
-        <label class="form-label">Usuario</label>
-        <div><input type="text" id="usuario" name="usuario" class="form-control form-control-lg"></div>
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<?php echo $this->partial('partial/fondos/movil', ['accion'=> 'home','configuracion'=> $this->configuracion]); ?>
+
+<section class="home">
+    
+    <?php if( !$this->fondo_video['estado'] ) : ?>
+    <a href="<?php echo $this->layout()->idiomaSeleccionado."/".$this->urlRedirect; ?>">
+        <div class="avion hide">
+            <div class="zep-otro">
+                <img src="imagenes/zep.png" alt="">
+                <div class="zep-fondo">
+                    <img src="<?php echo $this->layout()->url_backend; ?>/ferias/logo/<?php echo $this->layout()->feria['hash_logo']; ?>" alt="">
+                </div>
+            </div>
+        </div>
+    </a>
+    <?php endif; ?>
+
+    <a href="<?php echo $this->layout()->idiomaSeleccionado."/".$this->urlRedirect; ?>">
+        <div class="caja-ads-evento">
+            <div class="caja-ads-evento-centro">
+                <div class="ads-1">
+                    <img src="<?php echo ( isset($this->configuracion['imagen_izquierda_1'])) ? $this->layout()->url_backend.'/paginas/home/'.$this->configuracion['imagen_izquierda_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/home/imagen_izquierda_1.jpg'; ?>" alt="">
+                </div>
+                <div class="espacio-evento"></div>
+                <div class="ads-2">
+                    <img src="<?php echo ( isset($this->configuracion['imagen_tv'])) ? $this->layout()->url_backend.'/paginas/home/'.$this->configuracion['imagen_tv']['hash'] : $this->layout()->url_backend.'/img/plantillas/home/imagen_tv.jpg'; ?>" alt="">
+                </div>
+                <div class="espacio-evento"></div>
+                <div class="ads-3">
+                    <img src="<?php echo ( isset($this->configuracion['imagen_derecha_3'])) ? $this->layout()->url_backend.'/paginas/home/'.$this->configuracion['imagen_derecha_3']['hash'] : $this->layout()->url_backend.'/img/plantillas/home/imagen_derecha_3.jpg'; ?>" alt="">
+                </div>
+            </div>
+        </div>
+    </a>
+
+    <div class="cajas-artes-index">
+        <a href="<?php echo $this->layout()->idiomaSeleccionado."/".$this->urlRedirect; ?>">
+            <div class="center-cajas">
+                <div class="arte-1-index">
+                    <img src="imagenes/totems.png" alt="">
+                    <div class="arte-1-fondo">
+                        <a href="javascript:void(0)"><img src="<?php echo ( isset($this->configuracion['imagen_izquierda_2'])) ? $this->layout()->url_backend.'/paginas/home/'.$this->configuracion['imagen_izquierda_2']['hash'] : $this->layout()->url_backend.'/img/plantillas/home/imagen_izquierda_2.jpg'; ?>" alt=""></a>
+                    </div>
+                </div>
+                <div class="espacito-index"></div>
+                <div class="arte-2-index">
+                    <a href="javascript:void(0)"><img src="imagenes/totems.png" alt=""></a>
+                    <div class="arte-2-fondo">
+                        <a href="javascript:void(0)"><img src="<?php echo ( isset($this->configuracion['imagen_izquierda_3'])) ? $this->layout()->url_backend.'/paginas/home/'.$this->configuracion['imagen_izquierda_3']['hash'] : $this->layout()->url_backend.'/img/plantillas/home/imagen_izquierda_3.jpg'; ?>" alt=""></a>
+                    </div>
+                </div>
+                <div class="espacito-index-2"></div>
+                <div class="arte-3-index">
+                    <img src="imagenes/totems-2.png" alt="">
+                    <div class="arte-3-fondo">
+                        <a href="javascript:void(0)"><img src="<?php echo ( isset($this->configuracion['imagen_derecha_1'])) ? $this->layout()->url_backend.'/paginas/home/'.$this->configuracion['imagen_derecha_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/home/imagen_derecha_1.jpg'; ?>" alt=""></a>
+                    </div>
+                </div>
+                <div class="espacito-index"></div>
+                <div class="arte-4-index">
+                    <img src="imagenes/totems-2.png" alt="">
+                    <div class="arte-4-fondo">
+                        <a href="javascript:void(0)"><img src="<?php echo ( isset($this->configuracion['imagen_derecha_2'])) ? $this->layout()->url_backend.'/paginas/home/'.$this->configuracion['imagen_derecha_2']['hash'] : $this->layout()->url_backend.'/img/plantillas/home/imagen_derecha_2.jpg'; ?>" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </a>
     </div>
-    <div class="form-group">
-        <label class="form-label">Contraseña</label>
-        <div><input type="password" id="contrasena" name="contrasena" class="form-control form-control-lg"></div>
-    </div>
-    <div class="form-group text-left">
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="rememberme" name="remember_me">
-            <label class="custom-control-label" for="rememberme"> Recordar Sesión</label>
+
+    <?php if( !$this->fondo_video['estado'] ) : ?>
+    <div class="slide active <?php echo ($this->fondo_video['estado']) ? 'bg-none' : ''; ?>" style="background-image: url(<?php echo ( isset($this->configuracion['imagen_fondo'])) ? $this->layout()->url_backend.'/paginas/home/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/home/imagen_fondo.jpg'; ?>)">
+    <?php endif; ?>
+
+    <div id="ingresar" class="well">
+        <div class="modal-contents-2">
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post" class="form">
+                <div class="welcome-form">
+                    <h1>Ingresar a Evento</h1>
+                    <p>Digita los datos para poder ingresar</p>
+                </div>
+
+                <div class="titulos-form">Nombre de Usuario</div>
+                <div class="user line-input">
+                    <i class="fas fa-user"></i>
+                    <label class="lnr lnr-user"></label>
+                    <input type="text" placeholder="Nombre Usuario*" name="usuario" />
+                </div>
+                <div class="titulos-form">Contraseña de Acceso</div>
+                <div class="password line-input">
+                    <i class="fas fa-key"></i>
+                    <label class="lnr lnr-lock"></label>
+                    <input type="password" placeholder="Contraseña*" name="clave" />
+                </div>
+                <a href="#" class="titulos-form-forgot">Olvidaste tu Constraseña</a>
+                <?php if(!empty($error)):?>
+                <div class="mensaje">
+                    <?php echo $error; ?>
+                </div>
+                <?php endif; ?>
+                <button type="submit">INGRESAR<label class="lnr lnr-chevron-right"></label></button>
+            </form>
         </div>
     </div>
-    <div class="row no-gutters">
-        <div class="col-lg-12 pr-lg-1 my-2">
-            <button type="submit" class="btn btn-info btn-login btn-block btn-lg" data-id-form="form-login"><i class="fas fa-spinner fa-spin hidden"></i> <span>Iniciar Sesión</span></button>
-            <div class="mensaje-login alert" role="alert"></div>
-        </div>
-    </div>
-</form>
+</section>
 
 <script>
-
-$("#form-login").validate({
-    rules: {
-        usuario: {
-            required: true
-        },
-        contrasena: {
-            required: true
-        }
-    },
-    messages: {
-        usuario: {
-            required: 'Por favor, ingrese su usuario'
-        },
-        contrasena: {
-            required: 'Por favor, ingrese su contraseña'
-        }
-    },
-    errorPlacement: function (error, element) {
-        error.insertAfter(element.parent());
-    }
-});
-
+    <?php if( $this->fondo_video['estado'] ) : ?>
+        anamorph("<?php echo $this->layout()->url_backend.'/paginas/home/'.$this->fondo_video['ruta']; ?>", 0.5, "<?php echo ( isset($this->configuracion['imagen_fondo_movil'])) ? $this->layout()->url_backend.'/paginas/home/'.$this->configuracion['imagen_fondo_movil']['hash'] : $this->layout()->url_backend.'/img/plantillas/home/imagen_fondo.jpg'; ?>");
+    <?php endif; ?>
 </script>

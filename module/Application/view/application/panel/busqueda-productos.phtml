@@ -1,0 +1,174 @@
+<?php $this->headTitle('BÚSQUEDA - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<section class="home-buscador" style="background: #dfdfdf;">
+    <div class="contenedor-auditorios-premium">
+
+        <div class="filtro-buscar" style="background-image: url(<?php echo ($this->layout()->feria['config_buscador_hash_fondo']!='') ? $this->layout()->url_backend.'/buscador/fondo/'.$this->layout()->feria['config_buscador_hash_fondo'] : $this->layout()->url_backend.'/plantillas/imagenes/fondo-buscador.jpeg'; ?>)">
+            <div class="filtro-todos">
+                <?php if($this->layout()->feria['config_buscador_titulo'] != '') : ?>
+                <h2><?php echo $this->layout()->language->translate($this->layout()->feria['config_buscador_titulo'])['text']; ?></h2>
+                <?php else: ?>
+                <h2><?php echo $this->layout()->language->translate('ENCUENTRA AQUÍ LOS MEJORES DESCUENTOS EN LOS DISTRITOS MAS EXCLUSIVOS DE LIMA')['text']; ?></h2>
+                <?php endif; ?>
+            </div>
+            <div class="space"></div>
+            <div class="filtro-searcher">
+                <div class="demo">
+                    <div class="form-search">
+                        <div class="input-group">
+                            <input class="form-control form-text bg-white" id="buscador" maxlength="128" placeholder="<?php echo $this->layout()->language->translate('Buscar')['text']; ?>" size="15" type="text" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary"><i class="fa fa-search fa-lg">&nbsp;</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-template="empresas" style="display: none;">
+            <div class="contenedor-proyecto">
+                <img data-empresa="img" src="" />
+            </div>
+            <strong data-empresa="empresa"></strong>
+            <small data-empresa="zona"></small>
+            <span class="ocultar" data-empresa="enlace"><i class="far fa-comments"></i></span>
+            <img data-empresa="imagen" style="margin-top: 1vh" src="imagenes/whatsapp2-01.svg" alt="">
+        </div>
+
+        <div id="grid-premium" data-aos="fade-up" data-contenedor="empresas"></div>
+    </div>
+
+    <div id="chatcito" class="well-chatcito">
+        <div class="caja-chatcito">
+            <span>NOMBRE Y APELLIDO</span>
+            <div id="web_chat"></div>
+            <input type="text" id="name" placeholder="Nombre" class="campos-chatcito" /><br />
+            <textarea placeholder="Escribe tu consulta..." id="text" class="campos-comentarios-chatcito"></textarea>
+            <input type="button" onclick="send();" value="ENVIAR" class="send-chatcito" /><br />
+        </div>
+    </div>
+</section>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    const inputBuscador = $("#buscador");
+    const templateEmpresas = $("div[data-template='empresas']");
+    const contenedorEmpresas = $("div[data-contenedor='empresas']");
+
+    var timer = 0;
+    var datosEmpresas = [];
+
+    $(document).ready(function () {
+        $("body").css({ "overflow-y": "scroll" });
+        listaEmpresas();
+        inputBuscador.keyup(function () {
+            let search = $(this).val();
+            if (inputBuscador.val() != "") {
+                contenedorEmpresas.html("<div>Buscando...</div>");
+                delay(function () {
+                    contenedorEmpresas.html("");
+                    $.post(
+                        "<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/lista-productos",
+                        { q: search },
+                        function (data) {
+                            if (data.length) {
+                                for (i in data) {
+                                    procesarResultadosBusqueda(data);
+                                }
+                            } else {
+                                contenedorEmpresas.html("<div>No se encontraron resultados</div>");
+                            }
+                        },
+                        "json"
+                    );
+                }, 800);
+            } else {
+                clearTimeout(timer);
+                cargarDatosEmpresas();
+            }
+        });
+    });
+    
+    var delay = (function () {
+        return function (callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+    function listaEmpresas() {
+        $.post(
+            "<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/lista-productos",
+            function (data) {
+                if (data.length) {
+                    for (i in data) {
+                        procesarResultadosBusqueda(data);
+                    }
+                    datosEmpresas = data;
+                }
+            },
+            "json"
+        );
+    }
+
+    function cargarDatosEmpresas() {
+        let data = datosEmpresas;
+        if (data.length) {
+            contenedorEmpresas.html("");
+            for (i in data) {
+                procesarResultadosBusqueda(data);
+            }
+        }
+    }
+
+    function procesarResultadosBusqueda(data) {
+        let html = $("<div>").html(templateEmpresas.html());
+        let a = $("<a>").addClass("chatcito_open empresas").html(html.html());
+        let imagen = obtenerImagenPorTipo(data[i]._tipo, data[i]);
+        imagen = ( imagen ) ? imagen : "/img/no-imagen.jpg";
+        let enlace_redirect = data[i].idempresas !== "0" ? "<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/stand/zona/" + data[i].zona_orden + "/empresa/" + data[i].empresa_orden + "/" + data[i].hash_url : "javascript:abrirVentanaWindow('" + data[i].enlace + "')";
+        enlace_redirect = data[i].pagina_envivo === "1" ? enlace_redirect.replace("stand/","expositores-vivo/") : enlace_redirect;
+        let descripcion = data[i].zona !== null ? data[i].zona : data[i].descripcion;
+        let enlaceBusqueda = data[i].idempresa !== "0" ? data[i].enlace_wsp : data[i].enlace;
+        let enlaceModalWindow = enlaceBusqueda !== null ? enlaceBusqueda : "";
+        a.attr("href", enlace_redirect);
+        a.find('[data-empresa="empresa"]').text(data[i].nombre);
+        a.find('[data-empresa="zona"]').text(descripcion);
+        a.find('[data-empresa="img"]').attr("src", "<?php echo $this->layout()->url_backend; ?>" + imagen);
+        a.find('[data-empresa="enlace"]').attr("onclick", "abrirVentanaWindow('" + enlaceModalWindow + "', 'Wsp', 900, 650, event)");
+        a.find('[data-empresa="imagen"]').attr("onclick", "abrirVentanaWindow('" + enlaceModalWindow + "', 'Wsp', 900, 650, event)");
+
+        const divContent = $("<div>").addClass('po').append(a);
+        contenedorEmpresas.append(divContent);
+    }
+
+    function obtenerImagenPorTipo(tipo, data){
+        let rutaImagen = "";
+        switch(tipo){
+            case 'B':
+                rutaImagen = `/buscador/imagen/${ data.hash_imagen }`
+            break;
+            case 'P':
+                rutaImagen = `/promociones/imagen/${ data.hash_imagen }`
+            break;
+            default:
+            break;
+        }
+        return rutaImagen;
+    }
+
+    $("[chat-grupal='contenedor-usuarios-chat']").hide();
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

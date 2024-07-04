@@ -1,0 +1,9 @@
+<div id="contact-form-gracias">
+    <form method="post" action="index.php">
+        <h2><?php echo $this->layout()->language->translate('GRACIAS POR REGISTRARTE')['text']; ?></h2>
+        <div class="logo"><img src="imagenes/check-01.svg" width="14%" /></div>
+        <h2><?php echo $this->nonbres." ".$this->apellido_paterno." ".$this->apellido_materno; ?> <?php echo $this->layout()->language->translate('Bienvenido a la feria virtual Expopyme 2021.')['text']; ?></h2>
+        <h2 style="font-weight: bold;"><?php echo $this->layout()->language->translate('Lugar')['text']; ?>: www.<?php echo $this->layout()->feria['dominio']; ?></h2>
+        <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel"><button type="button" class="go-feria">INGRESAR</button></a>
+    </form>
+</div>

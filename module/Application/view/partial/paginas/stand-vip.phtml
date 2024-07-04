@@ -1,0 +1,163 @@
+<div class="logo-live-stand">
+    <div class="logo-live-center-stand">
+        <img src="<?php echo ( $this->empresa['hash_logo'] != '' ) ? $this->layout()->url_backend."/empresas/logo/".$this->empresa['hash_logo'] : ''; ?>" alt="">
+    </div>
+</div>
+
+<div class="home-fondo-stands <?php echo ($this->fondo_video['estado']) ? 'bg-none' : ''; ?>" style="background-image: url(<?php echo(isset($this->configuracion['imagen_fondo']))? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_fondo.jpg';?>);">
+
+    <?php
+        $data = ['expositor'=> $this->expositor, 'empresa'=> $this->empresa];
+        echo $this->partial('partial/empresa/info-modulo', $data);
+    ?>
+
+    <div class="stand-middle-vip">
+        <img src="imagenes/stand-vip.png" alt="">
+
+        <div class="logo-stand-vip">
+            <div class="logo-stand-vip-center">
+                <img src="<?php echo ( isset($this->configuracion['imagen_logo_1'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_logo_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_logo_1.svg'; ?>" alt="">
+                <a onclick="Panel.validarSesion(event)" href="<?php echo $this->layout()->idiomaSeleccionado.'/panel/expositores-vivo/zona/'.$this->zona['orden'].'/empresa/'.$this->empresa['orden'].'/'.$this->empresa['hash_url']; ?>" class="en-vivo <?php if( $this->empresa['config_estado_boton_envivo'] == "1" ) echo "ocultar"; ?>"> <?php echo $this->layout()->language->translate(($this->empresa['titulo_boton_envivo']!='')?$this->empresa['titulo_boton_envivo']:'AGENDA TU CITA')['text']; ?><img src="imagenes/tin.svg" alt=""></a>
+            </div>
+        </div>
+
+        <div class="paneles-stand-vip">
+            <div class="paneles-stand-vip-middle">
+                <div class="left-vip">
+                    <span><img src="imagenes/tin-green.svg" alt=""></span>
+                    <a class="banner_izquierda_1 banner_1_open" href="#" data-tooltip="<?php echo $this->layout()->language->translate('MÁS INFORMACIÓN')['text']; ?>">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_banner_1'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_banner_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_banner_1.jpg'; ?>" alt="">
+                    </a>
+                </div>
+
+                <div class="space"></div>
+
+                <div class="left-2-vip">
+                    <span><img src="imagenes/tin-green.svg" /></span>
+                    <a class="banner_izquierda_2 banner_2_open" href="#" data-tooltip="<?php echo $this->layout()->language->translate('MÁS INFORMACIÓN')['text']; ?>">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_banner_2'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_banner_2']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_banner_2.jpg'; ?>" alt="">
+                    </a>
+                </div>
+
+                <div class="space-2"></div>
+
+                <div class="center-vip">
+                    <span><img src="imagenes/tin-green.svg" /></span>
+                    <a href="<?php echo ( $this->empresa['enlace_video'] != '' ) ? $this->empresa['enlace_video'] : 'javascript:void(0)'; ?>" class="tv1_open" data-tooltip="VER VIDEO">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_tv_1'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_tv_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_tv_1.jpg'; ?>" alt="">
+                    </a>
+                </div>
+
+                <div class="space-2"></div>
+
+                <div class="right-vip">
+                    <span><img src="imagenes/tin-green.svg" /></span>
+                    <a class="banner_derecha_1 banner_3_open" href="#" data-tooltip="<?php echo $this->layout()->language->translate('MÁS INFORMACIÓN')['text']; ?>">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_banner_3'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_banner_3']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_banner_3.jpg'; ?>" alt="">
+                    </a>
+                </div>
+
+                <div class="space"></div>
+
+                <div class="right-2-vip">
+                    <span><img src="imagenes/tin-green.svg" /></span>
+                    <a class="banner_derecha_2 banner_4_open" href="#" data-tooltip="<?php echo $this->layout()->language->translate('MÁS INFORMACIÓN')['text']; ?>">
+                        <img src="<?php echo ( isset($this->configuracion['imagen_banner_4'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_banner_4']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_banner_4.jpg'; ?>" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!--MODAL BANNER [INICIO]-->
+        <div id="banner_1" class="well-zoom-circulo">
+            <div class="modal-contents-zoom-circulo">
+                <a href="javascript:abrirVentanaWindow('<?php echo ( $this->empresa['banner_izquierda_1'] != '' ) ? $this->empresa['banner_izquierda_1'] : ''; ?>')">
+                    <img src="<?php echo ( isset($this->configuracion['imagen_banner_1'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_banner_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_banner_1.jpg'; ?>" alt="">
+                </a>
+            </div>
+        </div>
+        <div id="banner_2" class="well-zoom-circulo">
+            <div class="modal-contents-zoom-circulo">
+                <a href="javascript:abrirVentanaWindow('<?php echo ( $this->empresa['banner_izquierda_2'] != '' ) ? $this->empresa['banner_izquierda_2'] : ''; ?>')">
+                    <img src="<?php echo ( isset($this->configuracion['imagen_banner_2'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_banner_2']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_banner_2.jpg'; ?>" alt="">
+                </a>
+            </div>
+        </div>
+        <div id="banner_3" class="well-zoom-circulo">
+            <div class="modal-contents-zoom-circulo">
+                <a href="javascript:abrirVentanaWindow('<?php echo ( $this->empresa['banner_derecha_1'] != '' ) ? $this->empresa['banner_derecha_1'] : ''; ?>')">
+                    <img src="<?php echo ( isset($this->configuracion['imagen_banner_3'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_banner_3']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_banner_3.jpg'; ?>" alt="">
+                </a>
+            </div>
+        </div>
+        <div id="banner_4" class="well-zoom-circulo">
+            <div class="modal-contents-zoom-circulo">
+                <a href="javascript:abrirVentanaWindow('<?php echo ( $this->empresa['banner_derecha_2'] != '' ) ? $this->empresa['banner_derecha_2'] : ''; ?>')">
+                    <img src="<?php echo ( isset($this->configuracion['imagen_banner_4'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_banner_4']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_banner_4.jpg'; ?>" alt="">
+                </a>
+            </div>
+        </div>
+        <!--MODAL BANNER [FIN]-->
+
+        <div class="box-counter-vip">
+            <div class="box-counter-center-vip">
+                <img src="imagenes/counter-vip.png" alt="">
+                <div class="logo-company">
+                <img src="<?php echo ( isset($this->configuracion['imagen_logo_3'])) ? $this->layout()->url_backend.'/paginas/stand-vip/'.$this->configuracion['imagen_logo_3']['hash'] : $this->layout()->url_backend.'/img/plantillas/stand-vip/imagen_logo_3.svg'; ?>" alt="">
+                </div>
+            </div>
+        </div>
+        <?php if( $this->empresa['enlace_wsp'] != '' ) : ?>
+        <div class="navbar5">
+            <div class="boton" style="animation-delay: 1.7s;">
+                <a href="javascript:abrirVentanaWindow('<?php echo $this->empresa['enlace_wsp']; ?>')" data-tooltip="<?php echo $this->layout()->language->translate('CHATEA CON UN ASESOR')['text']; ?>" class="chat_open wsp"><img src="imagenes/logo-stands-02.svg" width="35%" alt="" onclick="Panel.validarSesion(event)"></a>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
+
+    <?php
+        echo $this->partial('partial/menus/banner-modulo', [
+            'empresa'=> $this->empresa,
+            'zona'=> $this->zona,
+            'accion'=> 'stand',
+            'totalProductos'=> $this->totalProductos,
+            'totalPromociones'=> $this->totalPromociones,
+            'totalPlanos'=> $this->totalPlanos,
+            'class'=> '2'
+        ]);
+    ?>
+
+    <a href="<?php echo $this->layout()->idiomaSeleccionado.'/panel/expositores-vivo/zona/'.$this->zona['orden'].'/empresa/'.$this->empresa['orden'].'/'.$this->empresa['hash_url']; ?>" id="toggle" class="en-vivo <?php if( $this->empresa['config_estado_boton_envivo'] == "1" ) echo "ocultar"; ?>"><?php echo $this->layout()->language->translate(($this->empresa['titulo_boton_envivo']!='')?$this->empresa['titulo_boton_envivo']:'AGENDA TU CITA')['text']; ?>
+        <img src="imagenes/tin.svg" alt="">
+    </a>
+
+    <div id="chat" class="well-chat">
+        <div class="caja-chat">
+            <h2><?php echo $this->layout()->language->translate('CONVERSA CON NOSOTROS')['text']; ?></h2>
+            <div id="web_chat"></div>
+            <div>
+                <input type="text" id="name" placeholder="Nombre" class="campos-chat" /><br />
+                <textarea placeholder="Escribe tu consulta..." id="text" class="campos-comentarios"></textarea>
+                <input type="button" onclick="send();" value="ENVIAR" class="send-chat" /><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    $('#banner_1, #banner_2, #banner_3, #banner_4').popup({
+        transition: 'all 0.3s',
+        closebutton: true
+    });
+
+    <?php if( $this->fondo_video['estado'] ) : ?>
+        anamorph("<?php echo $this->layout()->url_backend.'/paginas/stand-vip/'.$this->fondo_video['ruta']; ?>", 0.5, "https://www.jqueryscript.net/dummy/6.jpg");
+    <?php endif; ?>
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

@@ -1,0 +1,146 @@
+<?php $this->headTitle('ZONA - '.mb_strtoupper($this->zona['nombre']).' - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<?php echo $this->partial('partial/fondos/movil', ['accion'=> 'zonas','configuracion'=> $this->configuracion]); ?>
+
+<section class="home-hall-front <?php echo ($this->fondo_video['estado']) ? 'bg-none' : ''; ?>"" style="background-image: url(<?php echo(isset($this->configuracion['imagen_fondo']))? $this->layout()->url_backend.'/paginas/zonas/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/zonas/imagen_fondo.jpg';?>);">
+
+    <div class="caja-ads-pabellon-front">
+        <div class="caja-ads-pabellon-center-front">
+            <div class="cajas-artes-pabellon-front">
+                <div class="arte-3">
+                    <?php
+                        $banner_5_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_banner_5']) && $this->configuracion['banner_opciones']['imagen_banner_5'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_5'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_banner_5']: 'javascript:void(0)';
+                        $banner_5_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_banner_5'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_5'] !== '' ) ? '_blank' : '_self';
+                    ?>
+                    <a href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_banner_5']) && $this->configuracion['banner_opciones']['imagen_banner_5'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_5'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_5'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_5'])[2]:$banner_5_no_empresa;?>" target="<?php echo $banner_5_metodo_enlace; ?>"> <img src="<?php echo ( isset($this->configuracion['imagen_banner_5'])) ? $this->layout()->url_backend.'/paginas/zonas/'.$this->configuracion['imagen_banner_5']['hash'] : $this->layout()->url_backend.'/img/plantillas/zonas/imagen_banner_5.jpg'; ?>" alt=""></a>
+                </div>
+                <div class="espacito"></div>
+                <div class="arte-1">
+                    <?php
+                        $banner_1_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_banner_1']) && $this->configuracion['banner_opciones']['imagen_banner_1'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_1'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_banner_1']: 'javascript:void(0)';
+                        $banner_1_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_banner_1'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_1'] !== '' ) ? '_blank' : '_self';
+                    ?>
+                    <a href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_banner_1']) && $this->configuracion['banner_opciones']['imagen_banner_1'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_1'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_1'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_1'])[2]:$banner_1_no_empresa;?>" target="<?php echo $banner_1_metodo_enlace; ?>"> <img src="<?php echo ( isset($this->configuracion['imagen_banner_1'])) ? $this->layout()->url_backend.'/paginas/zonas/'.$this->configuracion['imagen_banner_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/zonas/imagen_banner_1.jpg'; ?>" alt=""></a>
+                </div>
+                <div class="espacito"></div>
+                <div class="arte-2">
+                    <?php
+                        $banner_2_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_banner_2']) && $this->configuracion['banner_opciones']['imagen_banner_2'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_2'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_banner_2']: 'javascript:void(0)';
+                        $banner_2_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_banner_2'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_2'] !== '' ) ? '_blank' : '_self';
+                    ?>
+                    <a href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_banner_2']) && $this->configuracion['banner_opciones']['imagen_banner_2'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_2'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_2'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_2'])[2]:$banner_2_no_empresa;?>" target="<?php echo $banner_2_metodo_enlace; ?>"><img src="<?php echo ( isset($this->configuracion['imagen_banner_2'])) ? $this->layout()->url_backend.'/paginas/zonas/'.$this->configuracion['imagen_banner_2']['hash'] : $this->layout()->url_backend.'/img/plantillas/zonas/imagen_banner_2.jpg'; ?>" alt=""></a>
+                </div>
+            </div>
+            <div class="espacio-banner"></div>
+            <div class="arte-middle-front">
+                <div class="go-back">
+                    <?php if($this->flechasZonas['anterior']['activo']) : ?>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/zonas/<?php echo $this->flechasZonas['anterior']['orden']; ?>">
+                        <img src="imagenes/FLECHA-PABELLONES-40.svg" alt="">
+                    </a>
+                    <?php endif; ?>
+                    <p><?php echo $this->zona['nombre']; ?></p>
+                    <?php if($this->flechasZonas['siguiente']['activo']) : ?>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/zonas/<?php echo $this->flechasZonas['siguiente']['orden']; ?>">
+                        <img src="imagenes/FLECHA-PABELLONES-41.svg" alt=""></a>
+                    <?php endif; ?>
+                </div>
+                <div class="center-middle">
+                    <img src="<?php echo ( isset($this->configuracion['imagen_tv_1'])) ? $this->layout()->url_backend.'/paginas/zonas/'.$this->configuracion['imagen_tv_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/zonas/imagen_tv_1.jpg'; ?>" alt="">
+                </div>
+            </div>
+            <div class="espacio-banner"></div>
+            <div class="cajas-artes-pabellon-2-front">
+                <div class="arte-3">
+                    <?php
+                        $banner_6_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_banner_6']) && $this->configuracion['banner_opciones']['imagen_banner_6'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_6'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_banner_6']: 'javascript:void(0)';
+                        $banner_6_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_banner_6'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_6'] !== '' ) ? '_blank' : '_self';
+                    ?>
+                    <a href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_banner_6']) && $this->configuracion['banner_opciones']['imagen_banner_6'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_6'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_6'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_6'])[2]:$banner_6_no_empresa;?>" target="<?php echo $banner_6_metodo_enlace; ?>"> <img src="<?php echo ( isset($this->configuracion['imagen_banner_6'])) ? $this->layout()->url_backend.'/paginas/zonas/'.$this->configuracion['imagen_banner_6']['hash'] : $this->layout()->url_backend.'/img/plantillas/zonas/imagen_banner_6.jpg'; ?>" alt=""></a>
+                </div>
+                <div class="espacito"></div>
+                <div class="arte-1">
+                    <?php
+                        $banner_3_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_banner_3']) && $this->configuracion['banner_opciones']['imagen_banner_3'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_3'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_banner_3']: 'javascript:void(0)';
+                        $banner_3_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_banner_3'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_3'] !== '' ) ? '_blank' : '_self';
+                    ?>
+                    <a href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_banner_3']) && $this->configuracion['banner_opciones']['imagen_banner_3'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_3'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_3'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_3'])[2]:$banner_3_no_empresa;?>" target="<?php echo $banner_3_metodo_enlace; ?>"> <img src="<?php echo ( isset($this->configuracion['imagen_banner_3'])) ? $this->layout()->url_backend.'/paginas/zonas/'.$this->configuracion['imagen_banner_3']['hash'] : $this->layout()->url_backend.'/img/plantillas/zonas/imagen_banner_3.jpg'; ?>" alt=""></a>
+                </div>
+                <div class="espacito"></div>
+                <div class="arte-2">
+                    <?php
+                        $banner_4_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_banner_4']) && $this->configuracion['banner_opciones']['imagen_banner_4'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_4'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_banner_4']: 'javascript:void(0)';
+                        $banner_4_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_banner_4'] === '' && @$this->configuracion['banner_opciones_url']['imagen_banner_4'] !== '' ) ? '_blank' : '_self';
+                    ?>
+                    <a href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_banner_4']) && $this->configuracion['banner_opciones']['imagen_banner_4'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_4'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_4'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_banner_4'])[2]:$banner_4_no_empresa;?>" target="<?php echo $banner_4_metodo_enlace; ?>"><img src="<?php echo ( isset($this->configuracion['imagen_banner_4'])) ? $this->layout()->url_backend.'/paginas/zonas/'.$this->configuracion['imagen_banner_4']['hash'] : $this->layout()->url_backend.'/img/plantillas/zonas/imagen_banner_4.jpg'; ?>" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stands-box-front">
+        <div class="center-box-front">
+            <?php foreach($this->zonasEmpresas as $item) : ?>
+            <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/stand/zona/<?php echo $this->ordenzona; ?>/empresa/<?php echo $item['orden']; ?>/<?php echo $item['hash_url']; ?>" class="empresas">
+                <?php if( $item['stand_anuncio_titulo'] != "" && $item['stand_anuncio_descripcion'] != "" && (int)$item['stand_anuncio_duracion_segundos'] > 0 ) : ?>
+                    <div class="burbuja" style="animation: slidein <?php echo (int)$item['stand_anuncio_duracion_segundos']; ?>s infinite alternate;">
+                    <img src="imagenes/bubble-01.svg" alt="">
+                    <div class="date">
+                        <h2><?php echo $item['stand_anuncio_titulo']; ?></h2>
+                        <p><?php echo $item['stand_anuncio_descripcion']; ?></p>
+                    </div>
+                </div>
+                <?php endif; ?>
+                <div class="caja-stand-front">
+                    <img src="<?php echo ( $item['hash_logo'] != '' ) ? $this->layout()->url_backend.'/empresas/logo/'.$item['hash_logo'] : $this->layout()->url_backend.'/img/plantillas/zonas/no-imagen.jpg'; ?>" alt="">
+                </div>
+                <img src="<?php echo $this->layout()->url_backend.'/stand/galeria/'.$item['hash_imagen']; ?>" alt="">
+            </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <div class="nav-advice" style="display: none;">
+        <div class="boton-arrow" style="animation-delay: 1.7s;">
+            <a href="#" data-tooltip="HAZ CLICK EN LOS LOGOS PARA VER STANDS">
+                <img src="imagenes/angle-down.svg" width="4%" alt="">
+            </a>
+        </div>
+    </div>
+</section>
+
+<?php echo $this->partial('partial/panel/icono-soporte', []); ?>
+
+<?php
+    $dataPartial = [
+        'empresas'=> $this->empresas,
+        'ordenzona'=> $this->ordenzona
+    ];
+    echo $this->partial('partial/empresa/slider', $dataPartial);
+?>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    $(".burbuja").hover(function() {
+        $(".burbuja").addClass("burbuja-off")
+        $(this).removeClass("burbuja-off").addClass("burbuja-on")
+    }, function() {
+        $(".burbuja").removeClass("burbuja-on burbuja-off")
+    });
+
+    <?php if( $this->fondo_video['estado'] ) : ?>
+        anamorph("<?php echo $this->layout()->url_backend.'/paginas/zonas/'.$this->fondo_video['ruta']; ?>", 0.5, "https://www.jqueryscript.net/dummy/6.jpg");
+    <?php endif; ?>
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

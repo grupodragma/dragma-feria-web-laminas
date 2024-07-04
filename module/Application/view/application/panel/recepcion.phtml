@@ -1,0 +1,130 @@
+<?php $this->headTitle('RECEPCIÓN - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<?php echo $this->partial('partial/fondos/movil', ['accion'=> 'recepcion','configuracion'=> $this->configuracion]); ?>
+
+<section class="home-recepcion">
+
+    <div class="slide active-2 <?php echo ($this->fondo_video['estado']) ? 'bg-none' : ''; ?>" style="background-image: url(<?php echo ( isset($this->configuracion['imagen_fondo'])) ? $this->layout()->url_backend.'/paginas/recepcion/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/recepcion/imagen_fondo.jpg'; ?>)">
+    
+        <div class="caja-logos-evento">
+            <img src="<?php echo ( isset($this->configuracion['imagen_izquierda'])) ? $this->layout()->url_backend.'/paginas/recepcion/'.$this->configuracion['imagen_izquierda']['hash'] : $this->layout()->url_backend.'/img/plantillas/recepcion/imagen_izquierda.jpg'; ?>" alt="">
+        </div>
+
+        <div class="content-gif-tv">
+            <div class="tv-gif">
+                <img src="imagenes/tv-fondo-back.png" alt="">
+                <div class="caja-gif">
+                    <img style="<?php if( $this->layout()->feria['config_pagina_enlace_video_presentacion'] != '' ) { echo "display:none;"; } ?>" src="<?php echo ( isset($this->configuracion['imagen_gif'])) ? $this->layout()->url_backend.'/paginas/recepcion/'.$this->configuracion['imagen_gif']['hash'] : $this->layout()->url_backend.'/img/plantillas/recepcion/imagen_gif.gif'; ?>" alt="">
+                    <?php if( $this->layout()->feria['config_pagina_enlace_video_presentacion'] != '' ) : ?>
+                    <iframe class="border0-iframe" width="860" height="315" src="<?php echo $this->layout()->feria['config_pagina_enlace_video_presentacion']; ?>" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-conference">
+            <div class="boton-conference ocultar" style="animation-delay:1.0s;"> <span>Recepción</span></div>
+            <div class="nav-ver">
+                <?php if( empty($this->botones) ) : ?>
+                <div class="boton-conference2" style="animation-delay: 1.5s;">
+                    <div class="marco-boton">
+                        <img src="imagenes/new-icons-03.svg" alt="">
+                    </div>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/hall"><?php echo $this->layout()->language->translate('PABELLÓN')['text']; ?></a>
+                </div>
+                <div class="boton-conference2" style="animation-delay: 1.7s;">
+                    <div class="marco-boton">
+                        <img src="imagenes/new-icons-02.svg" alt="">
+                    </div>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/conferencias"><?php echo $this->layout()->language->translate('CONFERENCIAS')['text']; ?></a>
+                </div>
+                <?php else : ?>
+                    <?php foreach($this->botones as $item) : if( $item['texto'] === '' ) continue; ?>    
+                        <div class="boton-conference2" style="animation-delay: 1.5s;">
+                            <div class="marco-boton">
+                                <img src="<?php echo ( $item['icono'] !== 'img/boton-no-found.png' ) ? $this->layout()->url_backend."/paginas/botones/".$item['icono'] : $this->layout()->url_backend."/img/boton-no-found.png"; ?>" alt="">
+                            </div>
+                            <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/<?php echo $item['pagina_redireccion'] ?>" style="background:<?php echo $item['color_fondo']; ?>;color:<?php echo $item['color_texto']; ?>"><?php echo $this->layout()->language->translate($item['texto'])['text']; ?></a>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <?php if( $this->layout()->feria['config_pagina_enlace_video_tutorial'] !== '' ) : ?>
+        <div class="vid-slider">
+            <h1>VER VIDEO TUTORIAL</h1>
+            <div class="vid item">
+                <iframe width="180" height="110" src="<?php echo $this->layout()->feria['config_pagina_enlace_video_tutorial']; ?>" class="border0-iframe" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title=""></iframe>
+            </div>
+        </div>
+        <div class="video-popup">
+            <div class="iframe-wrapper">
+                <iframe width="820" height="500" src="" class="border0-iframe" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title=""></iframe>
+                <span class="close-video"></span>
+            </div>
+        </div>
+        <?php endif; ?>
+
+    </div>
+
+</section>
+
+<?php echo $this->partial('partial/panel/icono-soporte', []); ?>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    <?php if( $this->fondo_video['estado'] ) : ?>
+        anamorph("<?php echo $this->layout()->url_backend.'/paginas/recepcion/'.$this->fondo_video['ruta']; ?>", 0.5, "<?php echo ( isset($this->configuracion['imagen_fondo'])) ? $this->layout()->url_backend.'/paginas/recepcion/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/recepcion/imagen_fondo.jpg'; ?>");
+    <?php endif; ?>
+    
+    $(document).ready(function () {
+        $(".vid-slider .vid").on("click", function () {
+            // get required DOM Elements
+            var iframe_src = $(this).children("iframe").attr("src"),
+                iframe = $(".video-popup"),
+                iframe_video = $(".video-popup iframe"),
+                close_btn = $(".close-video");
+            iframe_src = iframe_src + "?autoplay=1&rel=0"; // for autoplaying the popup video
+
+            // change the video source with the clicked one
+            $(iframe_video).attr("src", iframe_src);
+            $(iframe).fadeIn().addClass("show-video");
+
+            // remove the video overlay when clicking outside the video
+            $(document).on("click", function (e) {
+                if ($(iframe).is(e.target) || $(close_btn).is(e.target)) {
+                    $(iframe).removeClass("show-video");
+                    $(iframe_video).attr("src", "");
+                }
+            });
+        });
+
+        <?php if( $this->layout()->feria['soporte_numero'] ) : ?>
+        /*$('#myButton').floatingWhatsApp({
+            phone: '51<?php echo $this->layout()->feria['soporte_numero']; ?>',
+            popupMessage: 'Hola, como puedo ayudarte?',
+            message: "Tengo una pregunta",
+            showPopup: false,
+            showOnIE: false,
+            headerTitle: 'Bienvenido!',
+            headerColor: '#3A9A48',
+            backgroundColor: '#3A9848',
+            buttonImage: '<img src="https://dragma3d.com/whatsapp.svg" />'
+        });*/
+        <?php endif; ?>
+
+    });
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

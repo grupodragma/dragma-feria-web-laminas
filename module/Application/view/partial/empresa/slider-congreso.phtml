@@ -1,0 +1,9 @@
+<div class="back-green fd_slider_empresas">
+   <div class="center">
+      <section class="regular slider">
+        <?php foreach($this->empresas as $item): ?>
+        <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/stand/zona/<?php echo $item['zonaOrden']; ?>/empresa/<?php echo $item['empresaOrden']; ?>/<?php echo $item['empresaHashUrl']; ?>" class="empresas"><img src="<?php echo ($item['empresaHashLogo'] != '') ? $this->layout()->url_backend."/empresas/logo/".$item['empresaHashLogo'] : $this->layout()->url_backend."/img/no-imagen-empresa.jpg"; ?>"></a>
+        <?php endforeach; ?>
+      </section>
+   </div>
+</div>

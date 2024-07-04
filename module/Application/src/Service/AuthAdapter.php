@@ -1,5 +1,4 @@
 <?php
-
 namespace Application\Service;
 
 use Laminas\Authentication\Adapter\AdapterInterface;
@@ -13,44 +12,43 @@ use Laminas\Crypt\Password\Bcrypt;
  * is saved to session and can be retrieved later with Identity view helper provided
  * by ZF3.
  */
-class AuthAdapter implements AdapterInterface
-{
-    private $usuario;
-    private $password;
-    private $accesoTable;
+class AuthAdapter implements AdapterInterface {
+
+    private $numeroDocumento;
+    private $objVisitantesTable;
     private $sessionConteiner;
     private $salt = '::::::(`_´)::::: NCL/SECURE';
-
-    public function __construct($accesoTable, $sessionConteiner)
-    {
-        $this->accesoTable = $accesoTable;
+    private $objExpositoresTable;
+    private $objUsuarioEventosTable;
+    
+    public function __construct($objVisitantesTable,$sessionConteiner,$objExpositoresTable,$objUsuarioEventosTable) {
+        $this->objVisitantesTable = $objVisitantesTable;
         $this->sessionConteiner = $sessionConteiner;
+        $this->objExpositoresTable = $objExpositoresTable;
+        $this->objUsuarioEventosTable = $objUsuarioEventosTable;
+    }
+    
+    public function setNumeroDocumento($numeroDocumento) {
+        $this->numeroDocumento = trim((string)$numeroDocumento);
     }
 
-    public function setUser($usuario)
-    {
-        $this->usuario = trim($usuario);
+    public function setIdFerias($idferias) {
+        $this->idferias = trim((string)$idferias);
     }
-
-    public function setPassword($password)
-    {
-        $this->password = trim((string)$password);
-    }
-
-    public function authenticate()
-    {
-
-        $acceso = $this->accesoTable->verificarUsuario($this->usuario, $this->password);
-        if ($acceso !== false) {
-            if ($acceso['estado'] == 'A') {
-                $this->sessionConteiner->datosUsuario = $acceso;
-                $this->sessionConteiner->access = true;
-                return new Result(Result::SUCCESS, $this->usuario, ['SUCCESS']);
-            } else {
-                return new Result(Result::FAILURE, $this->usuario, ['NOACTIVATE']);
-            }
-        } else {
+    
+    public function authenticate() {
+        $acceso = $this->objVisitantesTable->obtenerDatoVisitantes(['idferias'=> $this->idferias,'numero_documento'=> $this->numeroDocumento]);
+        if(!$acceso){
+            $acceso = $this->objExpositoresTable->obtenerDatoExpositores(['idferias'=> $this->idferias,'numero_documento'=> $this->numeroDocumento]);
+        }
+        if($acceso){
+            $this->objUsuarioEventosTable->agregarUsuarioEventosLogin($acceso, $this->idferias);
+            $this->sessionConteiner->datosUsuario = $acceso;
+            $this->sessionConteiner->access = true;
+            return new Result(Result::SUCCESS, $acceso['nombres'], ['SUCCESS']);
+        }else{
             return new Result(Result::FAILURE, null, ['CREDENTIAL_INVALID']);
         }
+
     }
 }

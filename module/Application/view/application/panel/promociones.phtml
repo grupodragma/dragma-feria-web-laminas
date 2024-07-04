@@ -1,0 +1,118 @@
+<?php $this->headTitle('PROMOCIONES - '.mb_strtoupper($this->empresa['nombre']).' - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<?php
+    echo $this->partial('partial/menus/encabezado-flechas', [
+        'zona'=> $this->zona,
+        'ordenzona'=> $this->ordenzona,
+        'zonaEmpresaAnterior'=> $this->zonaEmpresaAnterior,
+        'zonaEmpresaSiguiente'=> $this->zonaEmpresaSiguiente,
+        'totalZonas'=> $this->totalZonas,
+        'accion'=> 'promociones'
+    ]);
+?>
+
+<div class="home-3">
+
+    <div class="logo-live">
+        <div class="logo-live-center">
+            <img src="<?php echo ( $this->empresa['hash_logo'] != '' ) ? $this->layout()->url_backend."/empresas/logo/".$this->empresa['hash_logo'] : ''; ?>" alt="">
+        </div>
+    </div>
+
+    <?php
+        $data = ['expositor'=> $this->expositor, 'empresa'=> $this->empresa, 'zona'=> $this->zona];
+        echo $this->partial('partial/empresa/info-modulo', $data);
+    ?>
+
+    <div class="contenedor-promociones">
+        <div class="container-grid-promociones">
+            <h2><?php echo $this->layout()->language->translate('PROMOCIONES')['text']; ?></h2>
+            <div id="grid-promo" data-aos="fade-up">
+                <?php $i = 0; foreach($this->promociones as $item) : ?>
+                <a href="#" class="caja<?php echo $i; ?>_open">
+                    <span><i class="fas fa-search"></i>&nbsp;<?php echo $this->layout()->language->translate('VER MÁS')['text']; ?></span><img src="<?php echo $this->layout()->url_backend; ?>/promociones/imagen/<?php echo $item['hash_imagen']; ?>" width="100%" alt="">
+                </a>
+                <?php $i++; endforeach; ?>
+            </div>
+        </div>
+    </div>
+
+    <?php $i = 0; foreach($this->promociones as $item) : ?>
+    <div id="caja<?php echo $i; ?>" class="well-2">
+        <div class="modal-contents-caja">
+            <div><img src="<?php echo $this->layout()->url_backend; ?>/promociones/imagen/<?php echo $item['hash_imagen']; ?>" width="100%" alt=""></div>
+            <div class="botones-two">
+                <?php if( $item['tipo_enlace'] == 'PDF' ) : ?>
+                <a href="<?php echo $this->layout()->url_backend; ?>/promociones/documentos/<?php echo $item['hash_pdf']; ?>" class="_modal_brochure" download="<?php echo $item['nombre_pdf']; ?>" target="_blank"><?php echo $this->layout()->language->translate('DESCARGA BROCHURE')['text']; ?></a>
+                <div class="space"></div>
+                <?php endif; ?>
+                <?php if( $item['tipo_enlace'] == 'URL' ) : ?>
+                <a href="<?php echo $item['enlace']; ?>" class="_modal_abrir_enlace" target="_blank"><?php echo $this->layout()->language->translate('ABRIR ENLACE')['text']; ?></a>
+                <div class="space"></div>
+                <?php endif; ?>
+                <a href="javascript:void(0)" class="_modal_envia_correo" onclick="Panel.enviarCorreo('promocion', <?php echo $item['idpromociones']; ?>, this, <?php echo $this->empresa['idempresas']; ?>)"><?php echo $this->layout()->language->translate('ENVIA POR CORREO')['text']; ?></a>
+                <div class="space"></div>
+                <a href="javascript:abrirVentanaWindow('<?php echo ( $item['enlace_wsp'] != '' ) ? $item['enlace_wsp'] : $this->empresa['enlace_wsp']; ?>')" class="wsp _modal_wsp"><img src="imagenes/whatsapp.svg" alt="" onclick="Panel.validarSesion(event)"></a>
+            </div>
+        </div>
+    </div>
+    <?php $i++; endforeach; ?>
+</div>
+
+<div class="franja-amarillo">
+    <div class="responsive-franja"><?php echo $this->partial('partial/menus/pie-pagina', ['empresa'=> $this->empresa, 'zona'=> $this->zona, 'accion'=> 'promociones', 'totalProductos'=> $this->totalProductos, 'totalPromociones'=> $this->totalPromociones, 'totalPlanos'=> $this->totalPlanos]); ?></div>
+    <a class="space"></a>
+    <?php
+        echo $this->partial('partial/menus/pie-pagina-flechas', [
+            'empresa'=> $this->empresa,
+            'zona'=> $this->zona,
+            'ordenempresa'=> $this->ordenempresa,
+            'ordenzona'=> $this->ordenzona,
+            'empresaAnterior'=> $this->empresaAnterior,
+            'empresaSiguiente'=> $this->empresaSiguiente,
+            'totalEmpresas'=> $this->totalEmpresas
+        ]);
+    ?>
+</div>
+
+<?php
+    $dataPartial = [
+        'empresas'=> $this->empresas,
+        'ordenzona'=> $this->ordenzona
+    ];
+    echo $this->partial('partial/empresa/slider', $dataPartial);
+?>
+
+<?php
+    echo $this->partial('partial/empresa/agendar-cita', ['empresa'=> $this->empresa]);
+?>
+
+<script type="text/javascript">
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    //Capturar Orden Empresa
+    UsuariosEventos.ordenzona = '<?php echo $this->ordenzona; ?>';
+    UsuariosEventos.ordenempresa = '<?php echo $this->ordenempresa; ?>';
+
+    $(document).on("ready", function () {
+
+        <?php $i = 0; foreach($this->promociones as $item) : ?>
+        $("#caja<?php echo $i; ?>").popup({
+            transition: "all 0.3s",
+            closebutton: true,
+        });
+        <?php $i++; endforeach; ?>
+
+    });
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

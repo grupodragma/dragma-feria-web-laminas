@@ -1,0 +1,91 @@
+<style>
+    @media screen and (max-width: 580px) {
+    <?php if ($this->accion === 'home') : ?>
+        <?php if( isset($this->configuracion['imagen_fondo']) ) : ?>
+            <?php if( isset($this->configuracion['imagen_fondo_movil']) ) : ?>
+            .home .slide.active {
+                background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo_movil']['hash']; ?>') !important;
+            }
+            <?php else : ?>
+            .home .slide.active {
+                background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo']['hash']; ?>') !important;
+            }
+            <?php endif; ?>
+        <?php else : ?>
+        .home .slide.active {
+            background-image: url('<?php echo $this->layout()->url_backend.'/img/plantillas/home/imagen_fondo.jpg'; ?>') !important;
+        }
+        <?php endif; ?>
+    <?php elseif ($this->accion === 'hall') : ?>
+        <?php if( isset($this->configuracion['imagen_fondo_movil']) ) : ?>
+        .home .slide.active-hall {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo_movil']['hash']; ?>') !important;
+        }
+        <?php else : ?>
+        .home .slide.active-hall {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo']['hash']; ?>') !important;
+        }
+        <?php endif; ?>
+    <?php elseif ($this->accion === 'hall-conferencias') : ?>
+        <?php if( isset($this->configuracion['imagen_fondo_movil']) ) : ?>
+        .home-conferencias .slide.active {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo_movil']['hash']; ?>') !important;
+        }
+        <?php else : ?>
+        .home-conferencias .slide.active {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo']['hash']; ?>') !important;
+        }
+        <?php endif; ?>
+    <?php elseif ($this->accion === 'recepcion') : ?>
+        <?php if( isset($this->configuracion['imagen_fondo_movil']) ) : ?>
+        .home-recepcion .slide.active-2 {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo_movil']['hash']; ?>') !important;
+        }
+        <?php else : ?>
+        .home-recepcion .slide.active-2 {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo']['hash']; ?>') !important;
+        }
+        <?php endif; ?>
+    <?php elseif ($this->accion === 'registro') : ?>
+        <?php if( isset($this->configuracion['imagen_fondo_movil']) ) : ?>
+        .white-form-enter {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo_movil']['hash']; ?>') !important;
+        }
+        <?php else : ?>
+        .white-form-enter {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo']['hash']; ?>') !important;
+        } 
+        <?php endif; ?>
+    <?php elseif ($this->accion === 'registro-presencial') : ?>
+        <?php if( isset($this->configuracion['imagen_fondo_movil']) ) : ?>
+        .white-form-enter {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo_movil']['hash']; ?>') !important;
+        }
+        <?php else : ?>
+        .white-form-enter {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo']['hash']; ?>') !important;
+        } 
+        <?php endif; ?>
+    <?php elseif ($this->accion === 'cronograma') : ?>
+        <?php if( isset($this->configuracion['imagen_fondo_movil']) ) : ?>
+        .home-cronograma .center {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo_movil']['hash']; ?>') !important;
+        }
+        <?php else : ?>
+        .home-cronograma .center {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo']['hash']; ?>') !important;
+        }
+        <?php endif; ?>
+    <?php elseif ($this->accion === 'zonas') : ?>
+        <?php if( isset($this->configuracion['imagen_fondo_movil']) ) : ?>
+        .home-hall-front {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo_movil']['hash']; ?>') !important;
+        }
+        <?php else : ?>
+        .home-hall-front {
+            background-image: url('<?php echo $this->layout()->url_backend.'/paginas/'.$this->accion.'/'.$this->configuracion['imagen_fondo']['hash']; ?>') !important;
+        }
+        <?php endif; ?>
+    <?php endif; ?>
+    }
+</style>

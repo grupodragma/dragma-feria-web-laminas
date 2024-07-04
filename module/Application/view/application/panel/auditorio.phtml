@@ -1,0 +1,171 @@
+<?php $this->headTitle('AUDITORIO - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<?php if( $this->layout()->datosUsuarioLogin && $this->cronogramaFechaActual ) : ?>
+<!-- CHAT AUDITORIO GENERAL [FIN] -->
+<div class="chat-box3" chat-general="contenedor">
+    <small class="close6">X</small>
+    <div class="chat-head2">
+        <h3><span chat-general="contador"></span> Chat en Vivo</h3>
+        <h4 chat-general="total-mensajes">(<?php echo $this->totalMensajesChatsConferencias; ?> Mensajes)</h4>
+        <div class="si2">
+            <img src="https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_down-16.png" title="Expand Arrow" width="16" alt="">
+        </div>
+    </div>
+    <div class="chat-body" style="display: none">
+        <div class="msg-insert">
+            <div class="resume-conf">
+                <div class="icon-resum" style="display: none;">
+                    <img src="imagenes/company-logo.png" alt="">
+                </div>
+                <div class="text2" style="width: 100%;">
+                    <p><big><?php echo ( $this->cronogramaFechaActual['titulo_chat_conferencia'] != "" ) ? $this->cronogramaFechaActual['titulo_chat_conferencia'] : "Bienvenidos a la conferencia."; ?></big></p>
+                </div>
+            </div>
+            <div chat-general="mensajes">
+                <?php if(!empty($this->historialChatsConferencias)) : foreach($this->historialChatsConferencias as $item) : ?>
+                <div class="msg-send2">
+                    <div class="bol<?php if ( $item['tipo_usuario'] === 'E' ) { echo '2'; } ?>">
+                        <?php if($item['tipo_usuario'] != 'E') : ?>
+                        <span class="prefix"><?php echo mb_substr($item['usuario'], 0, 1, "UTF-8"); ?></span>
+                        <?php else: ?>
+                        <img class="logo" src="<?php echo $this->layout()->url_backend."/empresas/logo/".$item['empresa']['hash_logo']; ?>" alt="">
+                        <?php endif; ?>
+                    </div>
+                    <div class="te">
+                        <strong class="user"><?php echo $item['usuario']; ?>: </strong>
+                        <span class="msg"><?php echo $item['mensaje']; ?></span>
+                    </div>
+                </div>
+                <?php endforeach; endif; ?>
+            </div>
+        </div>
+        <div class="chat-text-3">
+            <button class="emox" style="display: none" onclick="toggleEmojiDrawer(this)"><img src="imagenes/emoticon.svg" alt=""></button>
+            <div id="drawr" class="emoji-drawer" style="display: none">
+                <div class="emoji" onclick="addEmoji(this)">😀</div>
+                <div class="emoji" onclick="addEmoji(this)">😃</div>
+                <div class="emoji" onclick="addEmoji(this)">😄</div>
+                <div class="emoji" onclick="addEmoji(this)">😁</div>
+                <div class="emoji" onclick="addEmoji(this)">😆</div>
+                <div class="emoji" onclick="addEmoji(this)">😆</div>
+                <div class="emoji" onclick="addEmoji(this)">😅</div>
+                <div class="emoji" onclick="addEmoji(this)">😉</div>
+                <div class="emoji" onclick="addEmoji(this)">👏</div>
+                <div class="emoji" onclick="addEmoji(this)">👍</div>
+            </div>
+            <input id="input" placeholder="Escribe algo..." chat-general="input">
+            <button type="button" class="chat-submit2" onclick="ChatGeneral.enviarMensaje()" id="chat-submit">
+                <i class="material-icons">send</i>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- CHAT AUDITORIO GENERAL [FIN] -->
+<?php endif; ?>
+
+<?php
+    $data = ['conferencias'=> $this->conferencias, 'cronogramaFechaActual'=> $this->cronogramaFechaActual, 'auditorioImagenesInicial'=> $this->auditorioImagenesInicial];
+    switch( $this->tipoAuditorio ) {
+        case 'auditorio_banner_1': echo $this->partial('partial/auditorio/banner_1', $data); break;
+        case 'auditorio_banner_2': echo $this->partial('partial/auditorio/banner_2', $data); break;
+        default: echo 'No se encontro una plantilla.'; break;
+    }
+?>
+
+<div class="franja-azul-conference-web">
+    <a href="#" id="cool-link-conference" style="color: #fff; text-decoration: none;" class="conference_open"><i class="fas fa-video"></i>&nbsp;<?php echo $this->layout()->language->translate('BIBLIOTECA DE VIDEOS')['text']; ?></a>
+    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/cronogramas" id="cool-link-conference"><i class="fas fa-calendar-alt"></i>&nbsp;<?php echo $this->layout()->language->translate('CRONOGRAMA')['text']; ?></a>
+</div>
+
+<?php echo $this->partial('partial/panel/icono-soporte', []); ?>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    <?php if( $this->layout()->datosUsuarioLogin && $this->cronogramaFechaActual ) : ?>
+    
+    ChatGeneral.idcronogramas = '<?php echo $this->cronogramaFechaActual['idcronogramas']; ?>';
+
+    socket.on('mensajeGeneral', function(data) {
+        const usuario = data.usuario.usuario;
+        let seleccionarPlantilla = ( usuario.tipo === 'E' ) ? ChatGeneral.chatMensajePlantillaExpositor : ChatGeneral.chatMensajePlantilla;
+        let mensaje = $("<div>").addClass("msg-send2").html(seleccionarPlantilla);
+        if( usuario.tipo === 'E' ) {
+            mensaje.find(".logo").attr("src", `${urlBackend}/empresas/logo/${usuario.logo_empresa}`);
+        } else {
+            mensaje.find(".prefix").text(`${usuario.nombres.charAt(0)}`);
+        }
+        mensaje.find(".user").text(`${usuario.nombres} ${usuario.apellido_paterno} ${usuario.apellido_materno}: `);
+        mensaje.find(".msg").text(`${data.msg}`);
+        ChatGeneral.chatMensajes.append(mensaje);
+        ChatGeneral.scrollTop();
+        ChatGeneral.totalMensajesActivos();
+    });
+
+    ChatGeneral.campoInput.keypress((e) => {
+        if(e.which === 13){
+            ChatGeneral.enviarMensaje()
+        }
+    });
+    <?php endif ?>
+
+    $(document).ready(function () {
+        $(".arrow-right").bind("click", function (event) {
+            event.preventDefault();
+            $(".vid-list-container").stop().animate(
+                {
+                    scrollLeft: "+=336",
+                },
+                750
+            );
+        });
+        $(".arrow-left").bind("click", function (event) {
+            event.preventDefault();
+            $(".vid-list-container").stop().animate(
+                {
+                    scrollLeft: "-=336",
+                },
+                750
+            );
+        });
+        $("#conference").popup({
+            transition: "all 0.3s",
+            closebutton: true,
+        });
+    });
+
+    socket.on('transmitirAhoraAuditorio', function(data){
+        let idferiasSelected = '<?php echo $this->layout()->feria['idferias']; ?>';
+        if(data.idferias == idferiasSelected) {
+            ocultarFondoAuditorio();
+            document.getElementById('vid_frame').src = data.enlace;
+        }
+    });
+
+    Panel.detectarAnuncio();
+
+    $("[data-conferencia='contenido']").addClass("no-visible");
+    $("[chat-grupal='contenedor-usuarios-chat']").hide();
+
+    function cambiarVideoGaleria(enlace){
+        ocultarFondoAuditorio();
+        document.getElementById('vid_frame').src = enlace;
+    }
+
+    function ocultarFondoAuditorio(){
+        if($("#auditorio-fondo-central").is(":visible")){
+            $("#auditorio-fondo-central").hide();
+        }
+    }
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

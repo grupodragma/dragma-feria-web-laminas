@@ -1,395 +1,152 @@
 <?= $this->doctype() ?>
 
 <!DOCTYPE html>
-<html lang="es" class="root-text-sm">
+<html lang="<?php echo $this->layout()->idiomaSeleccionado; ?>">
     <head>
-        <meta charset="utf-8">
-        <meta name="robots" content="noindex">
-        <title>Grupo Dragma</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="theme-color" content="#00b3ce" />
+        <meta http-equiv="Content-Language" content="<?php echo $this->layout()->idiomaSeleccionado; ?>" />
+        <title><?php echo $this->headTitle()->renderTitle(); ?></title>
+        <?php echo $this->headMeta(); ?>
+        <meta name="author" content="Dragma">
         <base href="<?php echo $this->layout()->base_url; ?>" />
-        <meta name="description" content="Dashboard">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="msapplication-tap-highlight" content="no">
-        <link rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
-        <link rel="stylesheet" media="screen, print" href="css/app.bundle.css">
-        <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
-        <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
-        <link rel="stylesheet" media="screen, print" href="css/miscellaneous/reactions/reactions.css">
-        <link rel="stylesheet" media="screen, print" href="css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
-        <link rel="stylesheet" media="screen, print" href="css/miscellaneous/jqvmap/jqvmap.bundle.css">
-        <link rel="stylesheet" media="screen, print" href="css/notifications/toastr/toastr.css">
-        <link rel="stylesheet" media="screen, print" href="css/datagrid/datatables/datatables.bundle.css">
-        <link rel="stylesheet" media="screen, print" href="css/formplugins/select2/select2.bundle.css">
-        <link rel="stylesheet" media="screen, print" href="css/fa-solid.css">
-        <link rel="stylesheet" media="screen, print" href="css/formplugins/bootstrap-datepicker/bootstrap-datepicker.css">
-        <link rel="stylesheet" media="screen, print" href="css/statistics/chartjs/chartjs.css">
-        <link rel="stylesheet" media="screen, print" href="css/formplugins/bootstrap-daterangepicker/bootstrap-daterangepicker.css">
-        <link rel="stylesheet" media="screen, print" href="css/formplugins/bootstrap-colorpicker/bootstrap-colorpicker.css">
-        <link rel="stylesheet" href="css/bootstrap-tagsinput/bootstrap-tagsinput.css">
-        <link rel="stylesheet" href="css/base.css">
-        <link rel="stylesheet" href="css/base-media-screen.css">
+        <link href="<?php echo ( $this->layout()->feria['config_hash_favicon'] != '' ) ? $this->layout()->url_backend."/portal/favicon/".$this->layout()->feria['config_hash_favicon'] : $this->layout()->url_backend."/img/not-favicon.jpg"; ?>" rel="shortcut icon" title="Icono Feria" />
+        <meta name="viewport" content="width=480" initial-scale="1" />
+        <link rel="alternate" hreflang="es" href="https://dragmastands.com/" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" media="screen, print" href="css/fontawesome.min.css">
+        <link href="css/base.css" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.popupoverlay.js"></script>
+        <script type="text/javascript" src="js/usuario-eventos.js?t=<?php echo time(); ?>"></script>
+        <script type="text/javascript" src="js/drawer.js"></script>
+        <script type="text/javascript" src="js/anamorph.min.js"></script>
+        <script type="text/javascript" src="js/init.js?t=<?php echo time(); ?>"></script>
+        <!-- Open Graph -->
+        <meta property="og:locale" content="es_ES">
+        <meta property="og:site_name" content="Dragma - Plataforma Virtual" />
+        <meta property="og:url" content="<?php echo $this->layout()->urlActual; ?>" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="<?php echo $this->layout()->feria['nombre']; ?>" />
+        <meta property="og:description" content="<?php echo $this->layout()->feria['descripcion']; ?>" />
+        <meta property="og:image" content="<?php echo $this->layout()->url_backend."/".$this->layout()->openGraph['url_imagen']; ?>" />
+        <meta property="og:image:url" content="<?php echo $this->layout()->url_backend."/".$this->layout()->openGraph['url_imagen']; ?>" />
+        <meta property="og:image:secure_url" content="<?php echo $this->layout()->url_backend."/".$this->layout()->openGraph['url_imagen']; ?>" />
+        <meta property="og:image:width" content="682" />
+	    <meta property="og:image:height" content="1024" />
+        <meta property="og:image:type" content="gif"/>
+        <meta property="og:image:type" content="jpeg"/>
+        <meta property="og:image:type" content="JPEG"/>
+        <meta property="og:image:type" content="png"/>
+        <meta property="og:image:type" content="jpg"/>
+        <meta property="og:updated_time" content="<?php echo time(); ?>"/>
+        <meta property="og:image:alt" content="<?php echo $this->layout()->feria['descripcion']; ?>"/>
+        <meta property="article:published_time" content="<?php echo time(); ?>"/>
+        <meta property="article:modified_time" content="<?php echo time(); ?>"/>
+        <meta property="fb:app_id" content="<?php echo $this->layout()->configuracion['aplicacion_red_social']['facebook']['app_id']; ?>" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:image" content="<?php echo $this->layout()->url_backend."/".$this->layout()->openGraph['url_imagen']; ?>" />
+        <meta name="twitter:description" content="<?php echo $this->layout()->feria['descripcion']; ?>" />
+        <meta name="twitter:title" content="<?php echo $this->layout()->feria['nombre']; ?>" />
+        <meta name="twitter:site" content="Dragma - Plataforma Virtual" />
+        <meta name="twitter:creator" content="Dragma" />
     </head>
-    <body class="mod-bg-1 nav-function-top">
-  
-        <div class="page-wrapper">
-            <div class="page-inner">
-                <aside class="page-sidebar">
-                    <div class="page-logo">
-                        <a href="/" class="page-logo-link press-scale-down d-flex align-items-center position-relative">
-                            <img src="img/logo.svg" aria-roledescription="logo">
-                            <span class="page-logo-text mr-1">Grupo Dragma</span>
-                            <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
-                        </a>
+
+    <?php echo $this->partial('partial/css/personalizado', []); ?>
+    <?php echo $this->partial('partial/css/select-idioma', []); ?>
+
+    <body>
+
+        <div class="container-language">
+            <select class="select-idioma" onchange="Panel.cambiarIdioma(this)" class="grayout">
+                <?php if($this->layout()->listaIdiomas): foreach($this->layout()->listaIdiomas as $key => $idioma): ?>
+                <option value="<?php echo $key; ?>" <?php if( $key === $this->layout()->idiomaSeleccionado ) echo 'selected="select"'; ?>><?php echo ( $this->layout()->language ) ? $this->layout()->language->translate($idioma)['text']: ''; ?></option>
+                <?php endforeach; endif; ?>
+            </select>
+        </div>
+
+        <div class="header-index">
+            <a href="/" class="logos">
+                <img src="<?php echo $this->layout()->url_backend; ?>/ferias/logo/<?php echo $this->layout()->feria['hash_logo']; ?>" width="60%" alt="">
+            </a>
+            <div class="eye" style="visibility: hidden;">
+                <button class="hide-counter"><i class="fas fa-eye" aria-hidden="true"></i></button>
+                <div class="contador">
+                    <div id="myDIVI">
+                        <div class="as">
+                            <a href="#">
+                                <img src="imagenes/list-1.svg" alt="">
+                                <strong>Total de Participantes <span>1000</span></strong>
+                            </a>
+                        </div>
+                        <div class="as2">
+                            <a href="#">
+                                <img src="imagenes/list-2.svg" alt="">
+                                <strong>Participantes AQUÍ <span>1000</span></strong>
+                            </a>
+                        </div>
                     </div>
-                    <nav id="js-primary-nav" class="primary-nav" role="navigation">
-                        <div class="info-card">
-                            <img src="<?php echo $this->layout()->image_perfil_url;?>" class="profile-image rounded-circle sesion-imagen">
-                            <div class="info-card-text">
-                                <a href="javascript:void(0)" class="d-flex align-items-center text-white">
-                                    <span class="text-truncate text-truncate-sm d-inline-block sesion-nombres"><?php echo @$this->layout()->datosUsuario['nombres']." ".@$this->layout()->datosUsuario['apellido_paterno']." ".@$this->layout()->datosUsuario['apellido_materno']; ?></span>
-                                </a>
-                                <span class="d-inline-block text-truncate text-truncate-sm"><?php echo $this->layout()->datosUsuario['email']; ?></span>
-                            </div>
-                            <img src="img/card-backgrounds/cover-2-lg.png" class="cover">
-                        </div>
-
-                        <ul id="js-nav-menu" class="nav-menu">
-                            <?php foreach ($this->layout()->datosMenu as $modulo): ?>
-                            <li>
-                                <a href="<?php if ($modulo['ruta'] == 'panel') echo '/' . $modulo['ruta']; else echo 'javascript:void(0)'; ?>" title="Application Intel" data-filter-tags="application intel">
-                                    <i class="<?php echo $modulo['icono'] ?>"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel"><?php echo $modulo['nombre'] ?></span>
-                                </a>
-                                <?php if (count($modulo['submodulos']) > 0): ?>
-                                <ul>
-                                    <?php foreach ($modulo['submodulos'] as $submodulo): ?>
-                                    <li class="<?php echo $submodulo['activo_class'] ?>">
-                                        <a href="<?php echo '/' . $modulo['ruta'] . '/' . $submodulo['ruta'] ?>">
-                                            <span class="nav-link-text" data-i18n="nav.application_intel_analytics_dashboard"><i class="<?php echo $submodulo['icono'] ?>"></i>&nbsp;<?php echo $submodulo['nombre'] ?></span>
-                                        </a>
-                                    </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                                <?php endif; ?>
-                            </li>
-                            <?php endforeach; ?>
-                        </ul>
-
-                        <div class="filter-message js-filter-message bg-success-600"></div>
-                    </nav>
-                </aside>
-                <div class="page-content-wrapper">
-                    <header class="page-header" role="banner">
-                        <div class="page-logo">
-                            <a href="/" class="page-logo-link press-scale-down d-flex align-items-center position-relative">
-                                <img src="img/logo.svg" aria-roledescription="logo">
-                                <span class="page-logo-text mr-1">Grupo Dragma</span>
-                                <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
-                            </a>
-                        </div>
-                        <div class="hidden-lg-up">
-                            <a href="javascript:void(0)" class="header-btn btn press-scale-down" data-action="toggle" data-class="mobile-nav-on">
-                                <i class="ni ni-menu"></i>
-                            </a>
-                        </div>
-                        <div class="ml-auto d-flex">
-                            <div>
-                                <a href="javascript:void(0)" class="header-icon">
-                                    <span class="info-usuario"><?php echo ( $this->layout()->datosUsuario['idperfil'] == '1' ) ? 'Administrador' : $this->layout()->datosUsuario['feria']; ?></span>
-                                </a>
-                            </div>
-                            <div class="contenedor-perfil">
-                                <a href="#" data-toggle="dropdown" class="header-icon d-flex align-items-center justify-content-center ml-2">
-                                    <img src="<?php echo $this->layout()->image_perfil_url;?>" class="profile-image rounded-circle sesion-imagen">
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
-                                    <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
-                                        <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
-                                            <span class="mr-2">
-                                                <img src="<?php echo $this->layout()->image_perfil_url;?>" class="rounded-circle profile-image sesion-imagen">
-                                            </span>
-                                            <div class="info-card-text">
-                                                <div class="fs-lg text-truncate text-truncate-lg sesion-nombres"><?php echo @$this->layout()->datosUsuario['nombres']." ".@$this->layout()->datosUsuario['apellido_paterno']." ".@$this->layout()->datosUsuario['apellido_materno']; ?></div>
-                                                <span class="text-truncate text-truncate-md opacity-80"><?php echo @$this->layout()->datosUsuario['email']; ?></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown-divider m-0"></div>
-                                    <a href="/panel/editar-perfil" class="dropdown-item pop-up editar-perfil">
-                                        <span>Editar Perfil</span>
-                                        <i class="float-right text-muted fw-n"></i>
-                                    </a>
-                                    <a href="#" class="dropdown-item" data-action="app-fullscreen">
-                                        <span data-i18n="drpdwn.fullscreen">Pantalla Completa</span>
-                                        <i class="float-right text-muted fw-n">F11</i>
-                                    </a>
-                                    <div class="dropdown-divider m-0"></div>
-                                    <a class="dropdown-item fw-500 pt-3 pb-3" href="/logout">
-                                        <span data-i18n="drpdwn.page-logout">Cerrar Sesión</span>
-                                        <span class="float-right fw-n"></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </header>
-
-                    <main id="js-page-content" role="main" class="page-content">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="subheader">
-                                    <h1 class="subheader-title">
-                                        <i class="subheader-icon <?php echo @$this->layout()->breadCums['icono']?>"></i> <?php echo @$this->layout()->breadCums['module']?> <?php if(!empty(@$this->layout()->breadCums['submodule'])):?> / <span class="fw-300"><?php echo @$this->layout()->breadCums['submodule']?></span><?php endif;?>
-                                    </h1>
-                                </div>
-                            </div>
-                            <div class="col-md-6" id="subheader-opciones">
-                                
-                            </div>
-                        </div>
-                        <?= $this->content; ?>
-                    </main>
-
-                    <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
-
-                    <footer class="page-footer" role="contentinfo">
-                        <div class="d-flex align-items-center flex-1 text-muted">
-                            <span class="hidden-md-down fw-700"><?php echo date('Y'); ?> © Grupo Dragma</span>
-                        </div>
-                        <div>
-                            <ul class="list-table m-0">
-                                <li><a href="javascript:void(0)" class="text-secondary fw-700">&nbsp;</a></li>
-                            </ul>
-                        </div>
-                    </footer>
-
                 </div>
             </div>
+            <div class="logos-2">
+                <img src="imagenes/logo-ccl-01.svg" width="38%" style="display:none;" alt="">
+                <img src="<?php echo $this->layout()->url_backend; ?>/clientes/logo/<?php echo $this->layout()->cliente['hash_logo']; ?>" width="26%" alt="">
+            </div>
+            <div class="logos-3">
+                <?php if($this->layout()->idiomaSeleccionado): ?>
+                <?php $urlPath = ( $this->layout()->menuSecuencia['home']['menu_posicion'] === 'C') ? 'panel/' : ''; ?>
+                <a href="<?php echo $this->layout()->idiomaSeleccionado."/".$urlPath.$this->layout()->menuSecuencia['home']['menu_url']; ?>">
+                    <i class="fas fa-user"></i>&nbsp;<?php echo $this->layout()->language->translate('INGRESAR AL EVENTO')['text']; ?>
+                </a>
+                <?php endif; ?>
+            </div>
+            <a href="#" data-drawer-trigger aria-controls="drawer-name" aria-expanded="false" class="button-menu">
+                <img src="imagenes/menu-01.svg" width="68%" alt="">
+            </a>
         </div>
 
-        <div class="modal fade" id="modal-uno" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content"></div>
+        <a href="#" class="claim-book"><img src="imagenes/reclamaciones.svg" width="40%" alt=""> </a>
+
+        <?php echo $this->partial('partial/menus/encabezado-movil', []); ?>
+
+        <?= $this->content; ?>
+
+        <div class="navbar">
+            <div class="boton" style="animation-delay: 1.3s; display: none;">
+                <img src="imagenes/new-icons-01.svg" width="32%" alt="">
+                <a href="recepcion.html"> RECEPCIÓN</a>
+            </div>
+
+            <div class="boton" style="animation-delay: 1.5s; display: none;">
+                <img src="imagenes/new-icons-03.svg" width="32%" alt="">
+                <a href="hall.html">EXPOSITORES</a>
+            </div>
+
+            <div class="boton" style="animation-delay: 1.7s; display: none;">
+                <img src="imagenes/new-icons-02.svg" width="32%" alt="">
+                <a href="conferencias.html">CONFERENCIAS</a>
             </div>
         </div>
-
-        <div class="modal fade" id="modal-dos" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content"></div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="modal-tres" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                <div class="modal-content"></div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="modal-icono" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content"></div>
-            </div>
-        </div>
-
-        <script src="js/vendors.bundle.js"></script>
-        <script src="js/app.bundle.js"></script>
-        <script src="js/dependency/moment/moment.js"></script>
-        <script src="js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
-        <script src="js/statistics/sparkline/sparkline.bundle.js"></script>
-        <script src="js/statistics/easypiechart/easypiechart.bundle.js"></script>
-        <script src="js/statistics/flot/flot.bundle.js"></script>
-        <script src="js/miscellaneous/jqvmap/jqvmap.bundle.js"></script>
-        <script src="js/jquery-validation/jquery.validate.min.js"></script>
-        <script src="js/jquery-validation/localization/messages_es.js"></script>
-        <script src="js/notifications/toastr/toastr.js"></script>
-        <script src="js/datagrid/datatables/datatables.bundle.js"></script>
-        <script src="js/datagrid/datatables/datatables.responsive.min.js"></script>
-        <script src="js/formplugins/select2/select2.bundle.js"></script>
-        <script src="js/formplugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
-        <script src="js/formplugins/bootstrap-datepicker/bootstrap-datepicker.es.js" charset="UTF-8"></script>
-        <script src="js/formplugins/inputmask/inputmask.bundle.js"></script>
-        <script src="js/statistics/chartjs/chartjs.bundle.js"></script>
-        <script src="js/formplugins/bootstrap-daterangepicker/bootstrap-daterangepicker.js"></script>
-        <script src="js/formplugins/bootstrap-colorpicker/bootstrap-colorpicker.js"></script>
-        <script src="js/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-        <script src="js/socket.io.js"></script>
-        <script src="plugins/ckeditor/ckeditor.js"></script>
-        <script src="plugins/ckeditor/config.js"></script>
-        <script src="plugins/moment/locale/es.js"></script>
 
         <script>
-            const host = "<?php echo $this->layout()->node_server['host']; ?>";
-            const port = "<?php echo $this->layout()->node_server['port']; ?>";
-            const socket = io(host + ":" + port);
-            socket.on("connect", function () {
-                console.log("Conectado correctamente al puerto " + port);
-            });
-        </script>
-
-        <?= $this->inlineScript() ?>
-
-        <script>
-
+            const idiomaSeleccionado = "<?php echo $this->layout()->idiomaSeleccionado; ?>";
+            UsuariosEventos.idioma = idiomaSeleccionado;
+            Panel.idioma = idiomaSeleccionado;
+            Panel.init();
             $(document).ready(function () {
-
-                $(document).on("click", ".dropdown-menu-modal", function(){
-                    $(this).parent().removeClass("show");
+                $("#ingresar").popup({
+                    transition: "all 0.3s",
+                    closebutton: true,
                 });
-
-                $.fn.datepicker.defaults.templates = {
-                    leftArrow: '<i class="fas fa-angle-left" style="font-size: 1.25rem"></i>',
-                    rightArrow: '<i class="fas fa-angle-right" style="font-size: 1.25rem"></i>'
-                };
-
-                $("a.editar-perfil").click(function(){
-                    $(".contenedor-perfil").removeClass("show").find(".dropdown-menu").removeClass("show");
-                    $(".contenedor-perfil > a").attr("aria-expanded", false);
-                });
-
-                $("body").on("click",".pop-up",function(e){
-                    e.preventDefault();
-                    abrirModal($(this).attr("href"),'uno');
-                });
-
-                $("body").delegate(".pop-up-2","click",function(e){
-                    e.preventDefault();
-                    abrirModal($(this).attr("href"),'dos');
-                });
-
-                $("body").delegate(".pop-up-3","click",function(e){
-                    e.preventDefault();
-                    abrirModal($(this).attr("href"),'tres');
-                });
-
-                $("body").on("click",".btn-submit",function(e){
-                    e.preventDefault();
-                    var idForm = $(this).attr("data-id-form");
-                    var form = $('#'+idForm);
-                    var url = form.attr('data-accion');
-                    var data = new FormData(form[0]);
-                    var callback = form.attr('data-callback');
-                    if(form.valid()){
-                        $(form).find(".btn-submit").addClass("disabled");
-                        procesarFormulario(url,data,form,callback);
-                    }
-                });
-
             });
-
-            $(document).on("submit", "form", function(e){
-                e.preventDefault();
+            $(window).load(function () {
+                $(".se-pre-con").fadeOut("slow");
             });
-
-            $(document).on('shown.bs.modal', function (e) {
-                if($('.modal').is(':visible'))$("body").addClass("modal-open");
-                if( e.currentTarget.activeElement.id != 'modal-icono' )$(document).bind("keyup");
-            });
-
-            $(document).on('hidden.bs.modal', function (e) {
-                if($('.modal').is(':visible'))$("body").addClass("modal-open");
-                if( e.target.id != 'modal-icono' )$(document).unbind("keyup");
-            });
-            
-            function abrirModal(src,id){
-                $('#modal-'+id).modal({
-                    backdrop: 'static',
-                    keyboard: true
-                });
-                $('#modal-'+id).find('.modal-content').html('<div class="text-center" style="padding:30px;"><i class="fas fa-spinner fa-pulse fa-5x"></i> <br/><br/> <p>Cargando Contenido</p></div>');
-                $.post(src,function(data){
-                    $('#modal-'+id).find('.modal-content').html(data);
-                    initApp.appForms('.input-group', 'has-length', 'has-disabled');
-                }).fail(function(e){
-                    var msj = '';
-                    var icon = 'fas fa-warning fa-5x txt-color-red';
-                    switch(e.status){
-                        case 0:
-                            msj = 'No se ha podido conectar con el servidor, intente en otro momento.';
-                            icon = "fas fa-globe fa-5x txt-color-red";
-                        break;
-                        case 404:
-                            msj = 'El contenido que usted esta buscando no se ha encontrado en el servidor.';
-                        break;
-                        case 401:
-                            msj = 'Usted no tiene acceso a esta opción.';
-                            icon = "fas fa-ban fa-5x txt-color-red";
-                        break;
-                        case 500:
-                            msj = 'Se ha encontrado un error en el servidor, contácte con su administrador del sistema.';
-                            icon = "fas fa-plug fa-5x txt-color-red";
-                        break;
-                        default:
-                            msj = 'No se ha podido conectar con el servidor, intente en otro momento.';
-                            icon = "fas fa-globe fa-5x txt-color-red";
-                        break;
-                    }
-                    $('#modal-'+id).find('.modal-content').html('<div class="text-center" style="padding:30px;"><i class="'+icon+'"></i> <br/><br/> <p>'+msj+'</p><br/> <div class="btn btn-default" data-dismiss="modal">Cerrar</div></div>'); 	
-                });
-            }
-            
-            function ocultarModal(instance){
-                if(!instance)instance = 'uno';
-                $('#modal-'+instance).modal('hide');
-                $('#modal-'+instance).find('.modal-content').html('');
-            }
-
-            function procesarFormulario(url,data,form,callback){
-                if($(form).find(".btn-uploader-form").length){
-                    if(!$(form).find(".btn-uploader-form").hasClass('disabled'))$(form).find(".btn-uploader-form").addClass("disabled");
-                    $(form).find(".btn-uploader-form").html("<i class='fa fa-circle-o-notch fa-spin'></i> Guardando <span class='btn-uploader-form-percent'>0%</span>");
-                }
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: data,
-                    contentType: false,
-                    processData: false,
-                    success: function (response) {
-                        if(typeof callback === 'function')callback(response);
-                        else if(callback.length>2)eval(callback);
-                    },
-                    xhr: function () {
-                        var xhr = new window.XMLHttpRequest();
-                        xhr.upload.addEventListener("progress", function(evt){
-                          if (evt.lengthComputable) {
-                            var percentComplete = Math.round((evt.loaded / evt.total)*100)+"%";
-                            $(".btn-uploader-form-percent").text(percentComplete);
-                          }
-                        }, false);
-                        return xhr;
-                    },
-                    error: function(){
-                        alerta('Se han detectado errores de red intente en otro momento.','error');
-                        setTimeout(function(){$("#myModal").modal('hide')},1000);
-                    }
-                });
-            }
-
-            toastr.options = {
-                "timeOut": 3000
-            }
-
-            function alerta(mensaje, clase){
-                switch(clase){
-                    case "success": toastr["success"](mensaje); break;
-                    case "error": toastr["error"](mensaje); break;
-                    case "warning": toastr["warning"](mensaje); break;
-                    default: toastr["warning"](mensaje); break;
-                }
-            }
-
-            function downloadURI (uri, name) {
-                var link = document.createElement("a");
-                link.setAttribute('download', name);
-                link.href = uri;
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-            }
-
         </script>
+
+        <?php echo $this->partial('partial/scripts/index', []); ?>
 
     </body>
+
 </html>

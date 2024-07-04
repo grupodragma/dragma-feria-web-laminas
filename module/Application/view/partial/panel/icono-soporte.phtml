@@ -1,0 +1,13 @@
+<div class="soport">
+    <div class="supo">SOPORTE</div>
+    <div id="myButton" class="floating-wpp" style="left: auto; right: 15px;">
+        <?php if( $this->layout()->feria['soporte_numero'] ) : ?>    
+        <div class="floating-wpp-button" style="width: 7vh; height: 7vh; background-color: rgb(58, 152, 72);">
+            <a href="javascript:abrirVentanaWindow('<?php echo $this->layout()->feria['soporte_numero'] ?>')">
+                <img src="https://dragma3d.com/whatsapp.svg" alt="">
+            </a>
+            <div class="floating-wpp-button-image"></div>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>

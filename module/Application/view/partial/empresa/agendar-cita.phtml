@@ -1,0 +1,74 @@
+<div id="en_directo" class="well-directo">
+   <div class="modal-contents-directo">
+      <form id="contact-form-envivo">
+         <h2><?php echo $this->layout()->language->translate('AGENDA UNA REUNIÓN VIRTUAL')['text']; ?></h2>
+         <big><?php echo $this->layout()->language->translate('Selecciona la Fecha y hora disponible para tu reunión virtual con uno de nuestros asesores')['text']; ?></big>
+         <div>
+            <div>
+                <input type="date" name="fecha" id="fecha" value="<?php echo date('Y/m/d'); ?>">
+            </div>
+         </div>
+         <div class="hora">
+            <p class="titulos"><?php echo $this->layout()->language->translate('Horario del Contacto')['text']; ?></p>
+            <input type="time" id="hora" name="hora" min="09:00" max="18:00">
+         </div>
+         <div class="mensaje">
+            <p class="titulos"><?php echo $this->layout()->language->translate('Escribe un comentario')['text']; ?></p>
+            <textarea name="comentario" id="comentario" rows="5" class="comentarios-envivo"></textarea>
+         </div>
+         <input type="submit" value="<?php echo $this->layout()->language->translate('ENVIAR')['text']; ?>" class="send-home-envivo">
+      </form>
+   </div>
+</div>
+
+<script type="text/javascript">
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    $("form#contact-form-envivo").validate({
+        ignore: [],
+        rules: {
+            fecha: {
+                required: true
+            },
+            hora: {
+                required: true
+            },
+            comentario: {
+                required: true
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        },
+        submitHandler: function(form) {
+            let btnSubmit = $(form).find("input[type='submit']");
+            btnSubmit.attr("disabled", "");
+            btnSubmit.attr("value", "<?php echo $this->layout()->language->translate('ENVIANDO...')['text']; ?>");
+            let datosForm = $(form).serializeArray();
+            datosForm.push({name: "idempresas", value: "<?php echo $this->empresa['idempresas']; ?>"});
+            $.post("<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/agendar-reunion-virtual", datosForm, function(response){
+                console.log(response);
+                if(response.result === 'success') {
+                    alert('<?php echo $this->layout()->language->translate('Sus datos se registraron satisfactoriamente.')['text']; ?>');
+                }
+                $('#en_directo').popup('hide');
+                btnSubmit.removeAttr("disabled");
+                $(form).trigger('reset');
+                btnSubmit.attr("value", "<?php echo $this->layout()->language->translate('ENVIAR')['text']; ?>");
+            }, 'json');
+        }
+    });
+
+    $(document).on("ready", function () {
+
+        $('#en_directo').popup({
+            transition: 'all 0.3s',
+            closebutton: true
+        });
+
+    });
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

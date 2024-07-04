@@ -1,0 +1,86 @@
+<?= $this->doctype() ?>
+
+<!DOCTYPE html>
+<html lang="<?php echo $this->layout()->idiomaSeleccionado; ?>">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="theme-color" content="#00b3ce" />
+        <meta http-equiv="Content-Language" content="<?php echo $this->layout()->idiomaSeleccionado; ?>" />
+        <title><?php echo $this->headTitle()->renderTitle(); ?></title>
+        <?php echo $this->headMeta(); ?>
+        <meta name="author" content="Dragma">
+        <base href="<?php echo $this->layout()->base_url; ?>" />
+        <link href="<?php echo ( $this->layout()->feria['config_hash_favicon'] != '' ) ? $this->layout()->url_backend."/portal/favicon/".$this->layout()->feria['config_hash_favicon'] : $this->layout()->url_backend."/img/not-favicon.jpg"; ?>" rel="shortcut icon" title="Icono Feria" />
+        <meta name="viewport" content="width=480" initial-scale="1" />
+        <link rel="alternate" hreflang="es" href="https://dragmastands.com/" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" media="screen, print" href="css/fontawesome.min.css">
+        <link href="css/base.css" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.popupoverlay.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=false&sensor=false&key=AIzaSyDsuRPGw_9VeQNjB--WY53mq3pAMqn5hm0"></script>
+        <script type="text/javascript" src="js/geo.js"></script>
+        <script type="text/javascript" src="js/drawer.js"></script>
+        <script type="text/javascript" src="js/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="js/jquery.validate_messages_es.js"></script>
+        <script type="text/javascript" src="js/cookie.js?t=<?php echo time(); ?>"></script>
+        <script type="text/javascript" src="js/storage.js?t=<?php echo time(); ?>"></script>
+        <script type="text/javascript" src="js/anamorph.min.js"></script>
+    </head>
+
+    <?php echo $this->partial('partial/css/personalizado', []); ?>
+
+    <body> <!-- style="overflow-y: scroll;" -->
+
+        <div class="se-pre-con"></div>
+
+        <div class="header-index" style="display: none;">
+            <a href="index.html" class="logos">
+                <img src="imagenes/LOGO-EXPOPOSTGRADOS.svg" width="60%" />
+            </a>
+            <div class="logos-2">
+                <img src="imagenes/logo-ccl-01.svg" width="25%" />
+                <a href="hall-planos.html" style="visibility: hidden;">INICIA FERIA</a>
+            </div>
+            <div class="logos-3">
+                <a href="registrar-visitante.html" style="visibility: hidden;"><i class="fas fa-user"></i>&nbsp;REGISTRARME</a>
+                <a href="#" class="ingresar_open"><i class="fas fa-sign-in-alt"></i>&nbsp;INGRESAR</a>
+            </div>
+
+            <a href="#" data-drawer-trigger aria-controls="drawer-name" aria-expanded="false" class="button-menu"><img src="imagenes/menu-01.svg" width="68%" /></a>
+        </div>
+
+        <a href="#" class="claim-book"><img src="imagenes/reclamaciones.svg" width="40%" /> </a>
+
+        <?= $this->content; ?>
+
+        <script>
+
+            $(document).ready(function () {
+                $("#ingresar").popup({
+                    transition: "all 0.3s",
+                    closebutton: true,
+                });
+            });
+
+            function smooth() {
+                if ($("#show").is(":visible")) {
+                    $("#show").hide("1000");
+                } else {
+                    $("#show").show("1000");
+                }
+            }
+
+            $(window).load(function () {
+                $(".se-pre-con").fadeOut("slow");
+            });
+
+        </script>
+
+        <?php echo $this->partial('partial/scripts/index', []); ?>
+    
+    </body>
+
+</html>

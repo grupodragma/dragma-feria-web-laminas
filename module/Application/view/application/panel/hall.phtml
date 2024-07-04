@@ -1,0 +1,112 @@
+<?php $this->headTitle('HALL - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<?php echo $this->partial('partial/fondos/movil', ['accion'=> 'hall','configuracion'=> $this->configuracion]); ?>
+
+<section class="home">
+    <div class="slide active-hall <?php echo ($this->fondo_video['estado']) ? 'bg-none' : ''; ?>" style="background-image: url(<?php echo ( isset($this->configuracion['imagen_fondo'])) ? $this->layout()->url_backend.'/paginas/hall/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall/imagen_fondo.jpg'; ?>)">
+        <div class="cajas-artes">
+            <div class="arte-1">
+                <?php
+                    $izquierda_1_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_izquierda_1']) && $this->configuracion['banner_opciones']['imagen_izquierda_1'] === '' && @$this->configuracion['banner_opciones_url']['imagen_izquierda_1'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_izquierda_1']: 'javascript:void(0)';
+                    $izquierda_1_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_izquierda_1'] === '' && @$this->configuracion['banner_opciones_url']['imagen_izquierda_1'] !== '' ) ? '_blank' : '_self';
+                ?>
+                <a class="empresas" href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_izquierda_1']) && $this->configuracion['banner_opciones']['imagen_izquierda_1'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_1'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_1'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_1'])[2]:$izquierda_1_no_empresa;?>" target="<?php echo $izquierda_1_metodo_enlace; ?>"><img src="<?php echo ( isset($this->configuracion['imagen_izquierda_1'])) ? $this->layout()->url_backend.'/paginas/hall/'.$this->configuracion['imagen_izquierda_1']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall/imagen_izquierda_1.jpg'; ?>" alt=""></a>
+            </div>
+            <div class="espacito"></div>
+            <div class="arte-2">
+                <?php
+                    $izquierda_2_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_izquierda_2']) && $this->configuracion['banner_opciones']['imagen_izquierda_2'] === '' && @$this->configuracion['banner_opciones_url']['imagen_izquierda_2'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_izquierda_2']: 'javascript:void(0)';
+                    $izquierda_2_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_izquierda_2'] === '' && @$this->configuracion['banner_opciones_url']['imagen_izquierda_2'] !== '' ) ? '_blank' : '_self';
+                ?>
+                <a class="empresas" href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_izquierda_2']) && $this->configuracion['banner_opciones']['imagen_izquierda_2'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_2'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_2'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_2'])[2]:$izquierda_2_no_empresa;?>" target="<?php echo $izquierda_2_metodo_enlace; ?>"><img src="<?php echo ( isset($this->configuracion['imagen_izquierda_2'])) ? $this->layout()->url_backend.'/paginas/hall/'.$this->configuracion['imagen_izquierda_2']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall/imagen_izquierda_2.jpg'; ?>" alt=""></a>
+            </div>
+            <div class="espacito"></div>
+            <div class="arte-3">
+                <?php
+                    $izquierda_3_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_izquierda_3']) && $this->configuracion['banner_opciones']['imagen_izquierda_3'] === '' && @$this->configuracion['banner_opciones_url']['imagen_izquierda_3'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_izquierda_3']: 'javascript:void(0)';
+                    $izquierda_3_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_izquierda_3'] === '' && @$this->configuracion['banner_opciones_url']['imagen_izquierda_3'] !== '' ) ? '_blank' : '_self';
+                ?>
+                <a class="empresas" href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_izquierda_3']) && $this->configuracion['banner_opciones']['imagen_izquierda_3'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_3'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_3'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_3'])[2]:$izquierda_3_no_empresa;?>" target="<?php echo $izquierda_3_metodo_enlace; ?>"><img src="<?php echo ( isset($this->configuracion['imagen_izquierda_3'])) ? $this->layout()->url_backend.'/paginas/hall/'.$this->configuracion['imagen_izquierda_3']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall/imagen_izquierda_3.jpg'; ?>" alt=""></a>
+            </div>
+            <div class="espacito"></div>
+            <div class="arte-4">
+                <?php
+                    $izquierda_4_no_empresa = (isset($this->configuracion['banner_opciones']['imagen_izquierda_4']) && $this->configuracion['banner_opciones']['imagen_izquierda_4'] === '' && @$this->configuracion['banner_opciones_url']['imagen_izquierda_4'] !== '') ? @$this->configuracion['banner_opciones_url']['imagen_izquierda_4']: 'javascript:void(0)';
+                    $izquierda_4_metodo_enlace = ( @$this->configuracion['banner_opciones']['imagen_izquierda_4'] === '' && @$this->configuracion['banner_opciones_url']['imagen_izquierda_4'] !== '' ) ? '_blank' : '_self';
+                ?>
+                <a class="empresas" href="<?php echo (isset($this->configuracion['banner_opciones']['imagen_izquierda_4']) && $this->configuracion['banner_opciones']['imagen_izquierda_4'] != '')?$this->layout()->idiomaSeleccionado.'/panel/stand/zona/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_4'])[0].'/empresa/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_4'])[1].'/'.explode("|", $this->configuracion['banner_opciones']['imagen_izquierda_4'])[2]:$izquierda_4_no_empresa;?>" target="<?php echo $izquierda_4_metodo_enlace; ?>"><img src="<?php echo ( isset($this->configuracion['imagen_izquierda_4'])) ? $this->layout()->url_backend.'/paginas/hall/'.$this->configuracion['imagen_izquierda_4']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall/imagen_izquierda_4.jpg'; ?>" alt=""></a>
+            </div>
+        </div>
+
+        <div class="content-gif-tv-hall">
+            <div class="tv-gif-hall">
+                <div class="bots">
+                    <?php foreach($this->zonas as $item) : ?>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/zonas/<?php echo $item['orden']; ?>" class="zonas"><i class="far fa-flag"></i>&nbsp; <?php echo $item['nombre']; ?> </a>
+                    <?php endforeach; ?>
+                </div>
+                <img src="imagenes/tv-fondo-back.png" alt="">
+                <div class="caja-gif-hall"><img src="<?php echo ( isset($this->configuracion['imagen_zonas'])) ? $this->layout()->url_backend.'/paginas/hall/'.$this->configuracion['imagen_zonas']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall/imagen_zonas.jpg'; ?>" alt=""></div>
+            </div>
+        </div>
+
+        <style>
+            .navbar-conference {
+                margin-top: 35.5%;
+            }
+            @media screen and (max-width: 580px) {
+                .navbar-conference {
+                    display: none;
+                }
+            }
+        </style>
+
+        <div class="navbar-conference">
+            <div class="boton-conference ocultar" style="animation-delay:1.0s;"> <span>Recepción</span></div>
+            <div class="nav-ver">
+                <?php if( empty($this->botones) ) : ?>
+                <div class="boton-conference2" style="animation-delay: 1.5s;">
+                    <div class="marco-boton">
+                        <img src="imagenes/new-icons-01.svg" alt="">
+                    </div>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/hall"><?php echo $this->layout()->language->translate('PABELLÓN')['text']; ?></a>
+                </div>
+                <div class="boton-conference2" style="animation-delay: 1.7s;">
+                    <div class="marco-boton">
+                        <img src="imagenes/new-icons-02.svg" alt="">
+                    </div>
+                    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/conferencias"><?php echo $this->layout()->language->translate('CONFERENCIAS')['text']; ?></a>
+                </div>
+                <?php else : ?>
+                    <?php foreach($this->botones as $item) : if( $item['texto'] === '' ) continue; ?>    
+                        <div class="boton-conference2" style="animation-delay: 1.5s;">
+                            <div class="marco-boton">
+                                <img src="<?php echo ( $item['icono'] !== 'img/boton-no-found.png' ) ? $this->layout()->url_backend."/paginas/botones/".$item['icono'] : $this->layout()->url_backend."/img/boton-no-found.png"; ?>" alt="">
+                            </div>
+                            <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/<?php echo $item['pagina_redireccion'] ?>" style="background:<?php echo $item['color_fondo']; ?>;color:<?php echo $item['color_texto']; ?>"><?php echo $this->layout()->language->translate($item['texto'])['text']; ?></a>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?php echo $this->partial('partial/panel/icono-soporte', []); ?>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+        <?php if( $this->fondo_video['estado'] ) : ?>
+            anamorph("<?php echo $this->layout()->url_backend.'/paginas/hall/'.$this->fondo_video['ruta']; ?>", 0.5, "<?php echo ( isset($this->configuracion['imagen_fondo'])) ? $this->layout()->url_backend.'/paginas/hall/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/hall/imagen_fondo.jpg'; ?>");
+        <?php endif; ?>
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

@@ -1,6 +1,9 @@
 <?php
-
-declare(strict_types=1);
+/**
+ * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ */
 
 namespace Application;
 
@@ -11,33 +14,36 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 return [
     'router' => [
         'routes' => [
-            'login' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/',
+            'home' => [
+                'type'      => Segment::class,
+                'options'   => [
+                    'route'    => '/[:lang][/:action]',
+                    'constraints' => ['lang' => 'es|en|pt|zh'],
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'index'
+                        'action'     => 'index',
                     ],
                 ],
             ],
-            'login_principal' => [
-                'type'    => Literal::class,
+            'registro' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/login',
+                    'route'    => '/[:lang]/registro',
+                    'constraints' => ['lang' => 'es|en|pt|zh'],
                     'defaults' => [
-                        'controller' => Controller\AccesoController::class,
-                        'action'     => 'login'
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'registro',
                     ],
                 ],
             ],
-            'logout' => [
-                'type'    => Literal::class,
+            'visitante' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/logout',
+                    'route'    => '/[:lang]/visitante',
+                    'constraints' => ['lang' => 'es|en|pt|zh'],
                     'defaults' => [
-                        'controller' => Controller\AccesoController::class,
-                        'action'     => 'logout'
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'visitante',
                     ],
                 ],
             ],
@@ -47,47 +53,216 @@ return [
                     'route'    => '/acceso[/:action]',
                     'defaults' => [
                         'controller' => Controller\AccesoController::class,
+                        'action'     => 'index'
+                    ],
+                ],
+            ],
+            'login' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/login',
+                    'defaults' => [
+                        'controller' => Controller\AccesoController::class,
                         'action'     => 'login'
+                    ],
+                ],
+            ],
+            'login-presencial' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/login-presencial',
+                    'defaults' => [
+                        'controller' => Controller\AccesoController::class,
+                        'action'     => 'login-presencial'
+                    ],
+                ],
+            ],
+            'login-recepcion' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/login-recepcion',
+                    'defaults' => [
+                        'controller' => Controller\AccesoController::class,
+                        'action'     => 'login-recepcion'
+                    ],
+                ],
+            ],
+            'generar-csrf-token' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/generar-csrf-token',
+                    'defaults' => [
+                        'controller' => Controller\AccesoController::class,
+                        'action'     => 'generar-csrf-token'
+                    ],
+                ],
+            ],
+            'logout' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/[:lang]/logout',
+                    'constraints' => ['lang' => 'es|en|pt|zh'],
+                    'defaults' => [
+                        'controller' => Controller\AccesoController::class,
+                        'action'     => 'logout'
                     ],
                 ],
             ],
             'panel' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/panel[/:action]',
+                    'route'    => '/[:lang]/panel[/:action]',
+                    'constraints' => ['lang' => 'es|en|pt|zh'],
                     'defaults' => [
                         'controller' => Controller\PanelController::class,
                         'action'     => 'index'
                     ],
                 ],
             ],
-            'sistema' => [
+            'panel-zonas' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/sistema[/:action]',
+                    'route'    => '/[:lang]/panel/zonas[/:ordenzona]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'ordenzona' => '[0-9]*'
+                    ),
                     'defaults' => [
-                        'controller' => Controller\SistemaController::class,
-                        'action'     => 'index'
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'zonas'
                     ],
                 ],
             ],
-            'herramienta' => [
+            'panel-empresas' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/herramienta[/:action]',
+                    'route'    => '/[:lang]/panel/empresas[/:url][/:idzonas]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'url' => '[-a-zA-Z]+',
+                        'idzonas' => '[0-9]*'
+                    ),
                     'defaults' => [
-                        'controller' => Controller\HerramientaController::class,
-                        'action'     => 'index'
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'empresas'
                     ],
                 ],
             ],
-            'mantenimiento' => [
+            'panel-expositores-vivo' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/mantenimiento[/:action]',
+                    'route'    => '/[:lang]/panel/expositores-vivo[/:zona][/:ordenzona][/:empresa][/:ordenempresa][/:hashurlempresa]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'zona' => 'zona',
+                        'ordenzona' => '[0-9]*',
+                        'empresa' => 'empresa',
+                        'ordenempresa' => '[0-9]*',
+                        'hashurlempresa' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
                     'defaults' => [
-                        'controller' => Controller\MantenimientoController::class,
-                        'action'     => 'index'
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'expositores-vivo'
+                    ],
+                ],
+            ],
+            'panel-stand' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/[:lang]/panel/stand[/:zona][/:ordenzona][/:empresa][/:ordenempresa][/:hashurlempresa]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'zona' => 'zona',
+                        'ordenzona' => '[0-9]*',
+                        'empresa' => 'empresa',
+                        'ordenempresa' => '[0-9]*',
+                        'hashurlempresa' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => [
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'stand'
+                    ],
+                ],
+            ],
+            'panel-realidad-virtual' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/[:lang]/panel/realidad-virtual[/:idempresa]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'idempresa' => '[0-9]*'
+                    ),
+                    'defaults' => [
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'realidad-virtual'
+                    ],
+                ],
+            ],
+            'panel-productos' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/[:lang]/panel/productos[/:zona][/:ordenzona][/:empresa][/:ordenempresa][/:hashurlempresa]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'zona' => 'zona',
+                        'ordenzona' => '[0-9]*',
+                        'empresa' => 'empresa',
+                        'ordenempresa' => '[0-9]*',
+                        'hashurlempresa' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => [
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'productos'
+                    ],
+                ],
+            ],
+            'panel-planos' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/[:lang]/panel/planos[/:zona][/:ordenzona][/:empresa][/:ordenempresa][/:hashurlempresa]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'zona' => 'zona',
+                        'ordenzona' => '[0-9]*',
+                        'empresa' => 'empresa',
+                        'ordenempresa' => '[0-9]*',
+                        'hashurlempresa' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => [
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'planos'
+                    ],
+                ],
+            ],
+            'panel-promociones' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/[:lang]/panel/promociones[/:zona][/:ordenzona][/:empresa][/:ordenempresa][/:hashurlempresa]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'zona' => 'zona',
+                        'ordenzona' => '[0-9]*',
+                        'empresa' => 'empresa',
+                        'ordenempresa' => '[0-9]*',
+                        'hashurlempresa' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => [
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'promociones'
+                    ],
+                ],
+            ],
+            'panel-auditorio' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/[:lang]/panel/auditorio[/:idcronograma]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'idcronograma' => '[0-9]*'
+                    ),
+                    'defaults' => [
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'auditorio'
                     ],
                 ],
             ],
@@ -101,133 +276,38 @@ return [
                     ],
                 ],
             ],
-            'paginas-ferias-configuracion' => [
+            /*'panel-networking' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/cliente/paginas-ferias-configuracion[/:idferias][/:idpaginas]',
-                    'constraints' => [
-                        'idferias' => '[0-9]*',
-                        'idpaginas' => '[0-9]*'
-                    ],
+                    'route'    => '/[:lang]/panel/networking[/:zona][/:ordenzona][/:empresa][/:ordenempresa][/:hashurlempresa]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'zona' => 'zona',
+                        'ordenzona' => '[0-9]*',
+                        'empresa' => 'empresa',
+                        'ordenempresa' => '[0-9]*',
+                        'hashurlempresa' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
                     'defaults' => [
-                        'controller' => Controller\ClienteController::class,
-                        'action'     => 'paginas-ferias-configuracion'
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'networking'
+                    ],
+                ],
+            ],*/
+            'panel-networking' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/[:lang]/panel/networking[/:id]',
+                    'constraints' => array(
+                        'lang' => 'es|en|pt|zh',
+                        'id' => '[0-9]*'
+                    ),
+                    'defaults' => [
+                        'controller' => Controller\PanelController::class,
+                        'action'     => 'networking'
                     ],
                 ],
             ],
-            'paginas-zonas-configuracion' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/cliente/paginas-zonas-configuracion[/:idzonas]',
-                    'constraints' => [
-                        'idzonas' => '[0-9]*'
-                    ],
-                    'defaults' => [
-                        'controller' => Controller\ClienteController::class,
-                        'action'     => 'paginas-zonas-configuracion'
-                    ],
-                ],
-            ],
-            'paginas-stand-configuracion' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/cliente/paginas-stand-configuracion[/:idempresas]',
-                    'constraints' => [
-                        'idempresas' => '[0-9]*'
-                    ],
-                    'defaults' => [
-                        'controller' => Controller\ClienteController::class,
-                        'action'     => 'paginas-stand-configuracion'
-                    ],
-                ],
-            ],
-            'producto' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/producto[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\ProductoController::class,
-                        'action'     => 'index'
-                    ],
-                ],
-            ],
-            'promocion' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/promocion[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\PromocionController::class,
-                        'action'     => 'index'
-                    ],
-                ],
-            ],
-            'oferta' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/oferta[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\OfertaController::class,
-                        'action'     => 'index'
-                    ],
-                ],
-            ],
-            'buscador' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/buscador[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\BuscadorController::class,
-                        'action'     => 'index'
-                    ],
-                ],
-            ],
-            'plano' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/plano[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\PlanoController::class,
-                        'action'     => 'index'
-                    ],
-                ],
-            ],
-            'networking' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/networking[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\NetworkingController::class,
-                        'action'     => 'index'
-                    ],
-                ],
-            ],
-            'tools' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/tools[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\ToolsController::class,
-                        'action'     => 'index'
-                    ],
-                ],
-            ],
-            'reporte' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/reporte[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\ReporteController::class,
-                        'action'     => 'index'
-                    ],
-                ],
-            ],
-        ],
-    ],
-    'console' => [],
-    'controllers' => [
-        'aliases' => [
-            'index' => \Controller\IndexController::class,
-            'acceso' => \Controller\AccesoController::class,
         ],
     ],
     'view_manager' => [
@@ -242,6 +322,13 @@ return [
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
             'mail/template'           => __DIR__ . '/../view/application/mail/template.phtml',
+            'mail/template-visitante' => __DIR__ . '/../view/application/mail/template-visitante.phtml',
+            'mail/template-producto' => __DIR__ . '/../view/application/mail/template-producto.phtml',
+            'mail/template-promocion' => __DIR__ . '/../view/application/mail/template-promocion.phtml',
+            'mail/template-banco' => __DIR__ . '/../view/application/mail/template-banco.phtml',
+            'mail/template-expositor' => __DIR__ . '/../view/application/mail/template-expositor.phtml',
+            'mail/template-agenda-virtual' => __DIR__ . '/../view/application/mail/template-agenda-virtual.phtml',
+            'mail/template-chat-notificacion' => __DIR__ . '/../view/application/mail/template-chat-notificacion.phtml'
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
@@ -249,5 +336,5 @@ return [
         'strategies' => [
             'ViewJsonStrategy',
         ]
-    ],
+    ]
 ];

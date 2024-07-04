@@ -1,0 +1,113 @@
+<?php //print_r($this->layout()->feria_color_personalizado); ?>
+<style>
+    .header-index .logos-3 a{
+        background-color: <?php echo $this->layout()->feria_color_personalizado['boton_primero']['fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['boton_primero']['texto']; ?>;
+    }
+    .header-index .logos-3 a:hover{
+        background-color: <?php echo $this->layout()->feria_color_personalizado['boton_primero']['hover_fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['boton_primero']['hover_texto']; ?>;
+    }
+    .header-index{
+        background: <?php echo $this->layout()->feria_color_personalizado['encabezado_primero']['fondo']; ?>;
+    }
+    .franja-azul{
+        background: <?php echo $this->layout()->feria_color_personalizado['encabezado_segundo']['fondo']; ?>;
+    }
+    .franja-azul a{
+        color: <?php echo $this->layout()->feria_color_personalizado['encabezado_segundo']['texto']; ?>;
+    }
+    .franja-azul a::after {
+        background-color: <?php echo $this->layout()->feria_color_personalizado['encabezado_segundo']['texto_linea_hover']; ?>;
+    }
+    .franja-azul .resaltar{
+        background: <?php echo $this->layout()->feria_color_personalizado['encabezado_segundo']['buscador_fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['encabezado_segundo']['buscador_texto']; ?>;
+    }
+    .franja-azul .resaltar:hover {
+        background: <?php echo $this->layout()->feria_color_personalizado['encabezado_segundo']['buscador_texto_linea_hover']; ?>;
+    }
+    .navbar a{
+        background: <?php echo $this->layout()->feria_color_personalizado['boton_segundo']['fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['boton_segundo']['texto']; ?>;
+    }
+    .navbar a:hover{
+        background-color: <?php echo $this->layout()->feria_color_personalizado['boton_segundo']['hover_fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['boton_segundo']['hover_texto']; ?>;
+    }
+    .franja-azul-menu .zonas{
+        background: <?php echo $this->layout()->feria_color_personalizado['flechas_zonas']['fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['flechas_zonas']['texto']; ?>;
+    }
+    .franja-azul-menu .zonas:hover{
+        background: <?php echo $this->layout()->feria_color_personalizado['flechas_zonas']['hover_fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['flechas_zonas']['hover_texto']; ?>;
+    }
+    .arte-middle-front .go-back p {
+        background-color: <?php echo $this->layout()->feria_color_personalizado['flechas_zonas']['fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['flechas_zonas']['texto']; ?>;
+    }
+    .fd_slider_empresas{
+        background-color: <?php echo $this->layout()->feria_color_personalizado['pie_pagina_primero']['fondo']; ?>;
+    }
+    .franja-amarillo{
+        background: <?php echo $this->layout()->feria_color_personalizado['pie_pagina_segundo']['fondo']; ?>;
+    }
+    .franja-amarillo .menu-amarillo{
+        background: <?php echo $this->layout()->feria_color_personalizado['pie_pagina_segundo']['fondo']; ?>;
+    }
+    .franja-amarillo .responsive-franja a{
+        color: <?php echo $this->layout()->feria_color_personalizado['pie_pagina_segundo']['texto']; ?>;
+    }
+    .franja-amarillo .menu-amarillo a {
+        color: <?php echo $this->layout()->feria_color_personalizado['pie_pagina_segundo']['texto']; ?>;
+    }
+    .franja-amarillo .responsive-franja a::after{
+        background-color: <?php echo $this->layout()->feria_color_personalizado['pie_pagina_segundo']['texto_linea_hover']; ?>;
+    }
+    .franja-amarillo .menu-amarillo a:hover{
+        color: <?php echo $this->layout()->feria_color_personalizado['pie_pagina_segundo']['hover_texto']; ?>;
+        background: <?php echo $this->layout()->feria_color_personalizado['pie_pagina_segundo']['hover_fondo']; ?>;
+    }
+    .send-home-contacto{
+        background: <?php echo $this->layout()->feria_color_personalizado['boton_segundo']['fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['boton_segundo']['texto']; ?>;
+    }
+    .send-home-contacto:hover{
+        background-color: <?php echo $this->layout()->feria_color_personalizado['boton_segundo']['hover_fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['boton_segundo']['hover_texto']; ?>;
+    }
+    .franja-menu-bots{
+        background: <?php echo $this->layout()->feria_color_personalizado['encabezado_tercero']['fondo']; ?>;
+    }
+    .franja-menu-bots a{
+        color: <?php echo $this->layout()->feria_color_personalizado['encabezado_tercero']['texto']; ?>;
+    }
+    .navbar-conference .boton-conference span{
+        background: <?php echo $this->layout()->feria_color_personalizado['boton_primero']['fondo']; ?>;
+        color: <?php echo $this->layout()->feria_color_personalizado['boton_primero']['texto']; ?>;
+    }
+    .navbar-conference .boton-conference .marco-boton{
+        background-color: <?php echo $this->layout()->feria_color_personalizado['boton_primero']['fondo']; ?>;
+    }
+    .franja-amarillo .responsive-franja .resaltar{
+        background: <?php echo $this->layout()->feria_color_personalizado['pie_pagina_segundo']['fondo_menu_resaltado']; ?>;
+    }
+    .franja-amarillo .responsive-franja a{
+        background-color: <?php echo $this->layout()->feria_color_personalizado['pie_pagina_segundo']['fondo_menu']; ?>;
+    }
+    .lef {
+        background: <?php echo @$this->layout()->feria_color_personalizado['seccion_maestria']['fondo']; ?>;
+    }
+    @media screen and (max-width: 580px) {
+        .lef {
+            background: inherit;
+        }
+    }
+    .lef:hover {
+        background: <?php echo @$this->layout()->feria_color_personalizado['seccion_maestria']['hover_fondo']; ?>;
+    }
+    .lef li {
+        color: <?php echo @$this->layout()->feria_color_personalizado['seccion_maestria']['texto']; ?>;
+    }
+</style>

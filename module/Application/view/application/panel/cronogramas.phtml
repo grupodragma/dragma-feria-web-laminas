@@ -1,0 +1,60 @@
+<?php $this->headTitle('CRONOGRAMAS - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false);
+    }
+?>
+
+<?php echo $this->partial('partial/fondos/movil', ['accion'=> 'cronograma','configuracion'=> $this->configuracion]); ?>
+
+<section class="home-cronograma">
+    <div class="center" data-aos="fade-up" style="background-image: url(<?php echo ( isset($this->configuracion['imagen_fondo'])) ? $this->layout()->url_backend.'/paginas/cronograma/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/cronograma/imagen_fondo.jpg'; ?>)">
+
+        <?php if(isset($this->cronogramas)) : foreach($this->cronogramas as $fecha => $item) : 
+        
+        $date = new DateTime($fecha);
+        $formatter = new IntlDateFormatter('es_ES', IntlDateFormatter::FULL, IntlDateFormatter::NONE);
+        $formatter->setPattern('EEEE d \'de\' MMMM');
+        
+        ?>
+        <div class="grande-2">
+            <div class="content">
+                <h1><?php echo $this->layout()->language->translate('CONFERENCIAS')['text']; ?></h1>
+                <p><?php echo ucfirst($formatter->format($date)); ?></p>
+            </div>
+            <div id="grid-cronograma">
+                <?php foreach($item as $value) : ?>
+                <a href="<?php echo ((int)$value['estado_conferencia']) ? $this->layout()->idiomaSeleccionado."/panel/auditorio/".$value['idcronogramas'] : 'javascript:void(0)'; ?>">
+                    <div id="white">
+                        <img src="<?php echo ($value['hash_logo'] != '') ? $this->layout()->url_backend.'/cronogramas/logo/'.$value['hash_logo'] : $this->layout()->url_backend.'/img/no-imagen.jpg'; ?>" alt="">
+                    </div>
+                    <div id="black">
+                        <h2><?php echo $value['titulo']; ?></h2>
+                        <p><?php echo $this->layout()->language->translate('EXPOSITOR:')['text']; ?> <?php echo $value['expositor']; ?></p>
+                        <strong><?php echo date('H:i', strtotime($value['hora_inicio'])); ?> a <?php echo date('H:i', strtotime($value['hora_fin'])); ?></strong>
+                    </div>
+                </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php endforeach; endif; ?>
+    
+    </div>
+
+</section>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+    
+    $(document).ready(function(){
+        $("body").css({'overflow-y': 'scroll'});
+    });
+
+    $("[chat-grupal='contenedor-usuarios-chat']").hide();
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

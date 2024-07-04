@@ -1,0 +1,37 @@
+<section class="home-conferencias-zoom" style="<?php echo ( $this->layout()->feria['config_auditorio_hash_fondo'] != '' ) ? "background-image: url(".$this->layout()->url_backend."/auditorio/fondo/".$this->layout()->feria['config_auditorio_hash_fondo'].")" : $this->layout()->url_backend.'/auditorio/fondo-inicial.jpg'; ?>">
+    <!-- THE YOUTUBE PLAYER -->
+    <div class="grid-videos-nuevo-2">
+        <div class="left-ad-2">
+            <img src="<?php echo ( isset($this->cronogramaFechaActual['hash_portada_derecha']) ) ? $this->layout()->url_backend.'/cronogramas/portada/'.$this->cronogramaFechaActual['hash_portada_derecha'] : $this->layout()->url_backend.$this->auditorioImagenesInicial['banner_derecho_inicial']; ?>" alt="">
+        </div>
+        <div class="espacio-zoom-2"></div>
+        <div class="center-ad-2">
+            <div class="vid-container">
+                <img id="auditorio-fondo-central" src="<?php echo $this->layout()->url_backend.$this->auditorioImagenesInicial['video_centro']; ?>" alt="" style="<?php if( isset($this->cronogramaFechaActual['conferencia_enlace']) ){ echo 'display: none;'; } ?>">
+                <iframe id="vid_frame" src="<?php echo $this->cronogramaFechaActual['conferencia_enlace']; ?>" width="100%" style="border: none; overflow: hidden;" allowfullscreen="true" title="" class="border0-iframe"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="conference" class="well-conference">
+        <div class="modal-contents-conference">
+            <!-- THE PLAYLIST -->
+            <div class="vid-list-container">
+                <div class="vid-list">
+                    <?php foreach($this->conferencias as $item) : ?>
+                    <div class="vid-item" onClick="cambiarVideoGaleria('<?php echo $item['enlace']; ?>')">
+                        <div class="thumb"><img src="<?php echo ($item['hash_imagen'] != '') ? $this->layout()->url_backend.'/conferencias/imagen/'.$item['hash_imagen'] : $this->layout()->url_backend.'/conferencias/no-imagen.jpg'; ?>" alt=""></div>
+                        <div class="desc"><?php echo $item['titulo']; ?></div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <!-- LEFT AND RIGHT ARROWS -->
+            <div class="arrows">
+                <div class="arrow-left"><i class="fa fa-chevron-left fa-lg"></i></div>
+                <div class="arrow-right"><i class="fa fa-chevron-right fa-lg"></i></div>
+            </div>
+        </div>
+    </div>
+
+</section>

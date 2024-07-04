@@ -1,0 +1,11 @@
+<div class="menu-amarillo">
+    <a style="<?php if( $this->ordenempresa == 1 ) echo 'display: none'; ?>" class="empresas" href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/stand/zona/<?php echo $this->ordenzona; ?>/empresa/<?php echo ($this->ordenempresa - 1); ?>/<?php echo $this->empresaAnterior['hash_url']; ?>">
+        <i class="fas fa-arrow-circle-left"></i>&nbsp;<?php echo $this->layout()->language->translate('ANTERIOR')['text']; ?>
+    </a>
+    <a class="space"></a>
+    <a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/stand/zona/<?php echo $this->ordenzona; ?>/empresa/<?php echo $this->empresa['orden'].'/'.$this->empresa['hash_url']; ?>" class="empresas">STAND</a>
+    <a class="space"></a>
+    <a style="<?php if( $this->ordenempresa >= $this->totalEmpresas ) echo 'display: none'; ?>" class="empresas" href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/stand/zona/<?php echo $this->ordenzona; ?>/empresa/<?php echo ($this->ordenempresa + 1); ?>/<?php echo $this->empresaSiguiente['hash_url']; ?>">
+        &nbsp;<?php echo $this->layout()->language->translate('SIGUIENTE')['text']; ?>&nbsp;<i class="fas fa-arrow-circle-right"></i>
+    </a>
+</div>

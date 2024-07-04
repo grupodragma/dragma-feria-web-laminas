@@ -2,29 +2,25 @@
 
 namespace Application\Service;
 
-class Uploader
-{
+class Uploader {
+
     protected $ancho;
-    protected $alto;
-    protected $escala;
-    protected $max_ancho;
+    protected $alto; 
+    protected $escala; 
+    protected $max_ancho; 
     protected $max_alto;
     protected $nuevo_ancho;
     protected $nuevo_alto;
     public $tojpg = false;
-
-    public function upload($origen, $destino, $ar_dims = null)
-    {
-        if (copy($origen, $destino)) {
-            if (is_array($ar_dims)) {
-                $this->resize($origen, $destino, $ar_dims['maxwidth'], $ar_dims['maxheight']);
-            }
+    
+    public function upload($origen,$destino,$ar_dims = null){
+        if(copy($origen, $destino)){
+            if(is_array($ar_dims))$this->resize($origen,$destino, $ar_dims['maxwidth'], $ar_dims['maxheight']);
             return true;
         }
     }
 
-    public function resize($ubicacion, $nueva_ubicacion, $maxw, $maxh)
-    {
+    public function resize($ubicacion, $nueva_ubicacion, $maxw, $maxh) {
         $this->max_ancho = $maxw;
         $this->max_alto = $maxh;
         $dim = getimagesize($ubicacion);
@@ -55,8 +51,7 @@ class Uploader
         }
     }
 
-    public function resizeImage($ubicacion, $nueva_ubicacion, $tipo = 'image/jpeg')
-    {
+    public function resizeImage($ubicacion, $nueva_ubicacion, $tipo = 'image/jpeg') {
 
         $nuevaimagen = imagecreatetruecolor($this->nuevo_ancho, $this->nuevo_alto);
 
@@ -78,7 +73,7 @@ class Uploader
                 imagecopyresampled($nuevaimagen, $fuente, 0, 0, 0, 0, $this->nuevo_ancho, $this->nuevo_alto, $this->ancho, $this->alto);
                 break;
             case "image/png":
-                $fuente = imagecreatefrompng($ubicacion); //png file
+                $fuente = imagecreatefrompng($ubicacion); //png file 
                 imagealphablending($nuevaimagen, false);
                 imagesavealpha($nuevaimagen, true);
                 if ($this->tojpg) {
@@ -93,20 +88,15 @@ class Uploader
             imagejpeg($nuevaimagen, $nueva_ubicacion, 100);
         } else {
             switch ($tipo) {
-                case "image/jpeg":
-                    imagejpeg($nuevaimagen, $nueva_ubicacion, 100);
-                    break;
-                case "image/gif":
-                    imagegif($nuevaimagen, $nueva_ubicacion);
-                    break;
-                case "image/png":
-                    imagepng($nuevaimagen, $nueva_ubicacion, 9);
-                    break;
+                case "image/jpeg": imagejpeg($nuevaimagen, $nueva_ubicacion, 100); break;
+                case "image/gif": imagegif($nuevaimagen, $nueva_ubicacion); break;
+                case "image/png": imagepng($nuevaimagen, $nueva_ubicacion, 9); break;
             }
         }
 
         chmod($nueva_ubicacion, 0755);
-
+        
         return true;
     }
+
 }

@@ -1,0 +1,10 @@
+<div class="franja-azul-menu-der" id="menu-encabezado">
+<?php
+    if(!empty($this->layout()->menus['encabezado'])) : foreach( $this->layout()->menus['encabezado'] as $item) :
+        if( (!(int)$this->layout()->datosUsuario['sala_premium'] && $item['hash_url'] === 'busqueda-networking') && (!(int)$this->layout()->feria['estado_networking']) && $item['hash_url'] === 'busqueda-networking')continue; //Menú visible solo para los usuarios premiun
+?>
+<a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/<?php echo $item['hash_url']; ?>" class="<?php echo ( $this->layout()->menus['hash_url_activo'] == $item['hash_url'] ) ? 'resaltar-pestaña' : 'esconder'; ?> menu-encabezado">&nbsp;<?php echo $this->layout()->language->translate(mb_strtoupper($item['nombre']))['text']; ?></a>
+<?php endforeach; endif; ?>
+<a class="space"></a>
+</div>
+<a href="<?php echo $this->layout()->idiomaSeleccionado; ?>/panel/busqueda-productos" class="resaltar"><img src="imagenes/tin.svg"><i class="fas fa-search"></i>&nbsp;<?php echo $this->layout()->language->translate(( $this->layout()->feria['texto_buscador'] != '' ) ? $this->layout()->feria['texto_buscador'] : 'BUSQUEDA DE PRODUCTOS')['text']; ?></a>

@@ -1,0 +1,331 @@
+<?php $this->headTitle('REGISTRO - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<style>
+
+    select {
+        color: #111;
+        border-radius: 10px;
+    }
+    select.gray {
+       color: #111;
+    }
+    option {
+    	color: #111;
+    }
+    .grayout option:first-child {
+      color: #111;
+    }
+
+    select {
+        margin: 0;
+        margin-bottom: 4%;
+        margin-top: 0%;
+        border-radius: 5px;
+        vertical-align: top;
+    	padding-top:2vh;
+    	padding-bottom:2vh;
+        padding: 1.2vh;
+        background-color: #fff;
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/4b/Feather-arrows-chevron-down.svg');
+        background-position: 97% center;
+        background-position: right 0px center;
+        background-repeat: no-repeat;
+        background-size: 18px;
+        border: 1px solid #CCC;
+        -webkit-appearance: button;
+        -webkit-border-radius: 3px;
+        -webkit-padding-end: 30px;
+        -webkit-padding-start: 8px;
+        -webkit-user-select: none;
+        -moz-appearance: none;
+    	font-size: 1vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    	 color: #111;
+        white-space: nowrap;
+        width: 100%;
+        transition: border 300ms;
+    }
+
+    @media screen and (max-width: 580px) {
+    	.info-modulo{
+    		display:none;
+    	}
+
+        select {
+            margin: 0;
+            margin-bottom: 4%;
+            margin-top: 0%;
+            border-radius: 2px !important;
+            vertical-align: top;
+            padding-top:2vh;
+            padding-bottom:2vh;
+            padding: 1.2vh;
+            background-color: #fff;
+            background-image:none;
+            background-position: 97% center;
+            background-position: right 0px center;
+            background-repeat: no-repeat;
+            background-size: 18px;
+            border: 1px solid #999;
+            -webkit-appearance: button;
+            -webkit-border-radius: 3px;
+            -webkit-padding-end: 30px;
+            -webkit-padding-start: 8px;
+            -webkit-user-select: none;
+            -moz-appearance: none;
+            font-size: 1em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #555;
+            white-space: nowrap;
+            width: 100%;
+            transition: border 300ms;
+        }
+
+    }
+</style>
+
+<?php echo $this->partial('partial/fondos/movil', ['accion'=> 'registro','configuracion'=> $this->configuracion]); ?>
+
+<section class="registro-home">
+    <a class="show-hide" href="#" onclick="smooth()"><?php echo $this->layout()->language->translate('VER REGISTRO')['text']; ?></a>
+
+    <div class="white-form-enter" id="show">
+        <div class="fondo-logo-form">
+            <img src="<?php echo ( isset($this->configuracion['imagen_logo'])) ? $this->layout()->url_backend.'/paginas/registro/'.$this->configuracion['imagen_logo']['hash'] : $this->layout()->url_backend.'/img/plantillas/registro/imagen_logo.jpg'; ?>" alt="">
+        </div>
+
+        <div class="image-lap-responsive" style="display: none;">
+            <img src="imagenes/lap-responsive.png" alt="">
+        </div>
+
+        <style>
+            .white-form-enter h3 {
+                color: <?php echo $this->layout()->feria['config_formulario_titulo_color_desktop']; ?>
+            }
+            .white-form-enter h2 {
+                color: <?php echo $this->layout()->feria['config_formulario_subtitulo_color_desktop']; ?>
+            }
+            @media screen and (max-width: 580px) {
+                .white-form-enter h3 {
+                    color: <?php echo $this->layout()->feria['config_formulario_titulo_color_movil']; ?>
+                }
+                .white-form-enter h2 {
+                    color: <?php echo $this->layout()->feria['config_formulario_subtitulo_color_movil']; ?>
+                }
+            }
+        </style>
+
+        <center>
+            <?php if( $this->layout()->feria['config_formulario_titulo'] != "" ) : ?>
+            <h3><?php echo $this->layout()->feria['config_formulario_titulo']; ?></h3>
+            <?php endif; ?>
+            <?php if( $this->layout()->feria['config_formulario_subtitulo'] != "" ) : ?>
+            <h2><?php echo $this->layout()->feria['config_formulario_subtitulo']; ?></h2>
+            <?php endif; ?>
+        </center>
+
+        <h3 style="display: none;"><?php echo $this->layout()->language->translate('1. Datos del usuario')['text']; ?></h3>
+
+        <div class="all-2">
+            <div class="first-form-2" style="margin-left: 25%;">
+                <center>
+                    <p><i class="fas fa-user"></i>&nbsp;<?php echo $this->layout()->language->translate('Ingresa tu D.N.I *')['text']; ?></p>
+                </center>
+            </div>
+            <div class="second-form-2" style="display: none;">
+                <p><i class="fas fa-user"></i>&nbsp;<?php echo $this->layout()->language->translate('Apellidos *')['text']; ?></p>
+            </div>
+        </div>
+
+        <div class="all">
+            <form id="frmLogin" method="post" autocomplete="off" class="d-flex flex-col">
+                <input type="hidden" name="csrf_token" value="<?php echo $this->csrf_token ?>">
+                <div class="first-form" style="width: 100% !important;">
+                    <input type="number" name="dni" class="campos-contacto-home" placeholder="DNI*" autofocus="" required="" />
+                </div>
+                <div class="alert form_mensaje alert-danger" style="display: none;"></div>
+                <?php if(!empty($this->layout()->feria['config_formulario']) ) : foreach($this->layout()->feria['config_formulario'] as $form) : $asterisk = (int)$form['requerido'] ? '*' : '' ?>
+                <div class="first-form" style="width: 100% !important;">
+                    <?php if($form['elemento'] == 'input') : ?>
+                    <input type="text" name="<?php echo $form['keyinput']; ?>" id="<?php echo $form['keyinput'] ?>" class="campos-contacto-home" placeholder="<?php echo $this->layout()->language->translate($form['nombre'].''.$asterisk)['text']; ?>" <?php if( (int)$form['requerido'] ){ echo 'required=""'; } ?>>
+                    <?php elseif($form['elemento'] == 'select') : ?>
+                    <select name="<?php echo $form['keyinput']; ?>" id="<?php echo $form['keyinput'] ?>" class="campos-contacto-home" placeholder="<?php echo $this->layout()->language->translate($form['nombre'].''.$asterisk)['text']; ?>" <?php if( (int)$form['requerido'] ){ echo 'required=""'; } ?>>
+                    <option value=""><?php echo $this->layout()->language->translate($form['nombre'].'*')['text']; ?></option>
+                    <?php if(!empty($form['opcion'])) : foreach($form['opcion'] as $item) : ?>
+                    <option value="<?php echo $item; ?>"><?php echo $item; ?></option>
+                    <?php endforeach; endif; ?>
+                    </select>
+                    <?php endif; ?>
+                </div>
+                <?php endforeach; endif; ?>
+                <div class="d-flex">
+                    <input type="submit" name="button" id="button" value="<?php echo $this->layout()->language->translate('CONTINUAR')['text']; ?>" class="send-home-contacto" />
+                </div>
+                <?php if( $this->layout()->feria['config_terminos_condiciones'] != '' ): ?>
+                <div class="condicion">
+                    <h5 style="font-weight: 300; text-align: center; margin-bottom: 2vh;margin-top: 2vh;"><?php echo $this->layout()->language->translate('Autorización de uso de datos.')['text']; ?></h5>
+                    <div class="inputs" style="color: #555; font-size: 12px; display: flex; justify-content: center; align-items: center;">
+                        <input type="radio" name="condicion" value="S" required="" checked="checked"><span><?php echo $this->layout()->language->translate('Si, acepto')['text']; ?> </span>
+                        <input type="radio" name="condicion" value="N" required=""><span><?php echo $this->layout()->language->translate('No, acepto')['text']; ?></span>
+                    </div>
+                    <div class="legal">
+                        <p><?php echo $this->layout()->language->translate($this->layout()->feria['config_terminos_condiciones'])['text']; ?></p>
+                    </div>
+                </div>
+                <?php endif; ?>
+            </form>
+        </div>
+    </div>
+
+    <div class="avion" style="display: none;"><img src="imagenes/zep.png" width="300" /></div>
+
+    <section class="drawer" id="drawer-name" data-drawer-target>
+        <div class="drawer__overlay" data-drawer-close tabindex="1"></div>
+        <div class="drawer__wrapper">
+            <button class="drawer__close" data-drawer-close aria-label="Close Drawer"></button>
+            <div class="drawer__content">
+                <ul class="menu-responsive">
+                    <a href="hall-planos-1.html">INICIAR FERIA</a>
+                    <a href="hall.html"><img src="imagenes/iconos-menu-01.svg" />Recepción</a>
+                    <a href="hall-planos-1.html"><img src="imagenes/iconos-menu-02.svg" />Zona Ferial</a>
+                    <a href="conferencias.html"><img src="imagenes/iconos-menu-03.svg" />Conferencias</a>
+                    <a href="#"><i class="fas fa-search"></i>&nbsp;Buscar por distrito</a>
+                </ul>
+                <div class="logo-responsive-ccl"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="slide active <?php echo ($this->fondo_video['estado']) ? 'bg-none' : ''; ?>" style="background-image: url(<?php echo(isset($this->configuracion[ 'imagen_fondo' ]))?$this->layout()->url_backend.'/paginas/registro/'.$this->configuracion['imagen_fondo']['hash']:$this->layout()->url_backend.'/img/plantillas/registro/imagen_fondo.jpg';?>);"
+    ></div>
+
+    <div id="ingresar" class="well">
+        <div class="modal-contents-2">
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post" class="form">
+                <div class="welcome-form">
+                    <h1>Ingresar a Evento</h1>
+                    <p>Digita los datos para poder ingresar</p>
+                </div>
+                <div class="titulos-form">Nombre de Usuario</div>
+                <div class="user line-input">
+                    <i class="fas fa-user"></i>
+                    <label class="lnr lnr-user"></label>
+                    <input type="text" placeholder="Nombre Usuario*" name="usuario" />
+                </div>
+                <div class="titulos-form">Contraseña de Acceso</div>
+                <div class="password line-input">
+                    <i class="fas fa-key"></i>
+                    <label class="lnr lnr-lock"></label>
+                    <input type="password" placeholder="Contraseña*" name="clave" />
+                </div>
+                <a href="#" class="titulos-form-forgot">Olvidaste tu Constraseña</a>
+                <?php if(!empty($error)):?>
+                <div class="mensaje">
+                    <?php echo $error; ?>
+                </div>
+                <?php endif; ?>
+                <button type="submit"><?php echo $this->layout()->language->translate('INGRESAR')['text']; ?><label class="lnr lnr-chevron-right"></label></button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    var mensaje = $(".form_mensaje");
+    var formUsuario = $("form#frmLogin");
+    var configFormulario;
+    
+    <?php if(!empty($this->layout()->feria['config_formulario']) ) : foreach($this->layout()->feria['config_formulario'] as $form) : ?>
+    configFormulario = '<?php echo json_encode($this->layout()->feria['config_formulario']); ?>';
+    <?php endforeach; endif; ?>
+    var dataConfigFormulario = JSON.parse(configFormulario);
+
+    $(document).ready(function () {
+        formUsuario.find("input[name='dni']").keyup(function (e) {
+            if ([67, 17].indexOf(e.keyCode) !== -1) return;
+            limpiarCampos();
+            mensaje.removeClass("alert-danger alert-success").hide().html("");
+            let _this = $(this);
+            delay(function () {
+                let numero_documento = _this.val();
+                $.post(
+                    "/cliente/validar-numero-documento",
+                    { numero_documento: numero_documento },
+                    function (response) {
+                        if (response.datos) {
+                            mensaje.addClass("alert-success").html("<p><?php echo $this->layout()->language->translate('Ya está registrado, ingrese.')['text']; ?></p>").show();
+                            if(dataConfigFormulario.length){
+                                for(form of dataConfigFormulario){
+                                    if(response.datos[form['keyinput']] !== undefined){
+                                        switch(form['elemento']){
+                                            case 'input': $("input[name='"+form['keyinput']+"']").val(response.datos[form['keyinput']]); break;
+                                            case 'select': $("select[name='"+form['keyinput']+"']").val(response.datos[form['keyinput']]); break;
+                                        }
+                                    }
+                                }
+                            }
+                            if (response.datos.condicion == "S") {
+                                formUsuario.find("input[name='condicion']").eq(0).prop('checked', true);
+                            } else {
+                                formUsuario.find("input[name='condicion']").eq(1).prop('checked', true);
+                            }
+                        } else {
+                            mensaje.addClass("alert-danger").html("<p><?php echo $this->layout()->language->translate('Todavía no está registrado, complete los campos.')['text']; ?></p>").show();
+                        }
+                    },
+                    "json"
+                );
+            }, 500);
+        });
+
+        formUsuario.submit(function (e) {
+            let _this = $(this);
+            _this.find("input[type='submit']").attr("disabled", "");
+            e.preventDefault();
+            $.post("/login", _this.serialize(), function (response) {
+                if (response.result == "success") {
+                    document.location = "<?php echo $this->layout()->idiomaSeleccionado."/".$this->urlRedirect; ?>";
+                    return;
+                } else {
+                    mensaje.removeClass("alert-danger alert-success").hide().html("");
+                    mensaje.addClass("alert-danger").html("<p>Ocurrio un error interno. Intente otra vez.</p>").show();
+                }
+                _this.find("input[type='submit']").removeAttr("disabled");
+                generarCsrfToken();
+            }, "json");
+        });
+    });
+
+    function limpiarCampos() {
+        formUsuario.find(":input").not("input[name='dni'], :submit, :radio, input[name='csrf_token']").val("");
+        formUsuario.find(":checkbox, :radio").prop("checked", false);
+    }
+
+    function generarCsrfToken(){
+        $.post("/generar-csrf-token", function(response) {
+            $("input[name='csrf_token']").val(response.csrf_token);
+        }, "json");
+    }
+
+    var delay = (function () {
+        var timer = 0;
+        return function (callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+    <?php if( $this->fondo_video['estado'] ) : ?>
+        anamorph("<?php echo $this->layout()->url_backend.'/paginas/registro/'.$this->fondo_video['ruta']; ?>", 0.5, "<?php echo ( isset($this->configuracion['imagen_fondo'])) ? $this->layout()->url_backend.'/paginas/registro/'.$this->configuracion['imagen_fondo']['hash'] : $this->layout()->url_backend.'/img/plantillas/registro/imagen_fondo.jpg'; ?>");
+    <?php endif; ?>
+
+</script>

@@ -1,0 +1,121 @@
+<?php $this->headTitle('STAND - '.$this->empresa['nombre'].' - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<?php
+    echo $this->partial('partial/menus/encabezado-flechas', [
+        'zona'=> $this->zona,
+        'ordenzona'=> $this->ordenzona,
+        'zonaEmpresaAnterior'=> $this->zonaEmpresaAnterior,
+        'zonaEmpresaSiguiente'=> $this->zonaEmpresaSiguiente,
+        'totalZonas'=> $this->totalZonas,
+        'accion'=> 'stand'
+    ]);
+?>
+
+<?php
+    $data = [
+        'empresa'=> $this->empresa,
+        'configuracion'=> $this->configuracion,
+        'zona'=> $this->zona,
+        'banco'=> $this->banco,
+        'banco_modulo'=>$this->banco_modulo,
+        'expositor'=> $this->expositor,
+        'totalProductos'=> $this->totalProductos,
+        'totalPromociones'=> $this->totalPromociones,
+        'totalPlanos'=> $this->totalPlanos,
+        'fondo_video'=> $this->fondo_video
+    ];
+    switch( $this->plantillaSeleccionado ) {
+        case 'vip': echo $this->partial('partial/paginas/stand-vip', $data); break;
+        case 'circular': echo $this->partial('partial/paginas/stand-circular', $data); break;
+        case 'standar': echo $this->partial('partial/paginas/stand-standar', $data); break;
+        case 'big': echo $this->partial('partial/paginas/stand-big', $data); break;
+        case 'big-scotiabank': echo $this->partial('partial/paginas/stand-big-scotiabank', $data); break;
+        case 'stand-nuevo-1': echo $this->partial('partial/paginas/stand-nuevo-1', $data); break;
+        case 'stand-nuevo-2': echo $this->partial('partial/paginas/stand-nuevo-2', $data); break;
+        default: echo 'No se encontro una plantilla.'; break;
+    }
+?>
+
+<?php
+    echo $this->partial('partial/empresa/agendar-cita', ['empresa'=> $this->empresa]);
+?>
+
+<div id="vr" class="well">
+    <div class="modal-contents-2">
+        <iframe class="paniframe" src="<?php echo $this->empresa['enlace_rv']; ?>" height="100%" width="100%" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" title=""></iframe>
+    </div>
+</div>
+
+<div id="tv1" class="well">
+    <div class="modal-contents-2">
+        <iframe width="96%" height="100%" src="<?php echo ( $this->empresa['enlace_video'] != '' ) ? $this->empresa['enlace_video'] : 'javascript:void(0)'; ?>" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="">
+        </iframe>
+    </div>
+</div>
+
+<div id="tv2" class="well">
+    <div class="modal-contents-2">
+        <iframe width="96%" height="100%" src="<?php echo ( $this->empresa['enlace_video_2'] != '' ) ? $this->empresa['enlace_video_2'] : 'javascript:void(0)'; ?>" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="">
+        </iframe>
+    </div>
+</div>
+
+<div class="franja-amarillo">
+    <div class="responsive-franja">
+        <?php echo $this->partial('partial/menus/pie-pagina', [
+            'empresa'=> $this->empresa,
+            'zona'=> $this->zona,
+            'accion'=> 'stand',
+            'totalProductos'=> $this->totalProductos,
+            'totalPromociones'=> $this->totalPromociones,
+            'totalPlanos'=> $this->totalPlanos,
+            'plantillaSeleccionado'=> $this->plantillaSeleccionado
+        ]); ?>
+    </div>
+    <a class="space"></a>
+    <?php
+        echo $this->partial('partial/menus/pie-pagina-flechas', [
+            'empresa'=> $this->empresa,
+            'zona'=> $this->zona,
+            'ordenempresa'=> $this->ordenempresa,
+            'ordenzona'=> $this->ordenzona,
+            'empresaAnterior'=> $this->empresaAnterior,
+            'empresaSiguiente'=> $this->empresaSiguiente,
+            'totalEmpresas'=> $this->totalEmpresas
+        ]);
+    ?>
+</div>
+
+<?php
+    $dataPartial = [
+        'empresas'=> $this->empresas,
+        'ordenzona'=> $this->ordenzona
+    ];
+    echo $this->partial('partial/empresa/slider', $dataPartial);
+?>
+
+<script>
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    $(document).on("ready", function () {
+        $('#tv1, #tv2').popup({
+            transition: 'all 0.3s',
+            closebutton: true
+        });
+        $('#vr').popup({
+            transition: 'all 0.3s',
+            closebutton: true
+        });
+    });
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>

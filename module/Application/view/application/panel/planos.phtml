@@ -1,0 +1,130 @@
+<?php $this->headTitle('PLANOS - '.mb_strtoupper($this->empresa['nombre']).' - FERIA VIRTUAL '.mb_strtoupper($this->layout()->feria['nombre'])); ?>
+
+<?php
+    if( isset($this->seo) ) {
+        echo $this->headMeta()->appendName('keywords', $this->seo['keywords'])->setAutoEscape(false);
+        echo $this->headMeta()->appendName('description', $this->seo['descripcion'])->setAutoEscape(false); 
+    }
+?>
+
+<?php
+    echo $this->partial('partial/menus/encabezado-flechas', [
+        'zona'=> $this->zona,
+        'ordenzona'=> $this->ordenzona,
+        'zonaEmpresaAnterior'=> $this->zonaEmpresaAnterior,
+        'zonaEmpresaSiguiente'=> $this->zonaEmpresaSiguiente,
+        'totalZonas'=> $this->totalZonas,
+        'accion'=> 'planos'
+    ]);
+?>
+
+<div class="wsp-all" style="display:none;">
+    <a href="#"><img src="imagenes/whatsapp.svg" alt=""></a>
+</div>
+
+<?php
+    $data = ['empresa'=> $this->empresa, 'zona'=> $this->zona];
+    echo $this->partial('partial/empresa/header-logo-movil', $data);
+?>
+
+<?php
+    $data = ['expositor'=> $this->expositor, 'empresa'=> $this->empresa, 'zona'=> $this->zona];
+    echo $this->partial('partial/empresa/info-modulo', $data);
+?>
+
+<div class="info-carrusel">
+    <div class="center">
+        <div id="sliderss" class="sliderss">
+            <div class="wrapper">
+                <div id="items" class="items">
+                    <?php foreach($this->planos as $item) : ?>
+                    <div class="slidess">
+                        <div class="content">
+                            <div class="imagen">
+                                <img src="<?php echo $this->layout()->url_backend."/planos/imagen/".$item['hash_imagen'] ?>" alt="">
+                            </div>
+                            <div class="descr">
+                                <div class="name">
+                                    <h1><?php echo $this->layout()->language->translate('INFORMACIÓN')['text']; ?></h1>
+                                </div>
+                                <div class="detalles">
+                                    <div class="desc">
+                                        <p><?php echo $this->layout()->language->translate($item['descripcion'])['text']; ?></p>
+                                    </div>
+                                    <?php $informacion = json_decode($item['informacion'], true); ?>
+                                    <?php if( $informacion ) : foreach($informacion as $info): ?>
+                                    <div class="desc"><small><?php echo $this->layout()->language->translate($info['titulo'])['text']; ?></small><span><?php echo $this->layout()->language->translate($info['descripcion'])['text']; ?></span></div>
+                                    <?php endforeach; endif; ?>
+                                </div>
+                                <div class="botones">
+                                    <a href="javascript:abrirVentanaWindow('<?php echo $item['enlace_wsp']; ?>')" class="wsp-empresa _wsp"><img src="imagenes/wsp.svg" alt=""></a>
+                                    <a href="javascript:abrirVentanaWindow('<?php echo ( $item['tipo_enlace'] === 'PDF' ) ? $this->layout()->url_backend."/planos/documentos/".$item['hash_pdf'] : $item['enlace'] ; ?>')" class="brochure-plano _url"><img src="imagenes/pdf.svg" width="13%" alt="">&nbsp;<?php echo $this->layout()->language->translate(($item['tipo_enlace'] === 'PDF')?'PDF':'URL')['text']; ?></a>
+                                    <a href="javascript:void(0)" class="_solicitar_informacion" onclick="Panel.enviarCorreo('expositor', <?php echo $this->expositor['idexpositores']; ?>, this, <?php echo $this->empresa['idempresas']; ?>)"><big><?php echo $this->layout()->language->translate('SOLICITAR INFORMACIÓN')['text']; ?></big></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <a id="prev" class="control prev arrow-plano"></a>
+            <a id="next" class="control next arrow-plano"></a>
+        </div>
+    </div>
+</div>
+
+<div class="franja-amarillo">
+    <div class="responsive-franja"><?php echo $this->partial('partial/menus/pie-pagina', ['empresa'=> $this->empresa, 'zona'=> $this->zona, 'accion'=> 'planos', 'totalProductos'=> $this->totalProductos, 'totalPromociones'=> $this->totalPromociones, 'totalPlanos'=> $this->totalPlanos]); ?></div>
+    <a class="space"></a>
+    <?php
+        echo $this->partial('partial/menus/pie-pagina-flechas', [
+            'empresa'=> $this->empresa,
+            'zona'=> $this->zona,
+            'ordenempresa'=> $this->ordenempresa,
+            'ordenzona'=> $this->ordenzona,
+            'empresaAnterior'=> $this->empresaAnterior,
+            'empresaSiguiente'=> $this->empresaSiguiente,
+            'totalEmpresas'=> $this->totalEmpresas
+        ]);
+    ?>
+</div>
+
+<?php
+    $dataPartial = [
+        'empresas'=> $this->empresas,
+        'ordenzona'=> $this->ordenzona
+    ];
+    echo $this->partial('partial/empresa/slider', $dataPartial);
+?>
+
+<div class="franja-azul-atajos" style="display: none;">
+    <a href="#" class="begin"><i class="fas fa-chevron-left"></i></a>
+    <a href="#" class="end"><i class="fas fa-chevron-right"></i></a>
+</div>
+
+<?php
+    echo $this->partial('partial/empresa/agendar-cita', ['empresa'=> $this->empresa]);
+?>
+
+<script type="text/javascript" src="js/index.js"></script>
+
+<script type="text/javascript">
+
+    <?php $this->inlineScript()->captureStart(); ?>
+
+    //Capturar Orden Empresa
+    UsuariosEventos.ordenzona = '<?php echo $this->ordenzona; ?>';
+    UsuariosEventos.ordenempresa = '<?php echo $this->ordenempresa; ?>';
+
+    $(document).on("ready", function () {
+
+        $('#vr, #map, #pdf').popup({
+            transition: 'all 0.3s',
+            closebutton: true
+        });
+
+    });
+
+    <?php $this->inlineScript()->captureEnd(); ?>
+
+</script>
